@@ -1,0 +1,41 @@
+# CeLT
+
+C eXTRA LiBRARiES & TOOLS
+
+> *NOTE: this is a work in progress, I'm still recycling my old code (with lots of parts that can't be published), so some aspects of the code may be left behind in some areas, same warning applies for tests and documentation so be patient. Also, it's not intended for newbies at all, do to it's nature, you should know what are you doing by using any of this code, plus you should know how to read code and find your own answers.*
+
+## MOTIVATION
+> *"If you want more effective programmers, you will discover that they should not waste their time debugging, they should not introduce the bugs to starth with."*
+- Edger Dijkstra, The Humble Programmer, 1972
+
+## LIBRARIES
+
+An opinionated mashup of decades of c code (with ~1700 test cases and 0 memory leaks/invalid memory accesses) structured in a bunch of libraries mostly for c99+, mostly for linux, mostly for gcc and clang, which doesn't use any external dependency (except indicated) not even libm/math.h (but it's compatible of course).
+In all of this libraries, name casing is snake, data types are suffixed as _dt and function types (such as callback types) are suffixed as _fn.
+
+* [`Ce`](libs/docs/ce.md) *mostly c89+ (plus some c99+ typedefs), for most compilers, only headers with macros and typedefs*
+
+* [`MeH`](libs/docs/meh.md) *c99+, for gcc/clang, uses Ce, only headers with macros and static inline functions*
+* [`GeM`](libs/docs/gem.md) *c99+, uses Ce, same as MeH but as independent files with special needs or purposes (ex. for clang linking BlocksRuntime)*
+
+* [`KeWL`](libs/docs/kewl.md) *c99+, for gcc/clang, uses MeH, more headers and some .c files to add a bunch of useful functions and data types*
+* [`GeST`](libs/docs/gest.md) *c99+, uses MeH, same as KeWL but as independent files with special needs or purposes (ex. for unix-like only)*
+
+* [`WeRKS`](libs/docs/werks.md) *c99+, for gcc/clang, uses KeWL, collections (like a stringlist and a key-value map) and common advanced functionalities (like logging and internationalization)*
+* [`PeRKS`](libs/docs/perks.md) *uses KeWL, same as WeRKS but as independent files with special needs or purposes (ex. for c11 or superior)*
+
+## TOOLS
+
+Also a selection of programs to work with c code in various ways featuring things that are not found in other tooling repositories.
+None of this programs use any of the CeLT libraries, just in case you want this but not that.
+
+* [`ceems`](tools/docs/ceems.md) *c code well-known includes good-enough inference tool*
+
+* [`cinco`](tools/docs/cinco.md) *c include outfinding tool*
+
+* [`chime`](tools/docs/chime.md) *c header included members explorer tool*
+
+* [`cinex`](tools/docs/cinex.md) *c include expanding tool*
+
+*IMPORTANT: Every library, tool, demo, etc is fully tested with valgrind for memory leaks or illegal accesses before publishing.*
+
