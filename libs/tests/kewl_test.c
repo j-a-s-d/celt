@@ -398,6 +398,15 @@ void print_value_with_reference(const char* value, const void* reference) {
     Tests.print("Reference: \"%p\"\n", reference);
 }
 
+void print_parsed_string(const char* str) {
+    Tests.print("Parsed String: %s\n", str);
+}
+
+void print_parsed_string_with_reference(const char* str, const void* reference) {
+    Tests.print("Parsed String: %s\n", str);
+    Tests.print("Passed Reference: %p\n", reference);
+}
+
 static inline void test_str_functions() {
     Tests.run("streq YES", streq("abc", "abc"));
     Tests.run("streq YES empty both", streq("", ""));
@@ -916,6 +925,28 @@ static inline void test_str_functions() {
     Tests.run("measure_string_format", measure_string_format("%s%d", "HEY", 123) == 6);
     AUTO_STRING(sss, format_string("A%sD", "BC"));
     Tests.run("format_string", streq(sss, "ABCD"));
+    Tests.run("parse_json_strings_array NO null null", !parse_json_strings_array(NULL, NULL));
+    Tests.run("parse_json_strings_array NO null 1", !parse_json_strings_array(NULL, print_parsed_string));
+    Tests.run("parse_json_strings_array NO null 2", !parse_json_strings_array("", NULL));
+    Tests.run("parse_json_strings_array NO empty", !parse_json_strings_array("", print_parsed_string));
+    Tests.run("parse_json_strings_array NO bad item 1", !parse_json_strings_array("[0]", print_parsed_string));
+    Tests.run("parse_json_strings_array NO bad item 2", !parse_json_strings_array("[0,\"\"]", print_parsed_string));
+    Tests.run("parse_json_strings_array NO bad item 3", !parse_json_strings_array("[\"\",0]", print_parsed_string));
+    Tests.run("parse_json_strings_array YES 1", parse_json_strings_array("[]", print_parsed_string));
+    Tests.run("parse_json_strings_array YES 2", parse_json_strings_array("[\"\"]", print_parsed_string));
+    Tests.run("parse_json_strings_array YES 3", parse_json_strings_array("[\"hello\"]", print_parsed_string));
+    Tests.run("parse_json_strings_array YES 4", parse_json_strings_array("[ \"hello\", \"w\\\"orld\", \"line\\nbreak\", \"unicode \\u263A\" ]", print_parsed_string));
+    Tests.run("parse_json_strings_array_with_reference NO null null", !parse_json_strings_array_with_reference(NULL, NULL, sample_ptr));
+    Tests.run("parse_json_strings_array_with_reference NO null 1", !parse_json_strings_array_with_reference(NULL, print_parsed_string_with_reference, sample_ptr));
+    Tests.run("parse_json_strings_array_with_reference NO null 2", !parse_json_strings_array_with_reference("", NULL, sample_ptr));
+    Tests.run("parse_json_strings_array_with_reference NO empty", !parse_json_strings_array_with_reference("", print_parsed_string_with_reference, sample_ptr));
+    Tests.run("parse_json_strings_array_with_reference NO bad item 1", !parse_json_strings_array_with_reference("[0]", print_parsed_string_with_reference, sample_ptr));
+    Tests.run("parse_json_strings_array_with_reference NO bad item 2", !parse_json_strings_array_with_reference("[0,\"\"]", print_parsed_string_with_reference, sample_ptr));
+    Tests.run("parse_json_strings_array_with_reference NO bad item 3", !parse_json_strings_array_with_reference("[\"\",0]", print_parsed_string_with_reference, sample_ptr));
+    Tests.run("parse_json_strings_array_with_reference YES 1", parse_json_strings_array_with_reference("[]", print_parsed_string_with_reference, sample_ptr));
+    Tests.run("parse_json_strings_array_with_reference YES 2", parse_json_strings_array_with_reference("[\"\"]", print_parsed_string_with_reference, sample_ptr));
+    Tests.run("parse_json_strings_array_with_reference YES 3", parse_json_strings_array_with_reference("[\"hello\"]", print_parsed_string_with_reference, sample_ptr));
+    Tests.run("parse_json_strings_array_with_reference YES 4", parse_json_strings_array_with_reference("[ \"hello\", \"w\\\"orld\", \"line\\nbreak\", \"unicode \\u263A\" ]", print_parsed_string_with_reference, sample_ptr));
 }
 
 void test_dbg_utilities() {

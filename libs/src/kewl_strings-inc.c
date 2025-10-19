@@ -651,6 +651,29 @@ bool hex_to_bytes(const char* hex_str, uint8_t** out_bytes, ssize_t* out_len) {
     return true;
 }
 
+int decode_utf8_escape(const char* str, char* out) {
+    if (str == NULL || out == NULL) return 0;
+    int u = 0;
+    for (int i = 0; i < 4; i++) {
+        int val = hex_char_to_int(str[i]);
+        if (val < 0) return 0;
+        u = (u << 4) | val;
+    }
+    if (u <= 0x7F) { // encode u as UTF-8
+        out[0] = (char)u;
+        return 1;
+    } else if (u <= 0x7FF) {
+        out[0] = (char)(0xC0 | ((u >> 6) & 0x1F));
+        out[1] = (char)(0x80 | (u & 0x3F));
+        return 2;
+    } else {
+        out[0] = (char)(0xE0 | ((u >> 12) & 0x0F));
+        out[1] = (char)(0x80 | ((u >> 6) & 0x3F));
+        out[2] = (char)(0x80 | (u & 0x3F));
+        return 3;
+    }
+}
+
 char** string_array_create(ssize_t size, const char* default_value) {
     if (size <= 0 || default_value == NULL) return NULL;
     RET_MALLOC_SIZE(char*, size * sizeof(char*), {
@@ -1055,7 +1078,7 @@ string_key_value_dt* string_key_value_parse(const char* input, const char* separ
     cb_blk; \
     ce_free(token)
 
-bool parse_separated_values(const char* text, const char* separator, separated_value_callback callback) {
+bool parse_separated_values(const char* text, const char* separator, parsed_string_callback callback) {
     if (text == NULL || separator == NULL || callback == NULL) return false;
     size_t sep_len = strlen(separator);
     const char* segment_start = text;
@@ -1081,7 +1104,7 @@ bool parse_separated_values(const char* text, const char* separator, separated_v
     return true;
 }
 
-bool parse_separated_values_with_reference(const char* text, const char* separator, separated_value_callback_with_reference callback, const void* reference) {
+bool parse_separated_values_with_reference(const char* text, const char* separator, parsed_string_callback_with_reference callback, const void* reference) {
     if (text == NULL || separator == NULL || callback == NULL) return false;
     size_t sep_len = strlen(separator);
     const char* segment_start = text;
@@ -1214,5 +1237,131 @@ char* format_string(const char* fmt, ...) {
     char* result = perform_string_format(size, fmt, args);
     va_end(args);
     return result;
+}
+
+// Parses a JSON string starting at *p (expects starting quote), returns parsed string via out_str and advances *p
+static bool parse_json_string(const char** p, char** out_str) {
+    const char* ptr = *p;
+    ptr++; // skip opening quote
+    // first pass: calculate output length
+    size_t length = 0;
+    const char* scan = ptr;
+    while (*scan && *scan != '"') {
+        if (*scan == '\\') {
+            scan++;
+            if (!*scan) return false;
+            if (*scan == 'u') { // unicode escape, 4 hex digits
+                for (int i = 1; i <= 4; i++)
+                    if (!scan[i] || !isxdigit(scan[i]))
+                        return false;
+                length += 3; // max UTF-8 length for one unicode char
+                scan += 5;
+            } else { // other escape sequences count as 1 char output
+                length++;
+                scan++;
+            }
+        } else {
+            length++;
+            scan++;
+        }
+    }
+    if (*scan != '"') return false; // closing quote missing
+    // allocate output buffer (length + 1 for null)
+    char* buf = malloc(length + 1);
+    if (buf == NULL) return false;
+    // second pass: decode string
+    char* out = buf;
+    while (ptr && *ptr != '"') {
+        if (*ptr == '\\') {
+            ptr++;
+            switch (*ptr) {
+                case '"':  *out++ = '"';  break;
+                case '\\': *out++ = '\\'; break;
+                case '/':  *out++ = '/';  break;
+                case 'b':  *out++ = '\b'; break;
+                case 'f':  *out++ = '\f'; break;
+                case 'n':  *out++ = '\n'; break;
+                case 'r':  *out++ = '\r'; break;
+                case 't':  *out++ = '\t'; break;
+                case 'u': {
+                    char utf8[3];
+                    int bytes = decode_utf8_escape(ptr + 1, utf8);
+                    if (bytes == 0) {
+                        free(buf);
+                        return false;
+                    }
+                    for (int i = 0; i < bytes; i++)
+                        *out++ = utf8[i];
+                    ptr += 4; // skip uXXXX digits
+                    break;
+                }
+                default:
+                    free(buf);
+                    return false; // invalid escape
+            }
+            ptr++;
+        } else
+            *out++ = *ptr++;
+    }
+    *out = CHARS_NULL;
+    if (*ptr != '"') {
+        free(buf);
+        return false;
+    }
+    *p = ptr + 1; // advance pointer past closing quote
+    *out_str = buf;
+    return true;
+}
+
+bool parse_json_strings_array(const char* json, parsed_string_callback callback) {
+    if (json == NULL || callback == NULL) return false;
+    const char* p = json;
+    while (isspace(*p)) p++;
+    if (*p != '[') return false;
+    p++;
+    LOOP_FOREVER() {
+        while (isspace(*p)) p++;
+        if (*p == ']') break;
+        if (*p != '"') return false; // not a string, invalid or end
+        char* str = NULL;
+        if (!parse_json_string(&p, &str)) return false; // parse error
+        callback(str);
+        free(str);
+        while (isspace(*p)) p++;
+        if (*p == ',') {
+            p++;
+            continue;
+        } else if (*p == ']') {
+            break;
+        } else
+            return false;
+    }
+    return true;
+}
+
+bool parse_json_strings_array_with_reference(const char* json, parsed_string_callback_with_reference callback, const void* reference) {
+    if (json == NULL || callback == NULL) return false;
+    const char* p = json;
+    while (isspace(*p)) p++;
+    if (*p != '[') return false;
+    p++;
+    LOOP_FOREVER() {
+        while (isspace(*p)) p++;
+        if (*p == ']') break;
+        if (*p != '"') return false; // not a string, invalid or end
+        char* str = NULL;
+        if (!parse_json_string(&p, &str)) return false; // parse error
+        callback(str, reference);
+        free(str);
+        while (isspace(*p)) p++;
+        if (*p == ',') {
+            p++;
+            continue;
+        } else if (*p == ']') {
+            break;
+        } else
+            return false;
+    }
+    return true;
 }
 

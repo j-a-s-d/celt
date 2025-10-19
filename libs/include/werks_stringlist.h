@@ -248,6 +248,11 @@ werks_stringlist_on_before_read_from_file_handler_fn werks_stringlist_get_on_bef
 void werks_stringlist_set_on_before_write_to_file(werks_stringlist_dt* sl, werks_stringlist_on_before_write_to_file_handler_fn handler);
 werks_stringlist_on_before_write_to_file_handler_fn werks_stringlist_get_on_before_write_to_file(werks_stringlist_dt* sl);
 
+// json
+
+char* werks_stringlist_write_to_json_array_string(werks_stringlist_dt* sl);
+bool werks_stringlist_read_from_json_array_string(werks_stringlist_dt* sl, const char* data);
+
 #ifdef __cplusplus
 }
 #endif

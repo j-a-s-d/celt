@@ -63,23 +63,6 @@ static inline bool is_ascii_char(const char chr) {
     return (unsigned char)chr <= 127;
 }
 
-// Returns the number of bytes in a UTF-8 character (-1 if the provided char is not a valid UTF-8 start byte)
-static inline int8_t get_utf8_char_length(char c) {
-#ifdef __c23
-    if ((c & 0b11111000) == 0b11110000) return 4; // 4-byte char
-    if ((c & 0b11110000) == 0b11100000) return 3; // 3-byte char
-    if ((c & 0b11100000) == 0b11000000) return 2; // 2-byte char
-    if ((c & 0b10000000) == 0b00000000) return 1; // 1-byte char (ASCII)
-#else
-    unsigned char uc = (unsigned char)c;
-    if ((uc & 0xF8) == 0xF0) return 4; // 4-byte char (11110xxx)
-    if ((uc & 0xF0) == 0xE0) return 3; // 3-byte char (1110xxxx)
-    if ((uc & 0xE0) == 0xC0) return 2; // 2-byte char (110xxxxx)
-    if ((uc & 0x80) == 0x00) return 1; // 1-byte char ASCII (0xxxxxxx)
-#endif
-    return -1; // continuation byte or invalid
-}
-
 static inline bool is_hex_char(const char chr) {
     return (chr >= '0' && chr <= '9') ||
            (chr >= 'a' && chr <= 'f') ||
@@ -185,6 +168,28 @@ static inline bool hex_string_to_byte(const char* hex_str, unsigned char* byte) 
     return true;
 }
 
+// UTF-8
+
+// Returns the number of bytes in a UTF-8 character (-1 if the provided char is not a valid UTF-8 start byte)
+static inline int8_t get_utf8_char_length(char c) {
+#ifdef __c23
+    if ((c & 0b11111000) == 0b11110000) return 4; // 4-byte char
+    if ((c & 0b11110000) == 0b11100000) return 3; // 3-byte char
+    if ((c & 0b11100000) == 0b11000000) return 2; // 2-byte char
+    if ((c & 0b10000000) == 0b00000000) return 1; // 1-byte char (ASCII)
+#else
+    unsigned char uc = (unsigned char)c;
+    if ((uc & 0xF8) == 0xF0) return 4; // 4-byte char (11110xxx)
+    if ((uc & 0xF0) == 0xE0) return 3; // 3-byte char (1110xxxx)
+    if ((uc & 0xE0) == 0xC0) return 2; // 2-byte char (110xxxxx)
+    if ((uc & 0x80) == 0x00) return 1; // 1-byte char ASCII (0xxxxxxx)
+#endif
+    return -1; // continuation byte or invalid
+}
+
+// It decodes \uXXXX unicode escape into UTF-8 bytes and returns the number of UTF-8 bytes written, 0 if invalid
+int decode_utf8_escape(const char* str, char* out);
+
 // MUTATION
 
 char* strreverse(char* str);
@@ -273,13 +278,19 @@ static inline char* rejoin_arguments(int argc, const char* argv[]) {
 
 // PARSE/SPLIT
 
-typedef void (*separated_value_callback)(const char* value);
+typedef void (*parsed_string_callback)(const char* value);
 
-bool parse_separated_values(const char* text, const char* separator, separated_value_callback callback);
+typedef void (*parsed_string_callback_with_reference)(const char* value, const void* reference);
 
-typedef void (*separated_value_callback_with_reference)(const char* value, const void* reference);
+bool parse_separated_values(const char* text, const char* separator, parsed_string_callback callback);
 
-bool parse_separated_values_with_reference(const char* text, const char* separator, separated_value_callback_with_reference callback, const void* reference);
+bool parse_separated_values_with_reference(const char* text, const char* separator, parsed_string_callback_with_reference callback, const void* reference);
+
+// Parse JSON array of strings with escapes and calls the callback with each string
+bool parse_json_strings_array(const char* json, parsed_string_callback callback);
+
+// Parse JSON array of strings with escapes and calls the callback with each string and the provided reference
+bool parse_json_strings_array_with_reference(const char* json, parsed_string_callback_with_reference callback, const void* reference);
 
 // SANITIZATION
 

@@ -630,6 +630,19 @@ int main(void) {
     AUTO_STRING(csvz, werks_stringlist_write_to_string(skz, ';'));
     Tests.run("werks_stringlist_write_to_string skz", streq(csvz, "000;aa;bb;cc;111"));
     werks_stringlist_destroy(sky);
+    Tests.run("werks_stringlist_read_from_json_array_string NO null", !werks_stringlist_read_from_json_array_string(NULL, NULL));
+    Tests.run("werks_stringlist_read_from_json_array_string skz NO null", !werks_stringlist_read_from_json_array_string(skz, NULL));
+    Tests.run("werks_stringlist_read_from_json_array_string skz NO empty", !werks_stringlist_read_from_json_array_string(skz, ""));
+    Tests.run("werks_stringlist_read_from_json_array_string skz YES array", werks_stringlist_read_from_json_array_string(skz, "[]"));
+    Tests.run("werks_stringlist_read_from_json_array_string skz YES spaced array", werks_stringlist_read_from_json_array_string(skz, " [ ] "));
+    Tests.run("werks_stringlist_read_from_json_array_string skz YES full", werks_stringlist_read_from_json_array_string(skz, "[\"xx\",\"yy\"]"));
+    Tests.run("werks_stringlist_read_from_json_array_string skz YES spaces", werks_stringlist_read_from_json_array_string(skz, " [ \"zz\" ] "));
+    Tests.run("werks_stringlist_write_to_json_array_string null", !werks_stringlist_write_to_json_array_string(NULL));
+    AUTO_STRING(jasz, werks_stringlist_write_to_json_array_string(skz));
+    Tests.run("werks_stringlist_write_to_json_array_string skz", streq(jasz, "[\"000\",\"aa\",\"bb\",\"cc\",\"111\",\"xx\",\"yy\",\"zz\"]"));
+    werks_stringlist_clear(skz);
+    AUTO_STRING(jesz, werks_stringlist_write_to_json_array_string(skz));
+    Tests.run("werks_stringlist_write_to_json_array_string skz empty", streq(jesz, "[]"));
     werks_stringlist_destroy(skz);
     return Tests.end();
 }

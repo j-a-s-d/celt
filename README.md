@@ -2,7 +2,7 @@
 
 C eXTRA LiBRARiES & TOOLS
 
-> *NOTE: this is a work in progress, I'm still recycling my old code (with lots of parts that can't be published), so some aspects of the code may be left behind in some areas, same warning applies for tests and documentation so be patient. Also, it's not intended for newbies at all, do to it's nature, you should know what are you doing by using any of this code, plus you should know how to read code and find your own answers.*
+> *NOTE: this is a work in progress, I'm still recycling my old code (with lots of parts that can't be published), so some aspects of the code may be left behind in some areas, same warning applies for tests and documentation so be patient. Also, this it's not intended for newbies at all, due to it's nature, you should know what are you doing by using any of this code, plus you should know how to read code and find your own answers.*
 
 ## MOTIVATION
 > *"If you want more effective programmers, you will discover that they should not waste their time debugging, they should not introduce the bugs to starth with."*
@@ -10,7 +10,7 @@ C eXTRA LiBRARiES & TOOLS
 
 ## LIBRARIES
 
-An opinionated mashup of decades of c code (with ~1700 test cases and 0 memory leaks/invalid memory accesses) structured in a bunch of libraries mostly for c99+, mostly for linux, mostly for gcc and clang, which doesn't use any external dependency (except indicated) not even libm/math.h (but it's compatible of course).
+An opinionated mashup of decades of c code (with ~1900 test cases and 0 memory leaks/invalid memory accesses) structured in a bunch of libraries mostly for c99+, mostly for linux, mostly for gcc and clang, which doesn't use any external dependency (except indicated) not even libm/math.h (but it's compatible of course).
 In all of this libraries, name casing is snake, data types are suffixed as _dt and function types (such as callback types) are suffixed as _fn.
 
 * [`Ce`](libs/docs/ce.md) *mostly c89+ (plus some c99+ typedefs), for most compilers, only headers with macros and typedefs*
@@ -37,5 +37,15 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 * [`cinex`](tools/docs/cinex.md) *c include expanding tool*
 
-*IMPORTANT: Every library, tool, demo, etc is fully tested with valgrind for memory leaks or illegal accesses before publishing.*
+*IMPORTANT: every library, tool, demo, etc is fully tested with valgrind for memory leaks or illegal accesses before publishing.*
+
+## HISTORY
+
+* 19-oct-2025 -- *20251019L*
+    -- [Ce] added `both_assigned`
+    -- [KeWL] added `decode_utf8_escape`, `parse_json_strings_array` and  `parse_json_strings_array_with_reference`
+    -- [WeRKS] added `werks_stringlist_write_to_json_array_string` and `werks_stringlist_read_from_json_array_string`
+    -- other minor adjustments
+* 14-oct-2025 -- *20251014L*
+    -- initial release
 

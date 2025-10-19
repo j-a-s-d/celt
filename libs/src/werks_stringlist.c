@@ -1155,3 +1155,30 @@ void werks_stringlist_shuffle(werks_stringlist_dt* const sl, fn_int_fn const ran
         string_array_shuffle(sl->size, sl->strings, rand_func);
 }
 
+char* werks_stringlist_write_to_json_array_string(werks_stringlist_dt* const sl) {
+    if (is_dead(sl)) return NULL;
+    ssize_t tot_len = 2;
+    for (ssize_t i = 0; i < sl->size; i++)
+        tot_len += strlen(sl->strings[i]) + 3;
+    RET_MALLOC_SIZE(char, tot_len + 1, {
+        result[0] = CHARS_BRACKETS_OPEN;
+        result[1] = CHARS_NULL;
+        for (ssize_t i = 0; i < sl->size; i++) {
+            if (i > 0) strcat(result, STRINGS_COMMA);
+            strcat(result, STRINGS_QUOTE);
+            strcat(result, sl->strings[i]);
+            strcat(result, STRINGS_QUOTE);
+        }
+        strcat(result, STRINGS_BRACKETS_CLOSE);
+    });
+}
+
+static void add_json_string(const char* value, const void* reference) {
+    add_string((werks_stringlist_dt*)reference, value);
+}
+
+bool werks_stringlist_read_from_json_array_string(werks_stringlist_dt* const sl, const char* data) {
+    return !is_dead(sl) && !sl->frozen && has_content(data) &&
+        parse_json_strings_array_with_reference(data, add_json_string, sl);
+}
+

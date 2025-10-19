@@ -16,6 +16,9 @@
 /* checks if the pointer is assigned */
 #define assigned(ptr) ((ptr) != NULL)
 
+/* checks if the both pointers are assigned */
+#define both_assigned(a, b) (assigned(a) && assigned(b))
+
 /* Ce.POINTERS -- Function Aliases/Pointers */
 
 /* creates a function alias */

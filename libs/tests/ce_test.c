@@ -94,6 +94,7 @@ static void test_pointers() {
     void* r = &p;
     printf("--- POINTERS\n");
     Tests.run("--- * assigned", !assigned(NULL) && !assigned(p) && assigned(r));
+    Tests.run("--- * both_assigned", both_assigned(r, &test_pointers));
 }
 
 static void test_memory() {
