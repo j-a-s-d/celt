@@ -39,13 +39,16 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 *IMPORTANT: every library, tool, demo, etc is fully tested with valgrind for memory leaks or illegal accesses before publishing.*
 
-## HISTORY
+### HISTORY
 
+* 20-oct-2025 -- *20251020L*
+	- [WeRKS] added `werks_stringlist_reverse_treat` and `werks_stringlist_reverse_treat_with_reference`
+	- other minor adjustments
 * 19-oct-2025 -- *20251019L*
-    -- [Ce] added `both_assigned`
-    -- [KeWL] added `decode_utf8_escape`, `parse_json_strings_array` and  `parse_json_strings_array_with_reference`
-    -- [WeRKS] added `werks_stringlist_write_to_json_array_string` and `werks_stringlist_read_from_json_array_string`
-    -- other minor adjustments
+	- [Ce] added `both_assigned`
+	- [KeWL] added `decode_utf8_escape`, `parse_json_strings_array` and  `parse_json_strings_array_with_reference`
+	- [WeRKS] added `werks_stringlist_write_to_json_array_string` and `werks_stringlist_read_from_json_array_string`
+	- other minor adjustments
 * 14-oct-2025 -- *20251014L*
-    -- initial release
+	- initial release
 

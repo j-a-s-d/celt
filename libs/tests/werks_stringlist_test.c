@@ -93,6 +93,8 @@ int main(void) {
     werks_stringlist_reverse_loop(slsp, loop_handler);
     Tests.print("werks_stringlist_treat:\n");
     werks_stringlist_treat(slsp, treat_handler);
+    Tests.print("werks_stringlist_reverse_treat:\n");
+    werks_stringlist_reverse_treat(slsp, treat_handler);
 #if defined(__GNUC__) && !defined(__clang__)
     Tests.print("werks_stringlist_each:\n");
     werks_stringlist_each(slsp, item, {
@@ -123,6 +125,8 @@ int main(void) {
     werks_stringlist_reverse_loop_with_reference(slsp, loop_with_reference_handler, slsp);
     Tests.print("werks_stringlist_treat_with_reference:\n");
     werks_stringlist_treat_with_reference(slsp, treat_with_reference_handler, slsp);
+    Tests.print("werks_stringlist_reverse_treat_with_reference:\n");
+    werks_stringlist_reverse_treat_with_reference(slsp, treat_with_reference_handler, slsp);
 #if defined(__GNUC__) && !defined(__clang__)
     Tests.print("werks_stringlist_each_with_reference:\n");
     werks_stringlist_each_with_reference(slsp, item, r, {

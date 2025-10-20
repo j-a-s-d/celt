@@ -634,6 +634,30 @@ void werks_stringlist_treat_with_reference(werks_stringlist_dt* const sl, werks_
         }
 }
 
+void werks_stringlist_reverse_treat(werks_stringlist_dt* const sl, werks_stringlist_treat_handler_fn handler) {
+    if (!is_dead(sl) && assigned(handler) && has_items(sl) && !sl->frozen)
+        for (ssize_t i = sl->size - 1; i >= 0; i--) {
+            const char* o = werks_stringlist_get(sl, i); // use the getter since the list can be manipulated outside
+            char* tmp = handler(sl, i, o);
+            if (o == tmp) // leave if the string returned is the original
+                continue;
+            UNUSED(werks_stringlist_set(sl, i, tmp));
+            ce_free(tmp);
+        }
+}
+
+void werks_stringlist_reverse_treat_with_reference(werks_stringlist_dt* const sl, werks_stringlist_treat_with_reference_handler_fn handler, void* reference) {
+    if (!is_dead(sl) && assigned(handler) && has_items(sl) && !sl->frozen)
+        for (ssize_t i = sl->size - 1; i >= 0; i--) {
+            const char* o = werks_stringlist_get(sl, i); // use the getter since the list can be manipulated outside
+            char* tmp = handler(sl, i, o, reference);
+            if (o == tmp) // leave if the string returned is the original
+                continue;
+            UNUSED(werks_stringlist_set(sl, i, tmp));
+            ce_free(tmp);
+        }
+}
+
 static void werks_stringlist_insertion_callback(const char* str, const void* ref) {
     UNUSED(werks_stringlist_append((werks_stringlist_dt*)ref, str));
 }

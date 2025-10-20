@@ -153,6 +153,7 @@ void werks_stringlist_reverse_loop_from_to(werks_stringlist_dt* const sl, ssize_
 
 typedef char* (*werks_stringlist_treat_handler_fn)(werks_stringlist_dt* sl, ssize_t index, const char* string);
 void werks_stringlist_treat(werks_stringlist_dt* sl, werks_stringlist_treat_handler_fn handler);
+void werks_stringlist_reverse_treat(werks_stringlist_dt* const sl, werks_stringlist_treat_handler_fn handler);
 
 typedef void (*werks_stringlist_loop_with_reference_handler_fn)(werks_stringlist_dt* sl, ssize_t index, const char* string, void* reference);
 void werks_stringlist_loop_with_reference(werks_stringlist_dt* sl, werks_stringlist_loop_with_reference_handler_fn handler, void* reference);
@@ -166,6 +167,7 @@ void werks_stringlist_reverse_loop_from_to_with_reference(werks_stringlist_dt* c
 
 typedef char* (*werks_stringlist_treat_with_reference_handler_fn)(werks_stringlist_dt* sl, ssize_t index, const char* string, void* reference);
 void werks_stringlist_treat_with_reference(werks_stringlist_dt* sl, werks_stringlist_treat_with_reference_handler_fn handler, void* reference);
+void werks_stringlist_reverse_treat_with_reference(werks_stringlist_dt* const sl, werks_stringlist_treat_with_reference_handler_fn handler, void* reference);
 
 #if defined(__GNUC__) && !defined(__clang__)
     #define werks_stringlist_each(l, parameter, code_block) \
