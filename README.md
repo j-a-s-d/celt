@@ -41,6 +41,8 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 23-oct-2025 -- *20251023L*
+	- [KeWL] added `hms_to_decimal_hours` and `decimal_hours_to_hms`
 * 20-oct-2025 -- *20251020L*
 	- [WeRKS] added `werks_stringlist_reverse_treat` and `werks_stringlist_reverse_treat_with_reference`
 	- other minor adjustments

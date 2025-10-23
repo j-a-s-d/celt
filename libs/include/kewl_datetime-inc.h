@@ -121,3 +121,17 @@ static inline char* get_timestamp(void) {
     return get_time_converter_stamp(localtime);
 }
 
+// CONVERSION
+
+/**
+ * Converts hours, minutes and seconds from integers to a decimal hours double value.
+ */
+static inline double hms_to_decimal_hours(int hh, int mm, int ss) {
+    return hh + mm / 60.0 + ss / 3600.0;
+}
+
+/**
+ * Converts a decimal hours double value to an hours, minutes and seconds integers array.
+ */
+void decimal_hours_to_hms(double decimal_hours, int result[3]);
+

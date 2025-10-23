@@ -74,3 +74,14 @@ elapsed_time_t get_elapsed_time(time_t start, time_t end) {
     return elapsed;
 }
 
+static inline int round_(double num) {
+    return (int)(num < 0 ? num - 0.5 : num + 0.5);
+}
+
+void decimal_hours_to_hms(double decimal_hours, int result[3]) {
+    int total_seconds = round_(decimal_hours * 3600);
+    result[0] = total_seconds / 3600;
+    result[1] = (total_seconds % 3600) / 60;
+    result[2] = total_seconds % 60;
+}
+

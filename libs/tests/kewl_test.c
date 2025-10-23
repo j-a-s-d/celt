@@ -202,6 +202,14 @@ static inline void test_sampleprofiler() {
     kewl_sampleprofiler_destroy(data);
 }
 
+static inline void test_datetime_utilities() {
+    double dh = hms_to_decimal_hours(16, 5, 33);
+    Tests.run("hms_to_decimal_hours", double_abs(dh - 16.0925) < 0.0001);
+    int hv[3] = {0};
+    decimal_hours_to_hms(dh, hv);
+    Tests.run("decimal_hours_to_hms", hv[0] == 16 && hv[1] == 5 && hv[2] == 33);
+}
+
 static inline void test_strhashset() {
     kewl_strhashset_dt* hs = kewl_strhashset_make();
     Tests.run("kewl_strhashset_make", assigned(hs));
@@ -1183,6 +1191,10 @@ int main(void) {
 
         printf("--- FILESYSTEM ---\n");
         test_fs_utilities();
+        printf("\n");
+
+        printf("--- DATETIME ---\n");
+        test_datetime_utilities();
         printf("\n");
         
         printf("--- STREAM ---\n");
