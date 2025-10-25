@@ -20,24 +20,27 @@
 #define VALUE_LOG2E 1.4426950408889634 // log_2 e
 #define VALUE_LOG10E 0.4342944819 // log10 e (alternative: 1.0 / log(10.0))
 #define VALUE_LNPI 1.1447298858494001 // log_e pi
-#define VALUE_INVERSE_PI 1.0 / VALUE_PI
-#define VALUE_2PI 2.0 * VALUE_PI
+#define VALUE_INVERSE_PI (1.0 / VALUE_PI)
+#define VALUE_2PI (2.0 * VALUE_PI)
 #define VALUE_TAU VALUE_2PI
-#define VALUE_PIDIV2 VALUE_PI / 2.0
-#define VALUE_PIDIV4 VALUE_PI / 4.0
-#define VALUE_1DIVPI 1.0 / VALUE_PI
-#define VALUE_2DIVPI 2.0 / VALUE_PI
+#define VALUE_PIDIV2 (VALUE_PI / 2.0)
+#define VALUE_PIDIV4 (VALUE_PI / 4.0)
+#define VALUE_1DIVPI (1.0 / VALUE_PI)
+#define VALUE_2DIVPI (2.0 / VALUE_PI)
 #define VALUE_SQRTPI 1.772453850905516 // alternative: sqrt(VALUE_PI)
-#define VALUE_INVERSE_SQRTPI 1.0 / VALUE_SQRTPI
-#define VALUE_2SQRTPI 2.0 / VALUE_SQRTPI
+#define VALUE_INVERSE_SQRTPI (1.0 / VALUE_SQRTPI)
+#define VALUE_2SQRTPI (2.0 / VALUE_SQRTPI)
 #define VALUE_SQRT2 1.414213562373095 // alternative: sqrt(2.0)
 #define VALUE_SQRT3 1.732050807568877 // alternative: sqrt(3.0)
-#define VALUE_INVERSE_SQRT3 1.0 / VALUE_SQRT3
-#define VALUE_1DIVSQRT2 1.0 / VALUE_SQRT2 // silver ratio
+#define VALUE_INVERSE_SQRT3 (1.0 / VALUE_SQRT3)
+#define VALUE_1DIVSQRT2 (1.0 / VALUE_SQRT2) // silver ratio
 #define VALUE_PHI 1.6180339887498948 // golden ratio
-#define VALUE_INVERSE_PHI 1.0 / VALUE_PHI
+#define VALUE_INVERSE_PHI (1.0 / VALUE_PHI)
 #define VALUE_EULER_MASCHERONI 0.5772156649015328 // gamma
 #define VALUE_ALPHA 0.0072992700729927 // fine-structure constant (alternative: 1/137)
+
+#define VALUE_DEGREES_TO_RADIANS (VALUE_PI / 180) // ~ 0.0174533
+#define VALUE_RADIANS_TO_DEGREES (180 / VALUE_PI) // ~ 57.2958
 
 // array of the prime numbers up to 1000
 static const int PRIMES_UP_TO_1000[] = {
@@ -143,5 +146,13 @@ static inline bool is_odd(intmax_t num) {
 
 static inline bool is_divisible_by(intmax_t number, intmax_t factor) {
     return number % factor == 0;
+}
+
+static inline double degrees_to_radians(double degrees) {
+    return degrees * VALUE_DEGREES_TO_RADIANS;
+}
+
+static inline double radians_to_degrees(double radians) {
+    return radians * VALUE_RADIANS_TO_DEGREES;
 }
 

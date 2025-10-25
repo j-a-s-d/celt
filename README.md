@@ -41,6 +41,9 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 25-oct-2025 -- *20251025L*
+	- [MeH] added `VALUE_DEGREES_TO_RADIANS`, `degrees_to_radians`, `VALUE_RADIANS_TO_DEGREES` and `radians_to_degrees`
+	- other minor adjustments
 * 23-oct-2025 -- *20251023L*
 	- [KeWL] added `hms_to_decimal_hours` and `decimal_hours_to_hms`
 * 20-oct-2025 -- *20251020L*
