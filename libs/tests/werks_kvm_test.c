@@ -643,7 +643,6 @@ int main() {
     Tests.run("werks_kvm_get_items_count n_map 2", werks_kvm_get_items_count(n_map) == 2);
     Tests.run("werks_kvm_has_items_prefixed YES", werks_kvm_has_items_prefixed(n_map, "str"));
     werks_kvm_destroy(n_map);
-    werks_kvm_destroy(m_map);
     werks_kvm_dt* u_map = werks_kvm_make();
     Tests.run("werks_kvm_get_eol_replacement u_map", streq(werks_kvm_get_eol_replacement(u_map), "\\n"));
     werks_kvm_set_eol_replacement(u_map, "###");
@@ -657,7 +656,22 @@ int main() {
     Tests.print("%s\n", werks_kvm_get_string(u_map, "string"));
     __auto char* saved2 = werks_kvm_save_to_string(u_map);
     Tests.print("-|||||||||||||||||||||||||||||-\n%s\n-|||||||||||||||||||||||||||||-\n", saved2);
+    werks_kvm_set_string(u_map, "string2", "anoter\ntest");
+    werks_kvm_set_double(u_map, "dbl", 123.456);
+    werks_kvm_set_kvm(u_map, "m_map");
+    werks_kvm_set_float(u_map, "flt", 123.456f);
+    werks_kvm_set_bool(m_map, "bln", true);
+    werks_kvm_read_items(werks_kvm_get_kvm(u_map, "m_map"), m_map);
+    werks_kvm_clear(m_map);
+    werks_kvm_set_kvm(u_map, "cleared");
+    werks_kvm_read_items(werks_kvm_get_kvm(u_map, "cleared"), m_map);
+    __auto char* saved3 = werks_kvm_export_to_json_object_string(u_map);
+    Tests.print("-|||||||||||||||||||||||||||||-\n%s\n-|||||||||||||||||||||||||||||-\n", saved3);
+    werks_kvm_disable_persistence(werks_kvm_get_kvm(u_map, "cleared"));
+    __auto char* saved4 = werks_kvm_export_to_json_object_string(u_map);
+    Tests.print("-|||||||||||||||||||||||||||||-\n%s\n-|||||||||||||||||||||||||||||-\n", saved4);
     werks_kvm_destroy(u_map);
+    werks_kvm_destroy(m_map);
     return Tests.end();
 }
 

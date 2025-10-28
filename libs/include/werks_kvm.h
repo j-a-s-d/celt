@@ -391,6 +391,7 @@ werks_kvm_on_before_copy_item_handler_fn werks_kvm_get_on_before_copy_item(werks
 
 // utilities
 
+char* werks_kvm_export_to_json_object_string(werks_kvm_dt* map);
 char* werks_kvm_get_type_name(const werks_kvm_type_dt t);
 werks_kvm_type_dt werks_kvm_get_type_by_name(const char* n);
 

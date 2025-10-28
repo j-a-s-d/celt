@@ -1963,12 +1963,13 @@ char* werks_kvm_save_to_string(werks_kvm_dt* const map) {
         if (assigned(si = serialize_map_item(map, i))) {
             if (map->types[i] == WERKS_KVM_TYPE_KVM) {
                 char* mv = werks_kvm_save_to_string(map->values[i]); // recurse
-                si = strappend(strappend(strappend(
-                    si, STRINGS_BRACKETS_OPEN WERKS_KVM_ITEMS_SEPARATOR), mv), STRINGS_BRACKETS_CLOSE);
-                ce_free(mv);
+                if (assigned(mv)) {
+                    si = strappend(strappend(strappend(
+                        si, STRINGS_BRACKETS_OPEN WERKS_KVM_ITEMS_SEPARATOR), mv), STRINGS_BRACKETS_CLOSE);
+                    ce_free(mv);
+                }
             }
-            result = strappend(strappend(
-                result, si), WERKS_KVM_ITEMS_SEPARATOR);
+            result = strappend(strappend(result, si), WERKS_KVM_ITEMS_SEPARATOR);
             ce_free(si);
         }
     return result;
@@ -2255,6 +2256,47 @@ werks_kvm_on_before_copy_item_handler_fn werks_kvm_get_on_before_copy_item(werks
 
 void werks_kvm_set_on_before_copy_item(werks_kvm_dt* const map, werks_kvm_on_before_copy_item_handler_fn handler) {
     if (assigned(map)) map->on_before_copy_item = handler;
+}
+
+static inline char* serialize_map_item_as_partial_json(werks_kvm_dt* const map, int index) {
+    if (map->keys[index] == NULL || map->types[index] == WERKS_KVM_TYPE_NOTHING) return NULL;
+    char* val = stringify_item_value(map, index);
+    char* tmp = strappend(strappend(concat_strings(
+            map->keys[index], STRINGS_QUOTE STRINGS_COLON STRINGS_QUOTE STRINGS_PARENTHESES_OPEN
+        ), werks_kvm_get_type_name(map->types[index])), STRINGS_PARENTHESES_CLOSE);
+    char* res = quote(concat_strings(tmp, val));
+    ce_free(tmp);
+    ce_free(val);
+    return res;
+}
+
+char* werks_kvm_export_to_json_object_string(werks_kvm_dt* const map) {
+    if (map == NULL || !map->allow_persistence) return NULL;
+    if (map->allow_events && assigned(map->on_before_write_to_string))
+        if (!map->on_before_write_to_string(map))
+            return NULL;
+    char* result = strdup(STRINGS_BRACES_OPEN);
+    char* si = NULL;
+    bool something = false;
+    for (ssize_t i = 0; i < map->size; i++)
+        if (assigned(si = serialize_map_item_as_partial_json(map, i))) {
+            something = true;
+            if (map->types[i] == WERKS_KVM_TYPE_KVM) {
+                char* mv = werks_kvm_export_to_json_object_string(map->values[i]); // recurse
+                if (assigned(mv)) {
+                    result = strappend(strappend(strappend(strappend(strappend(result,
+                        STRINGS_QUOTE), map->keys[i]), STRINGS_QUOTE STRINGS_COLON), mv), STRINGS_COMMA);
+                    ce_free(mv);
+                }
+            } else
+                result = strappend(strappend(result, si), STRINGS_COMMA);
+            ce_free(si);
+        }
+    if (something)
+        result[strlen(result) - 1] = CHARS_BRACES_CLOSE;
+    else
+        result = strappend(result, STRINGS_BRACES_CLOSE);
+    return result;
 }
 
 char* werks_kvm_get_type_name(const werks_kvm_type_dt t) {
