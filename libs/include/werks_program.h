@@ -42,7 +42,7 @@ werks_program_dt* werks_program_create(void);
 void werks_program_destroy(werks_program_dt* prg);
 bool werks_program_has_finished(werks_program_dt* prg);
 const char* werks_program_get_created_timestamp(werks_program_dt* prg);
-elapsed_time_t werks_program_get_elapsed_time(werks_program_dt* const prg);
+elapsed_time_dt werks_program_get_elapsed_time(werks_program_dt* const prg);
 
 void werks_program_set_on_before_main(werks_program_dt* prg, werks_program_initializer_fn initializer);
 static inline werks_program_initializer_fn werks_program_get_on_before_main(werks_program_dt* prg) {

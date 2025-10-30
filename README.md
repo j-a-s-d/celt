@@ -41,8 +41,11 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 30-oct-2025 -- *20251030L*
+	- [KeWL] added `local_hms_to_utc`, `local_hms_to_utc_decimal_hours`, `datetime_dt`, `fill_datetime_from_tm` and `get_now_datetime`
+	- other minor adjustments
 * 28-oct-2025 -- *20251028L*
-    - [WeRKS] added `werks_kvm_export_to_json_object_string`
+	- [WeRKS] added `werks_kvm_export_to_json_object_string`
 	- other minor adjustments
 * 25-oct-2025 -- *20251025L*
 	- [MeH] added `VALUE_DEGREES_TO_RADIANS`, `degrees_to_radians`, `VALUE_RADIANS_TO_DEGREES` and `radians_to_degrees`

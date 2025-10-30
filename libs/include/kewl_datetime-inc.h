@@ -42,7 +42,7 @@ static inline void nap(int milliseconds) {
 #endif
 
 /**
- * elapsed_time_t structure.
+ * elapsed_time_dt structure.
  */
 typedef struct {
     int weeks;
@@ -50,19 +50,19 @@ typedef struct {
     int hours;
     int minutes;
     int seconds;
-} elapsed_time_t;
+} elapsed_time_dt;
 
-#define DEFAULT_ELAPSED_TIME ((elapsed_time_t){0, 0, 0, 0, 0})
-
-/**
- * Returns an elapsed_time_t structure with the elapsed time information between start and end values.
- */
-elapsed_time_t get_elapsed_time(time_t start, time_t end);
+#define DEFAULT_ELAPSED_TIME ((elapsed_time_dt){0, 0, 0, 0, 0})
 
 /**
- * Compares the two provided elapsed_time_t structures.
+ * Returns an elapsed_time_dt structure with the elapsed time information between start and end values.
  */
-static inline int elapsed_time_equal(elapsed_time_t a, elapsed_time_t b) {
+elapsed_time_dt get_elapsed_time(time_t start, time_t end);
+
+/**
+ * Compares the two provided elapsed_time_dt structures.
+ */
+static inline int elapsed_time_equal(elapsed_time_dt a, elapsed_time_dt b) {
     return (a.weeks == b.weeks) &&
            (a.days == b.days) &&
            (a.hours == b.hours) &&
@@ -100,12 +100,12 @@ char* time_to_iso8601(time_t raw_time);
 /**
  * Time converter function (gmtime, localtime, etc) type definition.
  */
-typedef struct tm*(*time_converter_fn)(const time_t *);
+typedef struct tm*(*time_converter_fn)(const time_t*);
 
 /**
  * Get the ISO 8601 timestamp string using the specified time converter.
  */
-char* get_time_converter_stamp(const time_converter_fn tc);
+char* get_time_converter_stamp(time_converter_fn tc);
 
 /**
  * Get the ISO 8601 timestamp string using gmtime.
@@ -134,4 +134,36 @@ static inline double hms_to_decimal_hours(int hh, int mm, int ss) {
  * Converts a decimal hours double value to an hours, minutes and seconds integers array.
  */
 void decimal_hours_to_hms(double decimal_hours, int result[3]);
+
+/**
+ * Function to convert local time to UTC.
+ */
+void local_hms_to_utc(int local_hours, int local_minutes, int local_seconds, double gmt_offset, int result[3]);
+
+/**
+ * Function to convert local time to UTC decimal hours.
+ */
+double local_hms_to_utc_decimal_hours(int local_hours, int local_minutes, int local_seconds, double gmt_offset);
+
+/**
+ * datetime_dt structure.
+ */
+typedef struct {
+    int year;
+    int month;
+    int day;
+    int hours;
+    int minutes;
+    int seconds;
+} datetime_dt;
+
+/**
+ * Function to fill a datetime instance with the data of a tm struct.
+ */
+bool fill_datetime_from_tm(datetime_dt* datetime, const struct tm* time_tm);
+
+/**
+ * Functio to get a new datetime instance holding the currante local date time data.
+ */
+datetime_dt* get_now_datetime(void);
 

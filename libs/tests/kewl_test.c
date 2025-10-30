@@ -208,6 +208,16 @@ static inline void test_datetime_utilities() {
     int hv[3] = {0};
     decimal_hours_to_hms(dh, hv);
     Tests.run("decimal_hours_to_hms", hv[0] == 16 && hv[1] == 5 && hv[2] == 33);
+    int ut[3];
+    local_hms_to_utc(10, 30, 0, 5.5 /* GMT+5:30 */, ut);
+    Tests.run("local_hms_to_utc", ut[0] == 5 && ut[1] == 0 && ut[2] == 0);
+    local_hms_to_utc(10, 30, 0, -3.5 /* GMT-3:30 */, ut);
+    Tests.run("local_hms_to_utc", ut[0] == 14 && ut[1] == 0 && ut[2] == 0);
+    double uh = local_hms_to_utc_decimal_hours(13, 05, 33, -3.0);
+    Tests.run("local_hms_to_utc_decimal_hours", double_abs(uh - 16.0925) < 0.0001);
+    __auto datetime_dt* dt = get_now_datetime();
+    Tests.run("get_now_datetime", assigned(dt) && dt->year >= 2025);
+    Tests.print("now: %d-%d-%d %d:%d:%d", dt->day, dt->month, dt->year, dt->hours, dt->minutes, dt->seconds);
 }
 
 static inline void test_strhashset() {

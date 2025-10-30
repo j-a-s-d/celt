@@ -99,7 +99,7 @@ int werks_program_get_exit_value(werks_program_dt* const prg) {
         -1 : prg->program_task->exit_value;
 }
 
-elapsed_time_t werks_program_get_elapsed_time(werks_program_dt* const prg) {
+elapsed_time_dt werks_program_get_elapsed_time(werks_program_dt* const prg) {
     if (prg == NULL || prg->started_time == 0) return DEFAULT_ELAPSED_TIME;
     return get_elapsed_time(prg->started_time, prg->finished_time == 0 ? time(NULL) : prg->finished_time);
 }

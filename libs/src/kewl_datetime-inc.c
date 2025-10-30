@@ -19,11 +19,11 @@ char* get_formatted_date_time(const char* fmt) {
     char h[64]; // Large enough for most date/time strings
     if (strftime(h, sizeof(h), fmt, &local) == 0) return NULL;
     char* buffer = ce_malloc(strlen(h) + 1);
-    if (buffer) strcpy(buffer, h);
+    if (assigned(buffer)) strcpy(buffer, h);
     return buffer;
 }
 
-char* get_time_converter_stamp(const time_converter_fn tc) {
+char* get_time_converter_stamp(time_converter_fn tc) {
     if (tc == NULL) return NULL;
     struct timeval tv;
     struct tm* tm_info;
@@ -58,8 +58,8 @@ char* time_to_iso8601(time_t raw_time) {
     return buffer;
 }
 
-elapsed_time_t get_elapsed_time(time_t start, time_t end) {
-    elapsed_time_t elapsed = DEFAULT_ELAPSED_TIME;
+elapsed_time_dt get_elapsed_time(time_t start, time_t end) {
+    elapsed_time_dt elapsed = DEFAULT_ELAPSED_TIME;
     double diff = difftime(end, start);
     if (diff < 0) return elapsed;
     int total_seconds = (int)diff;
@@ -83,5 +83,80 @@ void decimal_hours_to_hms(double decimal_hours, int result[3]) {
     result[0] = total_seconds / 3600;
     result[1] = (total_seconds % 3600) / 60;
     result[2] = total_seconds % 60;
+}
+
+static inline void _normalize_time(int* hours, int* minutes, int* seconds) {
+    if (*seconds >= 60) {
+        *minutes += *seconds / 60;
+        *seconds %= 60;
+    } else if (*seconds < 0) {
+        int borrow = (abs(*seconds) + 59) / 60;
+        *minutes -= borrow;
+        *seconds += borrow * 60;
+    }
+    if (*minutes >= 60) {
+        *hours += *minutes / 60;
+        *minutes %= 60;
+    } else if (*minutes < 0) {
+        int borrow = (abs(*minutes) + 59) / 60;
+        *hours -= borrow;
+        *minutes += borrow * 60;
+    }
+    if (*hours >= 24) {
+        *hours %= 24;
+    } else if (*hours < 0)
+        *hours = (*hours % 24 + 24) % 24;
+}
+
+void local_hms_to_utc(int local_hours, int local_minutes, int local_seconds, double gmt_offset, int result[3]) {
+    int offset_seconds = (int)(gmt_offset * 3600);
+    int local_total_seconds = local_hours * 3600 + local_minutes * 60 + local_seconds;
+    int utc_total_seconds = local_total_seconds - offset_seconds;
+    result[0] = utc_total_seconds / 3600;
+    result[1] = (utc_total_seconds % 3600) / 60;
+    result[2] = utc_total_seconds % 60;
+    _normalize_time(&result[0], &result[1], &result[2]);
+}
+
+double local_hms_to_utc_decimal_hours(int local_hours, int local_minutes, int local_seconds, double gmt_offset) {
+    int ut[3];
+    int offset_seconds = (int)(gmt_offset * 3600);
+    int local_total_seconds = local_hours * 3600 + local_minutes * 60 + local_seconds;
+    int utc_total_seconds = local_total_seconds - offset_seconds;
+    ut[0] = utc_total_seconds / 3600;
+    ut[1] = (utc_total_seconds % 3600) / 60;
+    ut[2] = utc_total_seconds % 60;
+    _normalize_time(&ut[0], &ut[1], &ut[2]);
+    return ut[0] + ut[1] / 60.0 + ut[2] / 3600.0; // hms_to_decimal_hours
+}
+
+bool fill_datetime_from_tm(datetime_dt* datetime, const struct tm* time_tm) {
+    if (datetime == NULL || time_tm == NULL) return false;
+    datetime->year = time_tm->tm_year + 1900; // tm_year is years since 1900
+    datetime->month = time_tm->tm_mon + 1;    // tm_mon is months since January (0-11)
+    datetime->day = time_tm->tm_mday;         // day of the month (1-31)
+    datetime->hours = time_tm->tm_hour;       // hours since midnight (0-23)
+    datetime->minutes = time_tm->tm_min;      // minutes after the hour (0-59)
+    datetime->seconds = time_tm->tm_sec;      // seconds after the minute (0-61)
+    return true;
+}
+
+datetime_dt* get_now_datetime(void) {
+    time_t now = time(NULL);
+    if (now == (time_t)-1) return NULL; // time() error
+    struct tm local;
+#ifdef __posix01
+    if (localtime_r(&now, &local) == NULL) return NULL; // POSIX thread-safe
+#else
+    struct tm* tmp = localtime(&now); // Non-thread-safe fallback
+    if (tmp == NULL) return NULL;
+    local = *tmp;
+#endif
+    RET_MALLOC(datetime_dt, {
+        if (!fill_datetime_from_tm(result, &local)) {
+            ce_free(result);
+            result = NULL;
+        }
+    });
 }
 

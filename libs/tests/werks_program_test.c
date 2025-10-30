@@ -12,7 +12,7 @@ bool prg_before_main(werks_program_dt* prg, int args_count, const char* args_val
 
 int prg_main(werks_program_dt* prg) {
     nap(1000);
-    elapsed_time_t et = werks_program_get_elapsed_time(prg);
+    elapsed_time_dt et = werks_program_get_elapsed_time(prg);
     Tests.print("Elapsed time (W D HH:MM:SS): %d weeks, %d days, %02d:%02d:%02d\n",
            et.weeks, et.days, et.hours, et.minutes, et.seconds);
     nap(1000);
@@ -45,7 +45,7 @@ int main() {
     werks_program_set_main(prg, prg_main);
     Tests.run("werks_program_set_main", werks_program_get_main(prg) == prg_main);
     Tests.run("werks_program_run", werks_program_run(prg));
-    elapsed_time_t et = werks_program_get_elapsed_time(prg);
+    elapsed_time_dt et = werks_program_get_elapsed_time(prg);
     Tests.run("werks_program_get_elapsed_time", !elapsed_time_equal(et, DEFAULT_ELAPSED_TIME));
     Tests.print("Elapsed time (W D HH:MM:SS): %d weeks, %d days, %02d:%02d:%02d\n",
            et.weeks, et.days, et.hours, et.minutes, et.seconds);
