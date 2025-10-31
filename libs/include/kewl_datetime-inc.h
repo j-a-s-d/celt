@@ -163,7 +163,57 @@ typedef struct {
 bool fill_datetime_from_tm(datetime_dt* datetime, const struct tm* time_tm);
 
 /**
- * Functio to get a new datetime instance holding the currante local date time data.
+ * Function to get a new datetime instance holding the currante local date time data.
  */
 datetime_dt* get_now_datetime(void);
+
+/**
+ * Function to determine if an year is leap or not.
+ */
+static inline bool is_leap_year(int year) {
+    return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+}
+
+/**
+ * Function to determine the amount of days in a month.
+ */
+int get_days_in_month(int year, int month);
+
+/**
+ * Function to modify the provided datetime_dt instance by the provided values (positive to increment and negative to decrement).
+ */
+void modify_datetime(datetime_dt* dt, int years, int months, int days, int hours, int minutes, int seconds);
+
+/**
+ * Function to determine if two datetime_dt instances have the same values.
+ */
+static inline bool equal_datetimes(datetime_dt* dt1, datetime_dt* dt2) {
+    return (dt1->year == dt2->year) &&
+           (dt1->month == dt2->month) &&
+           (dt1->day == dt2->day) &&
+           (dt1->hours == dt2->hours) &&
+           (dt1->minutes == dt2->minutes) &&
+           (dt1->seconds == dt2->seconds);
+}
+
+/**
+ * Function to determine if the second datetime_dt instance has a lower value than the first one.
+ */
+bool is_newer_datetime(datetime_dt* dt1, datetime_dt* dt2);
+
+/**
+ * Function to convert 3 ints to a long date value YYYYMMDD.
+ */
+static inline long ymd_to_long_date(int year, int month, int day) {
+    return (long)year * 10000L + (long)month * 100L + (long)day;
+}
+
+/**
+ * Function to convert long date value YYYYMMDD to 3 ints.
+ */
+static inline void long_date_to_ymd(long date, int* year, int* month, int* day) {
+    *year = date / 10000L;
+    *month = (date % 10000L) / 100L;
+    *day = date % 100L;
+}
 

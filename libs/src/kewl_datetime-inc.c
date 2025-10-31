@@ -85,7 +85,7 @@ void decimal_hours_to_hms(double decimal_hours, int result[3]) {
     result[2] = total_seconds % 60;
 }
 
-static inline void _normalize_time(int* hours, int* minutes, int* seconds) {
+static inline void _normalize_hms(int* hours, int* minutes, int* seconds) {
     if (*seconds >= 60) {
         *minutes += *seconds / 60;
         *seconds %= 60;
@@ -115,7 +115,7 @@ void local_hms_to_utc(int local_hours, int local_minutes, int local_seconds, dou
     result[0] = utc_total_seconds / 3600;
     result[1] = (utc_total_seconds % 3600) / 60;
     result[2] = utc_total_seconds % 60;
-    _normalize_time(&result[0], &result[1], &result[2]);
+    _normalize_hms(&result[0], &result[1], &result[2]);
 }
 
 double local_hms_to_utc_decimal_hours(int local_hours, int local_minutes, int local_seconds, double gmt_offset) {
@@ -126,7 +126,7 @@ double local_hms_to_utc_decimal_hours(int local_hours, int local_minutes, int lo
     ut[0] = utc_total_seconds / 3600;
     ut[1] = (utc_total_seconds % 3600) / 60;
     ut[2] = utc_total_seconds % 60;
-    _normalize_time(&ut[0], &ut[1], &ut[2]);
+    _normalize_hms(&ut[0], &ut[1], &ut[2]);
     return ut[0] + ut[1] / 60.0 + ut[2] / 3600.0; // hms_to_decimal_hours
 }
 
@@ -158,5 +158,89 @@ datetime_dt* get_now_datetime(void) {
             result = NULL;
         }
     });
+}
+
+int get_days_in_month(int year, int month) {
+    if (month < 1 || month > 12)
+        return -1;
+    else if (month == 2)
+        return ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) ? 29 : 28; // is_leap_year
+    else
+        return (month == 4 || month == 6 || month == 9 || month == 11) ? 30 : 31;
+}
+
+void modify_datetime(datetime_dt* dt, int years, int months, int days, int hours, int minutes, int seconds) {
+    dt->seconds += seconds;
+    while (dt->seconds >= 60) {
+        dt->seconds -= 60;
+        dt->minutes++;
+    }
+    while (dt->seconds < 0) {
+        dt->seconds += 60;
+        dt->minutes--;
+    }
+    dt->minutes += minutes;
+    while (dt->minutes >= 60) {
+        dt->minutes -= 60;
+        dt->hours++;
+    }
+    while (dt->minutes < 0) {
+        dt->minutes += 60;
+        dt->hours--;
+    }
+    dt->hours += hours;
+    while (dt->hours >= 24) {
+        dt->hours -= 24;
+        dt->day++;
+    }
+    while (dt->hours < 0) {
+        dt->hours += 24;
+        dt->day--;
+    }
+    dt->day += days;
+    while (dt->day > get_days_in_month(dt->year, dt->month)) {
+        dt->day -= get_days_in_month(dt->year, dt->month);
+        dt->month++;
+        if (dt->month > 12) {
+            dt->month = 1;
+            dt->year++;
+        }
+    }
+    while (dt->day < 1) {
+        dt->month--;
+        if (dt->month < 1) {
+            dt->month = 12;
+            dt->year--;
+        }
+        dt->day += get_days_in_month(dt->year, dt->month);
+    }
+    dt->month += months;
+    while (dt->month > 12) {
+        dt->month -= 12;
+        dt->year++;
+    }
+    while (dt->month < 1) {
+        dt->month += 12;
+        dt->year--;
+    }
+    dt->year += years;
+    // NOTE: a direct month roll can overflow days in the month so a clamp is required
+    if (dt->day > get_days_in_month(dt->year, dt->month))
+        dt->day = get_days_in_month(dt->year, dt->month);
+}
+
+bool is_newer_datetime(datetime_dt* dt1, datetime_dt* dt2) {
+    if (dt2->year > dt1->year) return true;
+    if (dt2->year < dt1->year) return false;
+    if (dt2->month > dt1->month) return true;
+    if (dt2->month < dt1->month) return false;
+    if (dt2->day > dt1->day) return true;
+    if (dt2->day < dt1->day) return false;
+    if (dt2->hours > dt1->hours) return true;
+    if (dt2->hours < dt1->hours) return false;
+    if (dt2->minutes > dt1->minutes) return true;
+    if (dt2->minutes < dt1->minutes) return false;
+    if (dt2->seconds > dt1->seconds) return true;
+    return false;
 }
 

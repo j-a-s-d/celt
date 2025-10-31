@@ -41,6 +41,8 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 31-oct-2025 -- *20251031L*
+	- [KeWL] added `ymd_to_long_date`, `long_date_to_ymd`, `is_leap_year`, `get_days_in_month`, `modify_datetime`, `equal_datetimes` and `is_newer_datetime`
 * 30-oct-2025 -- *20251030L*
 	- [KeWL] added `local_hms_to_utc`, `local_hms_to_utc_decimal_hours`, `datetime_dt`, `fill_datetime_from_tm` and `get_now_datetime`
 	- other minor adjustments
