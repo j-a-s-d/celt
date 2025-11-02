@@ -41,6 +41,8 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 02-nov-2025 -- *20251102L*
+	- [KeWL] added `decimal_degrees_to_dms` and `dms_to_decimal_degrees`
 * 31-oct-2025 -- *20251031L*
 	- [KeWL] added `ymd_to_long_date`, `long_date_to_ymd`, `is_leap_year`, `get_days_in_month`, `modify_datetime`, `equal_datetimes` and `is_newer_datetime`
 * 30-oct-2025 -- *20251030L*

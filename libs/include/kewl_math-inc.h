@@ -11,6 +11,8 @@
 #warning This is intended to be part of the KeWL C Library.
 #endif
 
+// FLOATING-POINT
+
 /**
  * Calculates the square root of the given float number.
  * Analog functionality to: math.h, sqrtf, -lm.
@@ -62,6 +64,24 @@ double double_interpolate_custom(double value, double input_min, double input_ma
 static inline double double_interpolate(double value, double input_min, double input_max, double output_min, double output_max) {
     return double_interpolate_custom(value, input_min, input_max, output_min, output_max, MEH_DOUBLE_EPSILON);
 }
+
+// CONVERSION
+
+/**
+ * Converts decimal degrees to degrees, minutes, seconds.
+ */
+void decimal_degrees_to_dms(double decimal_degrees, int* degrees, int* minutes, double* seconds);
+
+/**
+ * Converts degrees, minutes, seconds to decimal degrees.
+ */
+static inline double dms_to_decimal_degrees(int degrees, int minutes, double seconds) {
+    double decimal_degrees = abs(degrees) + (minutes / 60.0) + (seconds / 3600.0);
+    if (degrees < 0) decimal_degrees = -decimal_degrees; // keep sign
+    return decimal_degrees;
+}
+
+// STATISTICS
 
 /**
  * Calculates the histogram (frequency) of each byte in the provided buffer.

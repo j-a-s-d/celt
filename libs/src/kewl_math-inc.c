@@ -46,6 +46,24 @@ double double_interpolate_custom(double value, double input_min, double input_ma
     return output_min + (scaled_value * output_span);
 }
 
+void decimal_degrees_to_dms(double decimal_degrees, int* degrees, int* minutes, double* seconds) {
+    *degrees = (int)decimal_degrees;
+    double fractional = double_abs(decimal_degrees - *degrees) * 60.0;
+    *minutes = (int)fractional;
+    *seconds = (fractional - *minutes) * 60.0;
+    if (*seconds >= 59.9999) {
+        *seconds = 0;
+        (*minutes)++;
+    }
+    if (*minutes >= 60) {
+        *minutes = 0;
+        if (decimal_degrees >= 0)
+            (*degrees)++;
+        else
+            (*degrees)--;
+    }
+}
+
 uint8_t* get_histogram(uint8_t* buffer, size_t length) {
     if (buffer == NULL || length == 0) return NULL;
     RET_CALLOC(uint8_t, 256, {

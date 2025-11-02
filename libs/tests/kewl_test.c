@@ -116,6 +116,15 @@ static inline void test_mth_utilities() {
     // FUN FACT: interpolate(Jesus-death-time-hour, 0..circle-1/solar-term, 0..week-days-1/God-day-in-years) = interpolate(15, 0..(360-1)/15, 0..(7-1)*1000) = interpolate(15, 0, 23.93, 0, 6000) = 3760.97 (3760 = year 0 + 365*0.97 = 354.05 (day 354 = Dec 20) + 24*0.05 = 1.2 (hour 1, minutes 12)) = Dec 20th, 0 @ 01:12 (in other words, it's a pointer to the night time of the winter solstice of the first year, suggesting the exit point of Jesus -Lord of History- refers to his entry point)
     Tests.print("Result: %.2f\n", bb);
 
+    double decimal_degrees = dms_to_decimal_degrees(123, 45, 06.123);
+    Tests.run("dms_to_decimal_degrees", double_equal(decimal_degrees, 123.751701, 0.000001));
+    Tests.print("Decimal: %f\n", decimal_degrees);
+    int degrees, minutes;
+    double seconds;
+    decimal_degrees_to_dms(decimal_degrees, &degrees, &minutes, &seconds);
+    Tests.run("decimal_degrees_to_dms", degrees == 123 && minutes == 45 && (int)seconds == 6);
+    Tests.print("Values: degrees %d, minutes %d, seconds %.4f\n", degrees, minutes, seconds);
+    
     uint8_t data[] = {0, 42, 42, 200, 255, 0};
     __auto uint8_t* hist = get_histogram(data, sizeof(data) / sizeof(data[0]));
     Tests.run("get_histogram", hist != NULL &&
