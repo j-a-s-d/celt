@@ -51,13 +51,13 @@ static inline void print_binary64(uint64_t x) {
 extern bool DEVELOPMENT;
 
 // Function to only print text if in DEV mode
-static inline void debugText(const char* text) {
+static inline void debug_text(const char* text) {
     if (DEVELOPMENT)
         printf("%s\n", text);
 }
 
 // Function to only print a byte array as hex if in DEV mode
-static inline void debugHex(const void* ptr, size_t size, size_t columns, const char* separator) {
+static inline void debug_hex(const void* ptr, size_t size, size_t columns, const char* separator) {
     if (DEVELOPMENT)
         print_bytes_as_hex(ptr, size, columns, separator);
 }

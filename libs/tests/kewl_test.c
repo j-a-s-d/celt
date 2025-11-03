@@ -1049,14 +1049,14 @@ static inline void test_str_functions() {
 
 void test_dbg_utilities() {
     Tests.run("DEVELOPMENT", DEVELOPMENT == false);
-    debugText("DEV mode is OFF by default");
+    debug_text("DEV mode is OFF by default");
     DEVELOPMENT = true;
-    debugText("DEV mode is now ON");
+    debug_text("DEV mode is now ON");
     char arr[11] = { BYTES_12, BYTES_34, BYTES_56, BYTES_78, BYTES_9A, BYTES_BC, BYTES_DE, BYTES_F0, BYTES_33, BYTES_22, BYTES_11 };
-    debugHex(arr, 11, 4, " ");
+    debug_hex(arr, 11, 4, " ");
     DEVELOPMENT = false;
-    debugHex(arr, 11, 4, " ");
-    debugText("DEV mode is OFF again");
+    debug_hex(arr, 11, 4, " ");
+    debug_text("DEV mode is OFF again");
     printf("\n");
     
     uint8_t val = 0b10010110;  // 150 decimal, 0x96

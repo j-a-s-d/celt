@@ -28,7 +28,7 @@ extern "C" {
 
 #define WERKS_KVM
 
-#define WERKS_WERKS_KVM_TYPE_NAME "werks_kvm_dt"
+#define WERKS_KVM_TYPE_NAME "werks_kvm_dt"
 
 #ifndef WERKS_KVM_INITIAL_CAPACITY
     #define WERKS_KVM_INITIAL_CAPACITY 128

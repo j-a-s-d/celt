@@ -41,6 +41,9 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 03-nov-2025 -- *20251103L*
+	- [WeRKS] added `werks_program_set_context`, `werks_program_get_context` and `werks_program_get_component`
+	- other minor adjustments
 * 02-nov-2025 -- *20251102L*
 	- [KeWL] added `decimal_degrees_to_dms` and `dms_to_decimal_degrees`
 * 31-oct-2025 -- *20251031L*

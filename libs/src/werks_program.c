@@ -23,6 +23,7 @@ static void task_finalizer(kewl_task_dt* task) {
 }
 
 static void reset_fields(werks_program_dt* prg) {
+    prg->component_instance = NULL;
     prg->created_timestamp = NULL;
     prg->program_task = NULL;
     prg->started_time = 0;
@@ -43,15 +44,23 @@ werks_program_dt* werks_program_create(void) {
         kewl_task_set_initializer(result->program_task, task_initializer);
         kewl_task_set_routine(result->program_task, task_routine);
         kewl_task_set_finalizer(result->program_task, task_finalizer);
+        result->component_instance = kewl_component_create(result, WERKS_PROGRAM_TYPE_NAME);
     });
 }
 
-void werks_program_destroy(werks_program_dt* const prg) {
-    if (prg == NULL) return;
-    ce_free(prg->created_timestamp);
+int werks_program_destroy(werks_program_dt* const prg) {
+    if (prg == NULL) return -1;
+    int result = prg->program_task == NULL ? -1 : prg->program_task->exit_value;
     kewl_task_destroy(prg->program_task);
+    kewl_component_destroy(prg->component_instance);
+    ce_free(prg->created_timestamp);
     reset_fields(prg);
     ce_free(prg);
+    return result;
+}
+
+const kewl_component_dt* werks_program_get_component(werks_program_dt* const prg) {
+    return prg == NULL ? NULL : prg->component_instance;
 }
 
 const char* werks_program_get_created_timestamp(werks_program_dt* const prg) {
@@ -97,6 +106,16 @@ bool werks_program_has_finished(werks_program_dt* const prg) {
 int werks_program_get_exit_value(werks_program_dt* const prg) {
     return prg == NULL || prg->program_task == NULL ?
         -1 : prg->program_task->exit_value;
+}
+
+void werks_program_set_context(werks_program_dt* prg, void* ctx) {
+    if (prg == NULL || prg->program_task == NULL) return;
+    prg->program_task->context_data = ctx;
+}
+
+void* werks_program_get_context(werks_program_dt* prg) {
+    return prg == NULL || prg->program_task == NULL ?
+        NULL : prg->program_task->context_data;
 }
 
 elapsed_time_dt werks_program_get_elapsed_time(werks_program_dt* const prg) {

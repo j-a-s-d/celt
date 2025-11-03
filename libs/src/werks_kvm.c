@@ -151,7 +151,7 @@ werks_kvm_dt* werks_kvm_create(ssize_t initial_capacity) {
         result->eol_replacement = strdup(WERKS_KVM_MULTILINE_STRINGS_EOL);
         result->parent = NULL;
         result->packable = false; // initial capacity is not zappable on purpose
-        result->component_instance = kewl_component_create(result, WERKS_WERKS_KVM_TYPE_NAME);
+        result->component_instance = kewl_component_create(result, WERKS_KVM_TYPE_NAME);
     });
 }
 
@@ -762,7 +762,7 @@ werks_kvm_dt* werks_kvm_clone(werks_kvm_dt* const map) {
         result->eol_replacement = strdup(WERKS_KVM_MULTILINE_STRINGS_EOL);
         result->parent = map->parent;
         result->packable = false;
-        result->component_instance = kewl_component_create(result, WERKS_WERKS_KVM_TYPE_NAME);
+        result->component_instance = kewl_component_create(result, WERKS_KVM_TYPE_NAME);
     });
 }
 
