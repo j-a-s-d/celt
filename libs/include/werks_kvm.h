@@ -310,6 +310,12 @@ int64_t* werks_kvm_get_int64(werks_kvm_dt* map, const char* key);
 uint64_t* werks_kvm_get_uint64(werks_kvm_dt* map, const char* key);
 werks_kvm_dt* werks_kvm_get_kvm(werks_kvm_dt* map, const char* key);
 
+#define werks_kvm_get_value(map, typ, nam, def) ({ \
+    if (map == NULL) return def; \
+    typ* tmp = werks_kvm_get_##typ(map, nam); \
+    assigned(tmp) ? *tmp : def; \
+})
+
 // iteration
 
 typedef void (*werks_kvm_callback_fn)(werks_kvm_type_dt type, char* key, void* data);

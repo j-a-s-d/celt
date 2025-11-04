@@ -21,6 +21,7 @@ extern "C" {
 #endif
 
 #include <stdio.h>
+#include <stdarg.h>
 #include <inttypes.h>
 
 #ifndef KEWL_DISABLE_DUMMIES

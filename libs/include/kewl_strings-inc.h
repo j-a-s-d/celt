@@ -331,8 +331,6 @@ char* replace_all_occurrences(const char* str, const char* target, const char* r
 
 // FORMATTING
 
-#include <stdarg.h>
-
 ssize_t measure_string_format(const char* fmt, ...);
 ssize_t get_string_format_size(const char* fmt, va_list args);
 char* perform_string_format(ssize_t size, const char* fmt, va_list args);

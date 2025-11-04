@@ -50,6 +50,16 @@ static inline void print_binary64(uint64_t x) {
 // Global DEV move flag
 extern bool DEVELOPMENT;
 
+// Function to formatted print if in DEV mode
+static inline void debug_print(const char* fmt, ...) {
+    if (DEVELOPMENT) {
+        va_list args;
+        va_start(args, fmt);
+        vprintf(fmt, args);
+        va_end(args);
+    }
+}
+
 // Function to only print text if in DEV mode
 static inline void debug_text(const char* text) {
     if (DEVELOPMENT)

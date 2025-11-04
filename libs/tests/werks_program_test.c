@@ -25,12 +25,19 @@ void prg_after_main(werks_program_dt* prg, int exit_value) {
     Tests.print("---\nRunning program: %s\nEvent: on_after_main\nExit value: %d\n", werks_program_get_created_timestamp(prg), exit_value);
 }
 
-int main() {
+int main(int argc, const char* argv[]) {
     Tests.begin("WeRKS PROGRAM");
     werks_program_dt* prg = werks_program_create();
     Tests.run("werks_program_create", assigned(prg));
     Tests.run("werks_program_get_component NULL", werks_program_get_component(NULL) == NULL);
     Tests.run("werks_program_get_component", assigned(werks_program_get_component(prg)));
+    Tests.run("werks_program_get_input_argc NULL", werks_program_get_input_argc(NULL) == -1);
+    Tests.run("werks_program_get_input_argv NULL", werks_program_get_input_argv(NULL) == NULL);
+    Tests.run("werks_program_get_input_argc NO", werks_program_get_input_argc(prg) == -1);
+    Tests.run("werks_program_get_input_argv NO", werks_program_get_input_argv(prg) == NULL);
+    werks_program_set_input_args(prg, argc, argv);
+    Tests.run("werks_program_get_input_argc YES", werks_program_get_input_argc(prg) > -1);
+    Tests.run("werks_program_get_input_argv YES", assigned(werks_program_get_input_argv(prg)));
     Tests.run("werks_program_get_context NULL", werks_program_get_context(NULL) == NULL);
     Tests.run("werks_program_get_context NO", werks_program_get_context(prg) == NULL);
     werks_program_set_context(prg, prg);

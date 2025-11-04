@@ -70,14 +70,14 @@ static inline double double_interpolate(double value, double input_min, double i
 /**
  * Converts decimal degrees to degrees, minutes, seconds.
  */
-void decimal_degrees_to_dms(double decimal_degrees, int* degrees, int* minutes, double* seconds);
+void decimal_degrees_to_dms(double decimal_degrees, int* degrees, int* minutes, double* seconds, bool* negative);
 
 /**
  * Converts degrees, minutes, seconds to decimal degrees.
  */
-static inline double dms_to_decimal_degrees(int degrees, int minutes, double seconds) {
+static inline double dms_to_decimal_degrees(int degrees, int minutes, double seconds, bool negative) {
     double decimal_degrees = abs(degrees) + (minutes / 60.0) + (seconds / 3600.0);
-    if (degrees < 0) decimal_degrees = -decimal_degrees; // keep sign
+    if (negative) decimal_degrees = -decimal_degrees;
     return decimal_degrees;
 }
 

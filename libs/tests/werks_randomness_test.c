@@ -9,7 +9,7 @@
 CE_MESSAGE("compile with: -Wall -Wfatal-errors -I../include -I../src -o ../bin/werks_randomness_test ../src/kewl.c ../src/werks_randomness.c werks_randomness_test.c")
 #endif
 
-int main() {
+int main(void) {
     Tests.begin("WeRKS RANDOMNESS");
 
     Tests.print("Coin toss: %s\n", coin_toss() ? "HEADS" : "TAILS");

@@ -41,6 +41,10 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 04-nov-2025 -- *20251104L*
+	- [WeRKS] added `werks_kvm_get_value`
+	- [KeWL] added `debug_print`
+	- other minor adjustments
 * 03-nov-2025 -- *20251103L*
 	- [WeRKS] added `werks_program_set_context`, `werks_program_get_context` and `werks_program_get_component`
 	- other minor adjustments

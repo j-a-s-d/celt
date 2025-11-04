@@ -5,7 +5,7 @@
 CE_MESSAGE("compile with: -Wall -Wfatal-errors -I../include -I../src -o ../bin/werks_ansi_test ../src/kewl.c ../src/werks_ansi.c werks_ansi_test.c");
 #endif
 
-int main() {
+int main(void) {
     Tests.begin("WeRKS ANSI");
     char* bs = ansi_blue("hello");
     char* bbs = ansi_bold(bs);

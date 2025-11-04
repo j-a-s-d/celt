@@ -52,7 +52,7 @@ __unoptimizable void test_try() {
     Tests.run("count is 6", Signals.get_count() == 6);
 }
 
-int main() {
+int main(void) {
     Tests.begin("PeRKS SIGNALS");
     Tests.run("set_signal_handler", Signals.set_handler(SIGINT, sigint_handler, 0));
     Tests.run("ignore_signal", Signals.ignore(SIGINT));

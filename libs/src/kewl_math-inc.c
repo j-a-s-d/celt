@@ -46,7 +46,8 @@ double double_interpolate_custom(double value, double input_min, double input_ma
     return output_min + (scaled_value * output_span);
 }
 
-void decimal_degrees_to_dms(double decimal_degrees, int* degrees, int* minutes, double* seconds) {
+void decimal_degrees_to_dms(double decimal_degrees, int* degrees, int* minutes, double* seconds, bool* negative) {
+    *negative = decimal_degrees < 0.0;
     *degrees = (int)decimal_degrees;
     double fractional = double_abs(decimal_degrees - *degrees) * 60.0;
     *minutes = (int)fractional;

@@ -24,8 +24,6 @@ extern "C" {
     #define WERKS_LOG_MESSAGE_SIZE 512
 #endif
 
-#include <stdarg.h>
-
 bool werks_log_init(const char* filename);
 const char* werks_log_get_filename(void);
 bool werks_log_is_logging(void);

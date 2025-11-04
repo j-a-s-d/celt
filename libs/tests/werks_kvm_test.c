@@ -66,7 +66,7 @@ bool on_before_copy_item(__unused werks_kvm_dt* map, const char* key, __unused w
     return false;
 }
 
-int main() {
+int main(void) {
     Tests.begin("WeRKS KVM");
     werks_kvm_dt* ___map = werks_kvm_make();
     Tests.run("werks_kvm_make", assigned(___map));

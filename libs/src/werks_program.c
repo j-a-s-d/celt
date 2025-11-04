@@ -31,7 +31,7 @@ static void reset_fields(werks_program_dt* prg) {
     prg->on_before_main = NULL;
     prg->on_run_main = NULL;
     prg->on_after_main = NULL;
-    prg->args_count = 0;
+    prg->args_count = -1;
     prg->args_values = NULL;
 }
 
