@@ -85,7 +85,7 @@ void decimal_hours_to_hms(double decimal_hours, int result[3]) {
     result[2] = total_seconds % 60;
 }
 
-static inline void _normalize_hms(int* hours, int* minutes, int* seconds) {
+static inline void _normalize_hms(int* hours, int* minutes, int* seconds, int* day_shift) {
     if (*seconds >= 60) {
         *minutes += *seconds / 60;
         *seconds %= 60;
@@ -104,21 +104,25 @@ static inline void _normalize_hms(int* hours, int* minutes, int* seconds) {
     }
     if (*hours >= 24) {
         *hours %= 24;
-    } else if (*hours < 0)
+        *day_shift = +1;
+    } else if (*hours < 0) {
         *hours = (*hours % 24 + 24) % 24;
+        *day_shift = -1;
+    } else
+        *day_shift = 0;
 }
 
-void local_hms_to_utc(int local_hours, int local_minutes, int local_seconds, double gmt_offset, int result[3]) {
+void local_hms_to_utc(int local_hours, int local_minutes, int local_seconds, double gmt_offset, int result[3], int* day_shift) {
     int offset_seconds = (int)(gmt_offset * 3600);
     int local_total_seconds = local_hours * 3600 + local_minutes * 60 + local_seconds;
     int utc_total_seconds = local_total_seconds - offset_seconds;
     result[0] = utc_total_seconds / 3600;
     result[1] = (utc_total_seconds % 3600) / 60;
     result[2] = utc_total_seconds % 60;
-    _normalize_hms(&result[0], &result[1], &result[2]);
+    _normalize_hms(&result[0], &result[1], &result[2], day_shift);
 }
 
-double local_hms_to_utc_decimal_hours(int local_hours, int local_minutes, int local_seconds, double gmt_offset) {
+double local_hms_to_utc_decimal_hours(int local_hours, int local_minutes, int local_seconds, double gmt_offset, int* day_shift) {
     int ut[3];
     int offset_seconds = (int)(gmt_offset * 3600);
     int local_total_seconds = local_hours * 3600 + local_minutes * 60 + local_seconds;
@@ -126,7 +130,7 @@ double local_hms_to_utc_decimal_hours(int local_hours, int local_minutes, int lo
     ut[0] = utc_total_seconds / 3600;
     ut[1] = (utc_total_seconds % 3600) / 60;
     ut[2] = utc_total_seconds % 60;
-    _normalize_hms(&ut[0], &ut[1], &ut[2]);
+    _normalize_hms(&ut[0], &ut[1], &ut[2], day_shift);
     return ut[0] + ut[1] / 60.0 + ut[2] / 3600.0; // hms_to_decimal_hours
 }
 

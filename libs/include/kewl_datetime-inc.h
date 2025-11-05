@@ -136,14 +136,14 @@ static inline double hms_to_decimal_hours(int hh, int mm, int ss) {
 void decimal_hours_to_hms(double decimal_hours, int result[3]);
 
 /**
- * Function to convert local time to UTC.
+ * Function to convert local time to UTC. If a day shift occurs it's returned in the flag day_shift (+1 for forewards, -1 for backwards, 0 means same date).
  */
-void local_hms_to_utc(int local_hours, int local_minutes, int local_seconds, double gmt_offset, int result[3]);
+void local_hms_to_utc(int local_hours, int local_minutes, int local_seconds, double gmt_offset, int result[3], int* day_shift);
 
 /**
- * Function to convert local time to UTC decimal hours.
+ * Function to convert local time to UTC decimal hours. If a day shift occurs it's returned in the flag day_shift (+1 for forewards, -1 for backwards, 0 means same date).
  */
-double local_hms_to_utc_decimal_hours(int local_hours, int local_minutes, int local_seconds, double gmt_offset);
+double local_hms_to_utc_decimal_hours(int local_hours, int local_minutes, int local_seconds, double gmt_offset, int* day_shift);
 
 /**
  * datetime_dt structure.

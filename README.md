@@ -41,6 +41,9 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 05-nov-2025 -- *20251105L*
+	- [KeWL] added `day_shift` output flag to `local_hms_to_utc` and `local_hms_to_utc_decimal_hours`
+	- other minor adjustments
 * 04-nov-2025 -- *20251104L*
 	- [WeRKS] added `werks_kvm_get_value`
 	- [KeWL] added `debug_print`
