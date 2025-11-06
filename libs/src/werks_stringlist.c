@@ -391,6 +391,38 @@ bool werks_stringlist_prepend(werks_stringlist_dt* const sl, const char* value) 
     return werks_stringlist_insert(sl, value, 0);
 }
 
+bool werks_stringlist_formatted_append(werks_stringlist_dt* const sl, const char* fmt, ...) {
+    if (is_dead(sl) || fmt == NULL || sl->frozen) return false;
+    va_list args;
+    va_start(args, fmt);
+    ssize_t size = get_string_format_size(fmt, args);
+    if (size < 0) {
+        va_end(args);
+        return false; // encoding error
+    }
+    char* value = perform_string_format(size, fmt, args);
+    bool result = add_string(sl, value);
+    va_end(args);
+    ce_free(value);
+    return result;
+}
+
+bool werks_stringlist_formatted_prepend(werks_stringlist_dt* const sl, const char* fmt, ...) {
+    if (is_dead(sl) || fmt == NULL || sl->frozen) return false;
+    va_list args;
+    va_start(args, fmt);
+    ssize_t size = get_string_format_size(fmt, args);
+    if (size < 0) {
+        va_end(args);
+        return false; // encoding error
+    }
+    char* value = perform_string_format(size, fmt, args);
+    bool result = insert_string(sl, value, 0);
+    va_end(args);
+    ce_free(value);
+    return result;
+}
+
 bool werks_stringlist_swap(werks_stringlist_dt* const sl, ssize_t index1, ssize_t index2) {
     if (is_dead(sl) || is_oob(sl, index1) || is_oob(sl, index2) || sl->frozen) return false;
     char* tmp1 = sl->strings[index1];

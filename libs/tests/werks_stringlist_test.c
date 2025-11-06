@@ -647,6 +647,12 @@ int main(void) {
     werks_stringlist_clear(skz);
     AUTO_STRING(jesz, werks_stringlist_write_to_json_array_string(skz));
     Tests.run("werks_stringlist_write_to_json_array_string skz empty", streq(jesz, "[]"));
+    Tests.run("werks_stringlist_formatted_append NO", !werks_stringlist_formatted_append(skz, NULL));
+    Tests.run("werks_stringlist_formatted_append YES", werks_stringlist_formatted_append(skz, "[%s]", "world"));
+    Tests.run("werks_stringlist_formatted_prepend NO", !werks_stringlist_formatted_prepend(skz, NULL));
+    Tests.run("werks_stringlist_formatted_prepend YES", werks_stringlist_formatted_prepend(skz, "<<%s>>", "hello"));
+    Tests.run("werks_stringlist_get 0", streq(werks_stringlist_get(skz, 0), "<<hello>>"));
+    Tests.run("werks_stringlist_get 1", streq(werks_stringlist_get(skz, 1), "[world]"));
     werks_stringlist_destroy(skz);
     return Tests.end();
 }

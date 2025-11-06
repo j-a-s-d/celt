@@ -41,6 +41,9 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 06-nov-2025 -- *20251106L*
+	- [WeRKS] added `werks_stringlist_formatted_append` and `werks_stringlist_formatted_prepend`
+	- [KeWL] added `datetime_alter_*` and alike simplifying macros to call `modify_datetime`
 * 05-nov-2025 -- *20251105L*
 	- [KeWL] added `day_shift` output flag to `local_hms_to_utc` and `local_hms_to_utc_decimal_hours`
 	- other minor adjustments

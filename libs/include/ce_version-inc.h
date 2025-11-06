@@ -1,1 +1,1 @@
-#define CE 20251105L
+#define CE 20251106L

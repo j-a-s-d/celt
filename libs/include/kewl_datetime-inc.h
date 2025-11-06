@@ -185,6 +185,28 @@ int get_days_in_month(int year, int month);
 void modify_datetime(datetime_dt* dt, int years, int months, int days, int hours, int minutes, int seconds);
 
 /**
+ * Macros that simplify the call to modify_datetime.
+ */
+#define datetime_alter_years(dt, amount) modify_datetime(dt, amount, 0, 0, 0, 0, 0)
+#define datetime_increment_year(dt) datetime_alter_years(dt, 1)
+#define datetime_decrement_year(dt) datetime_alter_years(dt, -1)
+#define datetime_alter_months(dt, amount) modify_datetime(dt, 0, amount, 0, 0, 0, 0)
+#define datetime_increment_month(dt) datetime_alter_months(dt, 1)
+#define datetime_decrement_month(dt) datetime_alter_months(dt, -1)
+#define datetime_alter_days(dt, amount) modify_datetime(dt, 0, 0, amount, 0, 0, 0)
+#define datetime_increment_day(dt) datetime_alter_days(dt, 1)
+#define datetime_decrement_day(dt) datetime_alter_days(dt, -1)
+#define datetime_alter_hours(dt, amount) modify_datetime(dt, 0, 0, 0, amount, 0, 0)
+#define datetime_increment_hour(dt) datetime_alter_hours(dt, 1)
+#define datetime_decrement_hour(dt) datetime_alter_hours(dt, -1)
+#define datetime_alter_minutes(dt, amount) modify_datetime(dt, 0, 0, 0, 0, amount, 0)
+#define datetime_increment_minute(dt) datetime_alter_minutes(dt, 1)
+#define datetime_decrement_minute(dt) datetime_alter_minutes(dt, -1)
+#define datetime_alter_seconds(dt, amount) modify_datetime(dt, 0, 0, 0, 0, 0, amount)
+#define datetime_increment_second(dt) datetime_alter_seconds(dt, 1)
+#define datetime_decrement_second(dt) datetime_alter_seconds(dt, -1)
+
+/**
  * Function to determine if two datetime_dt instances have the same values.
  */
 static inline bool equal_datetimes(datetime_dt* dt1, datetime_dt* dt2) {
