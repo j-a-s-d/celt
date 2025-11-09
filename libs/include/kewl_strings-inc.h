@@ -14,6 +14,8 @@
 #include <ctype.h>
 #include <float.h>
 
+// ENSURE
+
 static inline const char* ensure_const_string(const char* str) {
     return str == NULL ? STRINGS_NOTHING : str;
 }
@@ -335,4 +337,16 @@ ssize_t measure_string_format(const char* fmt, ...);
 ssize_t get_string_format_size(const char* fmt, va_list args);
 char* perform_string_format(ssize_t size, const char* fmt, va_list args);
 char* format_string(const char* fmt, ...);
+
+// COPY
+
+static inline bool copy_substring(const char* src, char* dst, int pos, int len) {
+    if (both_assigned(src, dst) && pos >= 0 && len > 0) {
+        for (int i = 0; i < len; i++)
+            dst[i] = src[pos + i];
+        dst[len] = CHARS_NULL;
+        return true;
+    }
+    return false;
+}
 

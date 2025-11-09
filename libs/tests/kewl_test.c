@@ -1056,6 +1056,13 @@ static inline void test_str_functions() {
     Tests.run("parse_json_strings_array_with_reference YES 2", parse_json_strings_array_with_reference("[\"\"]", print_parsed_string_with_reference, sample_ptr));
     Tests.run("parse_json_strings_array_with_reference YES 3", parse_json_strings_array_with_reference("[\"hello\"]", print_parsed_string_with_reference, sample_ptr));
     Tests.run("parse_json_strings_array_with_reference YES 4", parse_json_strings_array_with_reference("[ \"hello\", \"w\\\"orld\", \"line\\nbreak\", \"unicode \\u263A\" ]", print_parsed_string_with_reference, sample_ptr));
+    char source[] = "Hello World!";
+    char destination[10] = STRINGS_NOTHING;
+    Tests.run("copy_substring NO null 1", !copy_substring(NULL, destination, 6, 5) && streq(destination, STRINGS_NOTHING));
+    Tests.run("copy_substring NO null 2", !copy_substring(source, NULL, 6, 5) && streq(destination, STRINGS_NOTHING));
+    Tests.run("copy_substring NO index", !copy_substring(source, destination, -1, 5) && streq(destination, STRINGS_NOTHING));
+    Tests.run("copy_substring NO length", !copy_substring(source, destination, 6, 0) && streq(destination, STRINGS_NOTHING));
+    Tests.run("copy_substring YES", copy_substring(source, destination, 6, 5) && streq(destination, "World"));
 }
 
 void test_dbg_utilities() {

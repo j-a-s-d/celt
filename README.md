@@ -41,6 +41,8 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 09-nov-2025 -- *20251109L*
+	- [KeWL] added `copy_substring`
 * 06-nov-2025 -- *20251106L*
 	- [WeRKS] added `werks_stringlist_formatted_append` and `werks_stringlist_formatted_prepend`
 	- [KeWL] added `datetime_alter_*` and alike simplifying macros to call `modify_datetime`
