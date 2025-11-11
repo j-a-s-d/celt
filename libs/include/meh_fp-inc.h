@@ -51,6 +51,21 @@ static inline long double long_double_abs(long double x) {
     return (x < 0) ? -x : x;
 }
 
+// rounds the given float number
+static inline int float_round(float x) {
+    return (int)(x < 0 ? x - 0.5f : x + 0.5f);
+}
+
+// rounds the given double number
+static inline int double_round(double x) {
+    return (int)(x < 0 ? x - 0.5 : x + 0.5);
+}
+
+// rounds the given long double number
+static inline int long_double_round(long double x) {
+    return (int)(x < 0 ? x - 0.5L : x + 0.5L);
+}
+
 // returns true if the absolute difference between the two float numbers is smaller than a predefined small number (epsilon)
 static inline bool float_equal(float a, float b, float epsilon) {
     return float_abs(a - b) < epsilon;

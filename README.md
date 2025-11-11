@@ -41,6 +41,9 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 11-nov-2025 -- *20251111L*
+	- [MeH] added `float_round`, `double_round` and `long_double_round`
+	- [KeWL] added `utc_decimal_hours_to_local_hms`
 * 09-nov-2025 -- *20251109L*
 	- [KeWL] added `copy_substring`
 * 06-nov-2025 -- *20251106L*

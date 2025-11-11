@@ -146,6 +146,11 @@ void local_hms_to_utc(int local_hours, int local_minutes, int local_seconds, dou
 double local_hms_to_utc_decimal_hours(int local_hours, int local_minutes, int local_seconds, double gmt_offset, int* day_shift);
 
 /**
+ * Function to convert UTC decimal hours to local time.
+ */
+void utc_decimal_hours_to_local_hms(double utc_decimal_hour, double gmt_offset, int result[3], int* day_shift);
+
+/**
  * datetime_dt structure.
  */
 typedef struct {

@@ -74,12 +74,8 @@ elapsed_time_dt get_elapsed_time(time_t start, time_t end) {
     return elapsed;
 }
 
-static inline int round_(double num) {
-    return (int)(num < 0 ? num - 0.5 : num + 0.5);
-}
-
 void decimal_hours_to_hms(double decimal_hours, int result[3]) {
-    int total_seconds = round_(decimal_hours * 3600);
+    int total_seconds = double_round(decimal_hours * 3600);
     result[0] = total_seconds / 3600;
     result[1] = (total_seconds % 3600) / 60;
     result[2] = total_seconds % 60;
@@ -132,6 +128,17 @@ double local_hms_to_utc_decimal_hours(int local_hours, int local_minutes, int lo
     ut[2] = utc_total_seconds % 60;
     _normalize_hms(&ut[0], &ut[1], &ut[2], day_shift);
     return ut[0] + ut[1] / 60.0 + ut[2] / 3600.0; // hms_to_decimal_hours
+}
+
+void utc_decimal_hours_to_local_hms(double utc_decimal_hour, double gmt_offset, int result[3], int* day_shift) {
+    double local_time = utc_decimal_hour + gmt_offset;
+    result[0] = (int)local_time;
+    double fractional_hour = local_time - result[0];
+    double total_minutes = fractional_hour * 60.0;
+    result[1] = (int)total_minutes;
+    double fractional_minute = total_minutes - result[1];
+    result[2] = (int)double_round(fractional_minute * 60.0);
+    _normalize_hms(&result[0], &result[1], &result[2], day_shift);
 }
 
 bool fill_datetime_from_tm(datetime_dt* datetime, const struct tm* time_tm) {

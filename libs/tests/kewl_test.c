@@ -235,6 +235,10 @@ static inline void test_datetime_utilities() {
     Tests.run("local_hms_to_utc", ut[0] == 22 && ut[1] == 0 && ut[2] == 0 && day_shift == -1);
     double uh = local_hms_to_utc_decimal_hours(13, 05, 33, -3.0, &day_shift);
     Tests.run("local_hms_to_utc_decimal_hours", double_abs(uh - 16.0925) < 0.0001 && day_shift == 0);
+    day_shift = 0;
+    int xt[3];
+    utc_decimal_hours_to_local_hms(uh, -3.0, xt, &day_shift);
+    Tests.run("utc_decimal_hours_to_local_hms", xt[0] == 13 && xt[1] == 5 && xt[2] == 33 && day_shift == 0);
     __auto datetime_dt* nt = get_now_datetime();
     Tests.run("get_now_datetime", assigned(nt) && nt->year >= 2025);
     Tests.print("now: %d-%d-%d %d:%d:%d\n", nt->day, nt->month, nt->year, nt->hours, nt->minutes, nt->seconds);

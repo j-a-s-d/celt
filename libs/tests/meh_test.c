@@ -46,6 +46,12 @@ static inline void test_math_utilities() {
     Tests.run("float_abs", float_abs(-1.23f) == 1.23f);
     Tests.run("double_abs", double_abs(-1.23) == 1.23);
     Tests.run("long_double_abs", long_double_abs(-1.23L) == 1.23L);
+    Tests.run("float_round 1", float_round(-1.49f) == -1.0f);
+    Tests.run("double_round 1", double_round(-1.49) == -1.0);
+    Tests.run("long_double_round 1", long_double_round(-1.49L) == -1.0L);
+    Tests.run("float_round 2", float_round(1.51f) == 2.0f);
+    Tests.run("double_round 2", double_round(1.51) == 2.0);
+    Tests.run("long_double_round 2", long_double_round(1.51L) == 2.0L);
     Tests.run("float_equal", float_equal(3.21f / -1.23f, -2.609756f, 0.000001f));
     Tests.run("double_equal", double_equal(3.21 / -1.23, -2.609756, 0.000001));
     Tests.run("long_double_equal", long_double_equal(3.21L / -1.23L, -2.609756L, 0.000001L));
