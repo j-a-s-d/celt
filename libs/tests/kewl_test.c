@@ -313,6 +313,17 @@ static inline void test_datetime_utilities() {
     int year, month, day;
     long_date_to_ymd(date_val, &year, &month, &day);
     Tests.print("YMD: year %d, month %d, day %d\n", year, month, day);
+    __auto datetime_dt* zt = get_now_datetime();
+    datetime_increment_minute(zt);
+    elapsed_time_dt de = get_datetime_elapsed_time(nt, zt);
+    Tests.run("get_datetime_elapsed_time", (de.weeks == 0) && (de.days == 0) && (de.hours == 0) && (de.minutes == 1) && (de.seconds == 0));
+    Tests.print("elapsed: %d weeks %d days %d hours %d minutes %d seconds\n", de.weeks, de.days, de.hours, de.minutes, de.seconds);
+    __auto datetime_dt* tt = make_datetime(2025, 12, 31, 23, 59, 59);
+    Tests.run("datetime_make", tt->year == 2025 && tt->month == 12 && tt->day == 31 && tt->hours == 23 && tt->minutes == 59 && tt->seconds == 59);
+    __auto datetime_dt* noon = datetime_midday(2025, 12, 31);
+    Tests.run("datetime_make", noon->year == 2025 && noon->month == 12 && noon->day == 31 && noon->hours == 12 && noon->minutes == 0 && noon->seconds == 0);
+    __auto datetime_dt* midnite = datetime_midnight(2025, 12, 31);
+    Tests.run("datetime_make", midnite->year == 2025 && midnite->month == 12 && midnite->day == 31 && midnite->hours == 0 && midnite->minutes == 0 && midnite->seconds == 0);
 }
 
 static inline void test_strhashset() {

@@ -42,7 +42,7 @@ char* get_time_converter_stamp(time_converter_fn tc) {
     return timestamp;
 }
 
-char* time_to_iso8601(time_t raw_time) {
+char* time_t_to_iso8601(time_t raw_time) {
     struct tm local_tm;
 #ifdef __posix01
     if (localtime_r(&raw_time, &local_tm) == NULL) return NULL; // POSIX thread-safe
@@ -253,5 +253,22 @@ bool is_newer_datetime(datetime_dt* dt1, datetime_dt* dt2) {
     if (dt2->minutes < dt1->minutes) return false;
     if (dt2->seconds > dt1->seconds) return true;
     return false;
+}
+
+time_t datetime_to_time_t(datetime_dt* dt) {
+    struct tm tm_time = {0};
+    tm_time.tm_year = dt->year - 1900;
+    tm_time.tm_mon = dt->month - 1;
+    tm_time.tm_mday = dt->day;
+    tm_time.tm_hour = dt->hours;
+    tm_time.tm_min = dt->minutes;
+    tm_time.tm_sec = dt->seconds;
+    return mktime(&tm_time);
+}
+
+elapsed_time_dt get_datetime_elapsed_time(datetime_dt* start, datetime_dt* end) {
+    time_t tstart = datetime_to_time_t(start);
+    time_t tend = datetime_to_time_t(end);
+    return get_elapsed_time(tstart, tend);
 }
 

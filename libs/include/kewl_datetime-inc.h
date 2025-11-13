@@ -86,7 +86,7 @@ char* get_formatted_date_time(const char* fmt);
 /**
  * Converts the given time_t (local time, with offset) to it's ISO 8601 string representation.
  */
-char* time_to_iso8601(time_t raw_time);
+char* time_t_to_iso8601(time_t raw_time);
 
 // TIMESTAMP
 
@@ -122,6 +122,22 @@ static inline char* get_timestamp(void) {
 }
 
 // CONVERSION
+
+/**
+ * Function to convert 3 ints to a long date value YYYYMMDD.
+ */
+static inline long ymd_to_long_date(int year, int month, int day) {
+    return (long)year * 10000L + (long)month * 100L + (long)day;
+}
+
+/**
+ * Function to convert long date value YYYYMMDD to 3 ints.
+ */
+static inline void long_date_to_ymd(long date, int* year, int* month, int* day) {
+    *year = date / 10000L;
+    *month = (date % 10000L) / 100L;
+    *day = date % 100L;
+}
 
 /**
  * Converts hours, minutes and seconds from integers to a decimal hours double value.
@@ -163,26 +179,48 @@ typedef struct {
 } datetime_dt;
 
 /**
+ * Function to make an datetime_dt instance.
+ */
+static inline datetime_dt* make_datetime(int year, int month, int day, int hours, int minutes, int seconds) {
+    RET_CALLOC(datetime_dt, 1, {
+        result->year = year;
+        result->month = month;
+        result->day = day;
+        result->hours = hours;
+        result->minutes = minutes;
+        result->seconds = seconds;
+    });
+}
+
+/**
+ * Macros that simplify the call to make_datetime.
+ */
+#define datetime_midnight(year, month, day) make_datetime(year, month, day, 0, 0, 0)
+#define datetime_midday(year, month, day) make_datetime(year, month, day, 12, 0, 0)
+
+/**
  * Function to fill a datetime instance with the data of a tm struct.
  */
 bool fill_datetime_from_tm(datetime_dt* datetime, const struct tm* time_tm);
 
 /**
- * Function to get a new datetime instance holding the currante local date time data.
+ * Function to fill a datetime instance with the data of another instance.
  */
-datetime_dt* get_now_datetime(void);
-
-/**
- * Function to determine if an year is leap or not.
- */
-static inline bool is_leap_year(int year) {
-    return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+static inline void fill_datetime_from_datetime(datetime_dt* dt, datetime_dt* src) {
+    if (both_assigned(dt, src)) {
+        dt->year = src->year;
+        dt->month = src->month;
+        dt->day = src->day;
+        dt->hours = src->hours;
+        dt->minutes = src->minutes;
+        dt->seconds = src->seconds;
+    }
 }
 
 /**
- * Function to determine the amount of days in a month.
+ * Function to get a new datetime instance holding the currante local date time data.
  */
-int get_days_in_month(int year, int month);
+datetime_dt* get_now_datetime(void);
 
 /**
  * Function to modify the provided datetime_dt instance by the provided values (positive to increment and negative to decrement).
@@ -229,18 +267,26 @@ static inline bool equal_datetimes(datetime_dt* dt1, datetime_dt* dt2) {
 bool is_newer_datetime(datetime_dt* dt1, datetime_dt* dt2);
 
 /**
- * Function to convert 3 ints to a long date value YYYYMMDD.
+ * Function to convert datetime to time_t.
  */
-static inline long ymd_to_long_date(int year, int month, int day) {
-    return (long)year * 10000L + (long)month * 100L + (long)day;
+time_t datetime_to_time_t(datetime_dt* dt);
+
+/**
+ * Returns an elapsed_time_dt structure with the elapsed time information between start and end values.
+ */
+elapsed_time_dt get_datetime_elapsed_time(datetime_dt* start, datetime_dt* end);
+
+// GENERAL
+
+/**
+ * Function to determine if an year is leap or not.
+ */
+static inline bool is_leap_year(int year) {
+    return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
 }
 
 /**
- * Function to convert long date value YYYYMMDD to 3 ints.
+ * Function to determine the amount of days in a month.
  */
-static inline void long_date_to_ymd(long date, int* year, int* month, int* day) {
-    *year = date / 10000L;
-    *month = (date % 10000L) / 100L;
-    *day = date % 100L;
-}
+int get_days_in_month(int year, int month);
 

@@ -41,6 +41,9 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 13-nov-2025 -- *20251113L*
+	- [KeWL] added `make_datetime` and `datetime_*` macros to simplify the calling, `datetime_to_time_t`, `get_datetime_elapsed_time` and `fill_datetime_from_datetime`
+	- other minor adjustments
 * 11-nov-2025 -- *20251111L*
 	- [MeH] added `float_round`, `double_round` and `long_double_round`
 	- [KeWL] added `utc_decimal_hours_to_local_hms`
