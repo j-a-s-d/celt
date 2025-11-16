@@ -44,7 +44,7 @@ bool is_alphanumeric_string(const char* str);
 bool is_numeric_string(const char* str);
 
 static inline bool streq(const char* a, const char* b) {
-    return assigned(a) && assigned(b) && strcmp(a, b) == 0;
+    return both_assigned(a, b) && strcmp(a, b) == 0;
 }
 
 static inline bool contains_string(const char* container, const char* contained) {
@@ -338,7 +338,7 @@ ssize_t get_string_format_size(const char* fmt, va_list args);
 char* perform_string_format(ssize_t size, const char* fmt, va_list args);
 char* format_string(const char* fmt, ...);
 
-// COPY
+// RETRIEVAL
 
 static inline bool copy_substring(const char* src, char* dst, int pos, int len) {
     if (both_assigned(src, dst) && pos >= 0 && len > 0) {
@@ -349,4 +349,6 @@ static inline bool copy_substring(const char* src, char* dst, int pos, int len) 
     }
     return false;
 }
+
+bool parse_xyz_ints_string(const char* text, const char separator, int* x, int* y, int* z);
 

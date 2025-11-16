@@ -364,6 +364,30 @@ bool werks_stringlist_remove_not_suffixed(werks_stringlist_dt* const sl, const c
     return result;
 }
 
+bool werks_stringlist_remove_containing(werks_stringlist_dt* const sl, const char* text) {
+    bool result = false;
+    if (!is_dead(sl) && has_items(sl) && has_content(text))
+        for (ssize_t i = sl->size - 1; i >= 0; i--)
+            if (contains_string(sl->strings[i], text)) {
+                ce_free(sl->strings[i]);
+                UNUSED(forget_string(sl, i));
+                result = true;
+            }
+    return result;
+}
+
+bool werks_stringlist_remove_not_containing(werks_stringlist_dt* const sl, const char* text) {
+    bool result = false;
+    if (!is_dead(sl) && has_items(sl) && has_content(text))
+        for (ssize_t i = sl->size - 1; i >= 0; i--)
+            if (!contains_string(sl->strings[i], text)) {
+                ce_free(sl->strings[i]);
+                UNUSED(forget_string(sl, i));
+                result = true;
+            }
+    return result;
+}
+
 static inline bool insert_strings(werks_stringlist_dt* sl, werks_stringlist_dt* ns, ssize_t index) {
     for (ssize_t i = ns->size - 1; i >= 0; i--)
         UNUSED(insert_string(sl, ns->strings[i], index));

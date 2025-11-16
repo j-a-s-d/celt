@@ -1365,3 +1365,19 @@ bool parse_json_strings_array_with_reference(const char* json, parsed_string_cal
     return true;
 }
 
+bool parse_xyz_ints_string(const char* text, const char separator, int* x, int* y, int* z) {
+    if (x == NULL || y == NULL || z == NULL || text == NULL) return false;
+    char tmp_buffer[20];
+    strncpy(tmp_buffer, text, sizeof(tmp_buffer) - 1);
+    tmp_buffer[sizeof(tmp_buffer) - 1] = CHARS_NULL;
+    char* token;
+    char sep_str[2] = {separator, CHARS_NULL};
+    token = strtok(tmp_buffer, sep_str);
+    if (token != NULL) *x = atoi(token);
+    token = strtok(NULL, sep_str);
+    if (token != NULL) *y = atoi(token);
+    token = strtok(NULL, sep_str);
+    if (token != NULL) *z = atoi(token);
+    return true;
+}
+

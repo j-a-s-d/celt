@@ -10,7 +10,7 @@ C eXTRA LiBRARiES & TOOLS
 
 ## LIBRARIES
 
-An opinionated mashup of decades of c code (with ~1900 test cases and 0 memory leaks/invalid memory accesses) structured in a bunch of libraries mostly for c99+, mostly for linux, mostly for gcc and clang, which doesn't use any external dependency (except indicated) not even libm/math.h (but it's compatible of course).
+An opinionated mashup of decades of c code (with 2000+ test cases and 0 memory leaks/invalid memory accesses) structured in a bunch of libraries mostly for c99+, mostly for linux, mostly for gcc and clang, which doesn't use any external dependency (except indicated) not even libm/math.h (but it's compatible of course).
 In all of this libraries, name casing is snake, data types are suffixed as _dt and function types (such as callback types) are suffixed as _fn.
 
 * [`Ce`](libs/docs/ce.md) *mostly c89+ (plus some c99+ typedefs), for most compilers, only headers with macros and typedefs*
@@ -41,6 +41,10 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 16-nov-2025 -- *20251116L*
+	- [WeRKS] added `werks_stringlist_remove_containing` and `werks_stringlist_remove_not_containing`
+	- [KeWL] added `fill_datetime_with_now` and `parse_xyz_ints_string`
+	- other minor adjustments
 * 13-nov-2025 -- *20251113L*
 	- [KeWL] added `make_datetime` and `datetime_*` macros to simplify the calling, `datetime_to_time_t`, `get_datetime_elapsed_time` and `fill_datetime_from_datetime`
 	- other minor adjustments

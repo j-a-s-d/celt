@@ -218,6 +218,11 @@ static inline void fill_datetime_from_datetime(datetime_dt* dt, datetime_dt* src
 }
 
 /**
+ * Function to fill a datetime instance with the current local date time data.
+ */
+bool fill_datetime_with_now(datetime_dt* dt);
+
+/**
  * Function to get a new datetime instance holding the currante local date time data.
  */
 datetime_dt* get_now_datetime(void);
@@ -225,7 +230,7 @@ datetime_dt* get_now_datetime(void);
 /**
  * Function to modify the provided datetime_dt instance by the provided values (positive to increment and negative to decrement).
  */
-void modify_datetime(datetime_dt* dt, int years, int months, int days, int hours, int minutes, int seconds);
+bool modify_datetime(datetime_dt* dt, int years, int months, int days, int hours, int minutes, int seconds);
 
 /**
  * Macros that simplify the call to modify_datetime.

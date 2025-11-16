@@ -152,6 +152,20 @@ bool fill_datetime_from_tm(datetime_dt* datetime, const struct tm* time_tm) {
     return true;
 }
 
+bool fill_datetime_with_now(datetime_dt* dt) {
+    time_t now = time(NULL);
+    if (now == (time_t)-1) return false; // time() error
+    struct tm local;
+#ifdef __posix01
+    if (localtime_r(&now, &local) == NULL) return false; // POSIX thread-safe
+#else
+    struct tm* tmp = localtime(&now); // Non-thread-safe fallback
+    if (tmp == NULL) return false;
+    local = *tmp;
+#endif
+    return fill_datetime_from_tm(dt, &local);
+}
+
 datetime_dt* get_now_datetime(void) {
     time_t now = time(NULL);
     if (now == (time_t)-1) return NULL; // time() error
@@ -180,7 +194,8 @@ int get_days_in_month(int year, int month) {
         return (month == 4 || month == 6 || month == 9 || month == 11) ? 30 : 31;
 }
 
-void modify_datetime(datetime_dt* dt, int years, int months, int days, int hours, int minutes, int seconds) {
+bool modify_datetime(datetime_dt* dt, int years, int months, int days, int hours, int minutes, int seconds) {
+    if (dt == NULL) return false;
     dt->seconds += seconds;
     while (dt->seconds >= 60) {
         dt->seconds -= 60;
@@ -238,20 +253,23 @@ void modify_datetime(datetime_dt* dt, int years, int months, int days, int hours
     // NOTE: a direct month roll can overflow days in the month so a clamp is required
     if (dt->day > get_days_in_month(dt->year, dt->month))
         dt->day = get_days_in_month(dt->year, dt->month);
+    return true;
 }
 
 bool is_newer_datetime(datetime_dt* dt1, datetime_dt* dt2) {
-    if (dt2->year > dt1->year) return true;
-    if (dt2->year < dt1->year) return false;
-    if (dt2->month > dt1->month) return true;
-    if (dt2->month < dt1->month) return false;
-    if (dt2->day > dt1->day) return true;
-    if (dt2->day < dt1->day) return false;
-    if (dt2->hours > dt1->hours) return true;
-    if (dt2->hours < dt1->hours) return false;
-    if (dt2->minutes > dt1->minutes) return true;
-    if (dt2->minutes < dt1->minutes) return false;
-    if (dt2->seconds > dt1->seconds) return true;
+    if (both_assigned(dt1, dt2)) {
+        if (dt2->year > dt1->year) return true;
+        if (dt2->year < dt1->year) return false;
+        if (dt2->month > dt1->month) return true;
+        if (dt2->month < dt1->month) return false;
+        if (dt2->day > dt1->day) return true;
+        if (dt2->day < dt1->day) return false;
+        if (dt2->hours > dt1->hours) return true;
+        if (dt2->hours < dt1->hours) return false;
+        if (dt2->minutes > dt1->minutes) return true;
+        if (dt2->minutes < dt1->minutes) return false;
+        if (dt2->seconds > dt1->seconds) return true;
+    }
     return false;
 }
 
@@ -267,8 +285,11 @@ time_t datetime_to_time_t(datetime_dt* dt) {
 }
 
 elapsed_time_dt get_datetime_elapsed_time(datetime_dt* start, datetime_dt* end) {
-    time_t tstart = datetime_to_time_t(start);
-    time_t tend = datetime_to_time_t(end);
-    return get_elapsed_time(tstart, tend);
+    if (both_assigned(start, end)) {
+        time_t tstart = datetime_to_time_t(start);
+        time_t tend = datetime_to_time_t(end);
+        return get_elapsed_time(tstart, tend);
+    }
+    return DEFAULT_ELAPSED_TIME;
 }
 

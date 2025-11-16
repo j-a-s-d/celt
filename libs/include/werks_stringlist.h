@@ -94,6 +94,8 @@ bool werks_stringlist_remove_prefixed(werks_stringlist_dt* sl, const char* prefi
 bool werks_stringlist_remove_not_prefixed(werks_stringlist_dt* sl, const char* prefix);
 bool werks_stringlist_remove_suffixed(werks_stringlist_dt* sl, const char* suffix);
 bool werks_stringlist_remove_not_suffixed(werks_stringlist_dt* sl, const char* suffix);
+bool werks_stringlist_remove_containing(werks_stringlist_dt* const sl, const char* text);
+bool werks_stringlist_remove_not_containing(werks_stringlist_dt* const sl, const char* text);
 bool werks_stringlist_exclude_all(werks_stringlist_dt* sl, werks_stringlist_dt* nl);
 bool werks_stringlist_keep_all(werks_stringlist_dt* sl, werks_stringlist_dt* nl);
 
@@ -201,6 +203,7 @@ bool werks_stringlist_remove_duplicates(werks_stringlist_dt* sl);
 werks_stringlist_dt* werks_stringlist_list_duplicates(werks_stringlist_dt* sl);
 
 // replacing
+
 bool werks_stringlist_replace_first_occurrence(werks_stringlist_dt* sl, const char* target, const char* value);
 bool werks_stringlist_replace_last_occurrence(werks_stringlist_dt* sl, const char* target, const char* value);
 bool werks_stringlist_replace_occurrences(werks_stringlist_dt* sl, const char* target, const char* value);
