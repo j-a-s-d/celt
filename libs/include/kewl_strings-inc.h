@@ -202,6 +202,7 @@ char* to_upper_case(const char* str);
 
 char** string_array_create(ssize_t size, const char* default_value);
 char** string_array_with_sentinel_create(ssize_t size, const char* default_value);
+char** string_array_with_sentinel_from_string_split(const char* str, char separator);
 char** string_array_replace_segment(const char* array[], ssize_t arr_len, ssize_t from, ssize_t to, const char* source[], ssize_t src_len, ssize_t* out_len);
 static inline ssize_t string_array_find_null_sentinel(const char* array[], ssize_t limit) {
     ssize_t i = 0;
@@ -350,5 +351,11 @@ static inline bool copy_substring(const char* src, char* dst, int pos, int len) 
     return false;
 }
 
+bool parse_xyz_shorts_string(const char* text, const char separator, short* x, short* y, short* z);
 bool parse_xyz_ints_string(const char* text, const char separator, int* x, int* y, int* z);
+bool parse_xyz_longs_string(const char* text, const char separator, long* x, long* y, long* z);
+bool parse_xyz_long_longs_string(const char* text, const char separator, long long* x, long long* y, long long* z);
+bool parse_xyz_floats_string(const char* text, const char separator, float* x, float* y, float* z);
+bool parse_xyz_doubles_string(const char* text, const char separator, double* x, double* y, double* z);
+bool parse_xyz_long_doubles_string(const char* text, const char separator, long double* x, long double* y, long double* z);
 

@@ -703,6 +703,51 @@ char** string_array_with_sentinel_create(ssize_t size, const char* default_value
     });
 }
 
+char** string_array_with_sentinel_from_string_split(const char* str, char separator) {
+    if (str == NULL) return NULL;
+    // first pass: count number of substrings
+    int count = 1; // at least one token if string not empty
+    for (const char* s = str; *s != CHARS_NULL; s++)
+        if (*s == separator) count++;
+    // allocate array of char* for tokens + 1 for NULL terminator
+    char** result = ce_malloc((count + 1) * sizeof(char*));
+    if (!result) return NULL;
+    int token_index = 0;
+    const char* token_start = str;
+    const char* s = str;
+    while (*s != CHARS_NULL) {
+        if (*s == separator) {
+            size_t length = s - token_start;
+            char* token = ce_malloc(length + 1);
+            if (!token) {
+                for (int i = 0; i < token_index; i++)
+                    ce_free(result[i]);
+                ce_free(result);
+                return NULL;
+            }
+            strncpy(token, token_start, length);
+            token[length] = CHARS_NULL;
+            result[token_index++] = token;
+            token_start = s + 1;
+        }
+        s++;
+    }
+    // last token
+    size_t length = s - token_start;
+    char* token = ce_malloc(length + 1);
+    if (!token) {
+        for (int i = 0; i < token_index; i++)
+            ce_free(result[i]);
+        ce_free(result);
+        return NULL;
+    }
+    strncpy(token, token_start, length);
+    token[length] = CHARS_NULL;
+    result[token_index++] = token;
+    result[token_index] = NULL;
+    return result;
+}
+
 char** string_array_replace_segment(const char* array[], ssize_t arr_len, ssize_t from, ssize_t to, const char* source[], ssize_t src_len, ssize_t* out_len) {
     if (array == NULL || arr_len < 1 || source == NULL || src_len < 1 || from < 0 || to >= arr_len || from > to) return NULL;
     ssize_t new_len = arr_len - (to - from + 1) + src_len;
@@ -1365,19 +1410,42 @@ bool parse_json_strings_array_with_reference(const char* json, parsed_string_cal
     return true;
 }
 
+#define PARSER_XYZ(fn, def) \
+    if (text == NULL || x == NULL || y == NULL || z == NULL) return false; \
+    char tmp_buffer[1024]; \
+    strncpy(tmp_buffer, text, sizeof(tmp_buffer) - 1); \
+    tmp_buffer[sizeof(tmp_buffer) - 1] = CHARS_NULL; \
+    char sep_str[2] = {separator, CHARS_NULL}; \
+    *x = fn(strtok(tmp_buffer, sep_str), 0); \
+    *y = fn(strtok(NULL, sep_str), 0); \
+    *z = fn(strtok(NULL, sep_str), 0); \
+    return true
+
+bool parse_xyz_shorts_string(const char* text, const char separator, short* x, short* y, short* z) {
+    PARSER_XYZ(str_to_short_def, 0);
+}
+
 bool parse_xyz_ints_string(const char* text, const char separator, int* x, int* y, int* z) {
-    if (x == NULL || y == NULL || z == NULL || text == NULL) return false;
-    char tmp_buffer[20];
-    strncpy(tmp_buffer, text, sizeof(tmp_buffer) - 1);
-    tmp_buffer[sizeof(tmp_buffer) - 1] = CHARS_NULL;
-    char* token;
-    char sep_str[2] = {separator, CHARS_NULL};
-    token = strtok(tmp_buffer, sep_str);
-    if (token != NULL) *x = atoi(token);
-    token = strtok(NULL, sep_str);
-    if (token != NULL) *y = atoi(token);
-    token = strtok(NULL, sep_str);
-    if (token != NULL) *z = atoi(token);
-    return true;
+    PARSER_XYZ(str_to_int_def, 0); // 0 is the atoi default
+}
+
+bool parse_xyz_longs_string(const char* text, const char separator, long* x, long* y, long* z) {
+    PARSER_XYZ(str_to_long_def, 0);
+}
+
+bool parse_xyz_long_longs_string(const char* text, const char separator, long long* x, long long* y, long long* z) {
+    PARSER_XYZ(str_to_long_long_def, 0);
+}
+
+bool parse_xyz_floats_string(const char* text, const char separator, float* x, float* y, float* z) {
+    PARSER_XYZ(str_to_float_def, float_NaN);
+}
+
+bool parse_xyz_doubles_string(const char* text, const char separator, double* x, double* y, double* z) {
+    PARSER_XYZ(str_to_double_def, double_NaN);
+}
+
+bool parse_xyz_long_doubles_string(const char* text, const char separator, long double* x, long double* y, long double* z) {
+    PARSER_XYZ(str_to_long_double_def, long_double_NaN);
 }
 

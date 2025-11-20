@@ -836,7 +836,10 @@ static inline void test_str_functions() {
     Tests.run("string_array_equal NO null1", !string_array_equal(NULL, (const char*[]){"1", "22", "0"}, 3));
     Tests.run("string_array_equal NO null2", !string_array_equal((const char*[]){"1", "22", "333"}, NULL, 3));
     Tests.run("string_array_equal NO unsized", !string_array_equal((const char*[]){"1", "22", "333"}, (const char*[]){"1", "22", "333"}, 0));
-
+    Tests.run("string_array_with_sentinel_from_string_split NO", string_array_with_sentinel_from_string_split(NULL, ',') == NULL);
+    __auto char** zz = string_array_with_sentinel_from_string_split("aaa,bbb,ccc,ddd", ',');
+    Tests.run("string_array_with_sentinel_from_string_split YES", assigned(zz) && streq(zz[0], "aaa") && streq(zz[1], "bbb") && streq(zz[2], "ccc") && streq(zz[3], "ddd") && zz[4] == NULL);
+    
     tmp = concat_strings("Hello", "World");
     Tests.run("concat_strings text text", strcmp(tmp, "HelloWorld") == 0);
     free(tmp);
@@ -1097,6 +1100,24 @@ static inline void test_str_functions() {
     int y, m, d;
     Tests.run("parse_xyz_ints_string", parse_xyz_ints_string("2025-11-15", '-', &y, &m, &d) && y == 2025 && m == 11 && d == 15);
     Tests.print("Parsed: year %d, month %d, day %d\n", y, m, d);
+    short hh, mm, ss;
+    Tests.run("parse_xyz_shorts_string", parse_xyz_shorts_string("23:59:59", ':', &hh, &mm, &ss) && hh == 23 && mm == 59 && ss == 59);
+    Tests.print("Parsed: hours %hd, minutes %hd, seconds %hd\n", hh, mm, ss);
+    long d1, d2, d3;
+    Tests.run("parse_xyz_longs_string", parse_xyz_longs_string("19780625;19860629;20221218", ';', &d1, &d2, &d3) && d1 == 19780625L && d2 == 19860629L && d3 == 20221218L);
+    Tests.print("Parsed: wc1 %ld, wc2 %ld, wc3 %ld\n", d1, d2, d3);
+    long l1, l2, l3;
+    Tests.run("parse_xyz_longs_string", parse_xyz_longs_string("19780625123;19860629123;20221218123", ';', &l1, &l2, &l3) && l1 == 19780625123LL && l2 == 19860629123LL && l3 == 20221218123LL);
+    Tests.print("Parsed: ll1 %ld, ll2 %ld, ll3 %ld\n", d1, d2, d3);
+    float t0, t1, t2;
+    Tests.run("parse_xyz_floats_string", parse_xyz_floats_string("30.5,0.25,-5.75", ',', &t0, &t1, &t2) && float_equal(t0, 30.5, 0.00001) && float_equal(t1, 0.25, 0.00001) && float_equal(t2, -5.75, 0.00001));
+    Tests.print("Parsed: t0 %f, t1 %f, t2 %f\n", t0, t1, t2);
+    double lon, lat, alt;
+    Tests.run("parse_xyz_doubles_string", parse_xyz_doubles_string("-58.521461,-34.600583,0.0", ',', &lon, &lat, &alt) && double_equal(lon, -58.521461, 0.00001) && double_equal(lat, -34.600583, 0.00001) && double_equal(alt, 0.0, 0.00001));
+    Tests.print("Parsed: longitude %f, latitude %f, altitude %f\n", lon, lat, alt);
+    long double ld1, ld2, ld3;
+    Tests.run("parse_xyz_long_doubles_string", parse_xyz_long_doubles_string("-58.521461,-34.600583,0.0", ',', &ld1, &ld2, &ld3) && long_double_equal(ld1, -58.521461, 0.00001) && long_double_equal(ld2, -34.600583, 0.00001) && long_double_equal(ld3, 0.0, 0.00001));
+    Tests.print("Parsed: longitude %Lf, latitude %Lf, altitude %Lf\n", lon, lat, alt);
 }
 
 void test_dbg_utilities() {
