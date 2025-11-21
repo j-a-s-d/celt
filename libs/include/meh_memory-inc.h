@@ -67,7 +67,7 @@ inline void _auto_cleanup(void* ptr) {
     if (assigned(result)) { code } \
     return result;
 
-/* MeH.MEMORY -- Deallocation Functions */
+/* MeH.MEMORY -- Deallocation Utilities */
 
 static inline void zero_free(void* ptr, size_t size) {
     if (ptr == NULL) return;
@@ -80,6 +80,16 @@ static inline void safe_free(void* ptr, size_t size, unsigned char byte) {
     for (size_t i = 0; i < size; i++) ((unsigned char*)ptr)[i] = byte;
     ce_free(ptr);
 }
+
+static inline void free_and_null_array_items(void** arr, size_t size) {
+    if (assigned(arr))
+        for (size_t i = 0; i < size; i++) {
+            ce_free(arr[i]);
+            arr[i] = NULL;
+        }
+}
+
+#define FREE_ARRAY_ITEMS(arr, size) free_and_null_array_items((void**)arr, size)
 
 /* MeH.MEMORY -- Function Pointers */
 

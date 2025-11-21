@@ -837,8 +837,9 @@ static inline void test_str_functions() {
     Tests.run("string_array_equal NO null2", !string_array_equal((const char*[]){"1", "22", "333"}, NULL, 3));
     Tests.run("string_array_equal NO unsized", !string_array_equal((const char*[]){"1", "22", "333"}, (const char*[]){"1", "22", "333"}, 0));
     Tests.run("string_array_with_sentinel_from_string_split NO", string_array_with_sentinel_from_string_split(NULL, ',') == NULL);
-    __auto char** zz = string_array_with_sentinel_from_string_split("aaa,bbb,ccc,ddd", ',');
+    char** zz = string_array_with_sentinel_from_string_split("aaa,bbb,ccc,ddd", ',');
     Tests.run("string_array_with_sentinel_from_string_split YES", assigned(zz) && streq(zz[0], "aaa") && streq(zz[1], "bbb") && streq(zz[2], "ccc") && streq(zz[3], "ddd") && zz[4] == NULL);
+    string_array_with_sentinel_destroy(zz, 100);
     
     tmp = concat_strings("Hello", "World");
     Tests.run("concat_strings text text", strcmp(tmp, "HelloWorld") == 0);
@@ -1117,7 +1118,7 @@ static inline void test_str_functions() {
     Tests.print("Parsed: longitude %f, latitude %f, altitude %f\n", lon, lat, alt);
     long double ld1, ld2, ld3;
     Tests.run("parse_xyz_long_doubles_string", parse_xyz_long_doubles_string("-58.521461,-34.600583,0.0", ',', &ld1, &ld2, &ld3) && long_double_equal(ld1, -58.521461, 0.00001) && long_double_equal(ld2, -34.600583, 0.00001) && long_double_equal(ld3, 0.0, 0.00001));
-    Tests.print("Parsed: longitude %Lf, latitude %Lf, altitude %Lf\n", lon, lat, alt);
+    Tests.print("Parsed: longitude %Lf, latitude %Lf, altitude %Lf\n", ld1, ld2, ld3);
 }
 
 void test_dbg_utilities() {

@@ -238,22 +238,14 @@ static inline bool string_array_treat(ssize_t size, char* array[], trt_string_fn
     return true;
 }
 static inline void string_array_destroy(char* array[], ssize_t size) {
-    if (assigned(array)) {
-        for (ssize_t i = 0; i < size; i++) {
-            ce_free(array[i]);
-            array[i] = NULL;
-        }
-        ce_free(array);
-    }
+    FREE_ARRAY_ITEMS(array, size);
+    ce_free(array);
 }
 static inline void string_array_with_sentinel_destroy(char* array[], ssize_t limit) {
     if (assigned(array)) {
         ssize_t size = string_array_find_null_sentinel((const char**)array, limit);
         if (size > 0)
-            for (ssize_t i = 0; i < size; i++) {
-                ce_free(array[i]);
-                array[i] = NULL;
-            }
+            FREE_ARRAY_ITEMS(array, size);
         ce_free(array);
     }
 }

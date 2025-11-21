@@ -705,47 +705,42 @@ char** string_array_with_sentinel_create(ssize_t size, const char* default_value
 
 char** string_array_with_sentinel_from_string_split(const char* str, char separator) {
     if (str == NULL) return NULL;
-    // first pass: count number of substrings
     int count = 1; // at least one token if string not empty
     for (const char* s = str; *s != CHARS_NULL; s++)
         if (*s == separator) count++;
-    // allocate array of char* for tokens + 1 for NULL terminator
-    char** result = ce_malloc((count + 1) * sizeof(char*));
-    if (!result) return NULL;
-    int token_index = 0;
-    const char* token_start = str;
-    const char* s = str;
-    while (*s != CHARS_NULL) {
-        if (*s == separator) {
-            size_t length = s - token_start;
-            char* token = ce_malloc(length + 1);
-            if (!token) {
-                for (int i = 0; i < token_index; i++)
-                    ce_free(result[i]);
-                ce_free(result);
-                return NULL;
+    RET_MALLOC_SIZE(char*, (count + 1) * sizeof(char*), {
+        int token_index = 0;
+        const char* token_start = str;
+        const char* s = str;
+        while (*s != CHARS_NULL) {
+            if (*s == separator) {
+                size_t length = s - token_start;
+                VAR_MALLOC_SIZE(token, char, length + 1);
+                if (token == NULL) {
+                    FREE_ARRAY_ITEMS(result, token_index);
+                    ce_free(result);
+                    return NULL;
+                }
+                strncpy(token, token_start, length);
+                token[length] = CHARS_NULL;
+                result[token_index++] = token;
+                token_start = s + 1;
             }
-            strncpy(token, token_start, length);
-            token[length] = CHARS_NULL;
-            result[token_index++] = token;
-            token_start = s + 1;
+            s++;
         }
-        s++;
-    }
-    // last token
-    size_t length = s - token_start;
-    char* token = ce_malloc(length + 1);
-    if (!token) {
-        for (int i = 0; i < token_index; i++)
-            ce_free(result[i]);
-        ce_free(result);
-        return NULL;
-    }
-    strncpy(token, token_start, length);
-    token[length] = CHARS_NULL;
-    result[token_index++] = token;
-    result[token_index] = NULL;
-    return result;
+        // last token
+        size_t length = s - token_start;
+        VAR_MALLOC_SIZE(token, char, length + 1);
+        if (token == NULL) {
+            FREE_ARRAY_ITEMS(result, token_index);
+            ce_free(result);
+            return NULL;
+        }
+        strncpy(token, token_start, length);
+        token[length] = CHARS_NULL;
+        result[token_index++] = token;
+        result[token_index] = NULL;
+    });
 }
 
 char** string_array_replace_segment(const char* array[], ssize_t arr_len, ssize_t from, ssize_t to, const char* source[], ssize_t src_len, ssize_t* out_len) {
@@ -1294,10 +1289,10 @@ static bool parse_json_string(const char** p, char** out_str) {
     while (*scan && *scan != '"') {
         if (*scan == '\\') {
             scan++;
-            if (!*scan) return false;
+            if (*scan == CHARS_NULL) return false;
             if (*scan == 'u') { // unicode escape, 4 hex digits
                 for (int i = 1; i <= 4; i++)
-                    if (!scan[i] || !isxdigit(scan[i]))
+                    if (scan[i] == CHARS_NULL || !isxdigit(scan[i]))
                         return false;
                 length += 3; // max UTF-8 length for one unicode char
                 scan += 5;
