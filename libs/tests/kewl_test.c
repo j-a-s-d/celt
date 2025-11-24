@@ -340,6 +340,30 @@ static inline void test_datetime_utilities() {
     Tests.run("datetime_make", noon->year == 2025 && noon->month == 12 && noon->day == 31 && noon->hours == 12 && noon->minutes == 0 && noon->seconds == 0);
     __auto datetime_dt* midnite = datetime_midnight(2025, 12, 31);
     Tests.run("datetime_make", midnite->year == 2025 && midnite->month == 12 && midnite->day == 31 && midnite->hours == 0 && midnite->minutes == 0 && midnite->seconds == 0);
+    char tmpc = validate_ddmmyyyy_date_string_format(NULL);
+    Tests.run("validate_ddmmyyyy_date_string_format NO null", tmpc == CHARS_NULL);
+    tmpc = validate_ddmmyyyy_date_string_format("xx/yy/zz");
+    Tests.run("validate_ddmmyyyy_date_string_format NO numeric", tmpc == CHARS_NULL);
+    tmpc = validate_ddmmyyyy_date_string_format("11-22");
+    Tests.run("validate_ddmmyyyy_date_string_format NO short", tmpc == CHARS_NULL);
+    tmpc = validate_ddmmyyyy_date_string_format("11/22/3344/55");
+    Tests.run("validate_ddmmyyyy_date_string_format NO large", tmpc == CHARS_NULL);
+    tmpc = validate_ddmmyyyy_date_string_format("11-22/3344");
+    Tests.run("validate_ddmmyyyy_date_string_format NO diff", tmpc == CHARS_NULL);
+    tmpc = validate_ddmmyyyy_date_string_format("11-22-3344");
+    Tests.run("validate_ddmmyyyy_date_string_format YES", tmpc == CHARS_MINUS);
+    tmpc = validate_yyyymmdd_date_string_format(NULL);
+    Tests.run("validate_yyyymmdd_date_string_format NO null", tmpc == CHARS_NULL);
+    tmpc = validate_yyyymmdd_date_string_format("xx/yy/zz");
+    Tests.run("validate_yyyymmdd_date_string_format NO numeric", tmpc == CHARS_NULL);
+    tmpc = validate_yyyymmdd_date_string_format("0011-22");
+    Tests.run("validate_yyyymmdd_date_string_format NO short", tmpc == CHARS_NULL);
+    tmpc = validate_yyyymmdd_date_string_format("0011/22/33/44");
+    Tests.run("validate_yyyymmdd_date_string_format NO large", tmpc == CHARS_NULL);
+    tmpc = validate_yyyymmdd_date_string_format("0011-22/33");
+    Tests.run("validate_yyyymmdd_date_string_format NO diff", tmpc == CHARS_NULL);
+    tmpc = validate_yyyymmdd_date_string_format("0011-22-33");
+    Tests.run("validate_yyyymmdd_date_string_format YES", tmpc == CHARS_MINUS);
 }
 
 static inline void test_strhashset() {
@@ -1119,6 +1143,18 @@ static inline void test_str_functions() {
     long double ld1, ld2, ld3;
     Tests.run("parse_xyz_long_doubles_string", parse_xyz_long_doubles_string("-58.521461,-34.600583,0.0", ',', &ld1, &ld2, &ld3) && long_double_equal(ld1, -58.521461, 0.00001) && long_double_equal(ld2, -34.600583, 0.00001) && long_double_equal(ld3, 0.0, 0.00001));
     Tests.print("Parsed: longitude %Lf, latitude %Lf, altitude %Lf\n", ld1, ld2, ld3);
+    char tmpc = validate_numeric_xx_yy_zz_string(NULL);
+    Tests.run("validate_numeric_xx_yy_zz_string NO null", tmpc == CHARS_NULL);
+    tmpc = validate_numeric_xx_yy_zz_string("xx:yy:zz");
+    Tests.run("validate_numeric_xx_yy_zz_string NO numeric", tmpc == CHARS_NULL);
+    tmpc = validate_numeric_xx_yy_zz_string("11.22");
+    Tests.run("validate_numeric_xx_yy_zz_string NO short", tmpc == CHARS_NULL);
+    tmpc = validate_numeric_xx_yy_zz_string("11:22:33:44");
+    Tests.run("validate_numeric_xx_yy_zz_string NO large", tmpc == CHARS_NULL);
+    tmpc = validate_numeric_xx_yy_zz_string("11.22:33");
+    Tests.run("validate_numeric_xx_yy_zz_string NO diff", tmpc == CHARS_NULL);
+    tmpc = validate_numeric_xx_yy_zz_string("11:22:33");
+    Tests.run("validate_numeric_xx_yy_zz_string YES", tmpc == CHARS_COLON);
 }
 
 void test_dbg_utilities() {

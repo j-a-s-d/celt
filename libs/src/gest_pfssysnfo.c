@@ -68,7 +68,7 @@ static inline cpu_stats_dt read_cpu_stats(void) {
     cpu_stats_dt stats = {0};
     FILE* fp = fopen("/proc/stat", "r");
     if (assigned(fp)) {
-        char buffer[1024];
+        char buffer[MEH_DEFAULT_BUFFER_SIZE];
         if (assigned(fgets(buffer, sizeof(buffer), fp)))
             sscanf(buffer, "cpu %lu %lu %lu %lu %lu %lu %lu %lu", &stats.user, &stats.nice, &stats.system, &stats.idle, &stats.iowait, &stats.irq, &stats.softirq, &stats.steal);
         fclose(fp);

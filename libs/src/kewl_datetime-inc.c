@@ -293,3 +293,33 @@ elapsed_time_dt get_datetime_elapsed_time(datetime_dt* start, datetime_dt* end) 
     return DEFAULT_ELAPSED_TIME;
 }
 
+char validate_ddmmyyyy_date_string_format(const char* text) {
+    char result = CHARS_NULL;
+    if (assigned(text) && strlen(text) == 10) {
+        char tmp = text[2];
+        if (tmp == text[5]) {
+            if (isdigit(text[0]) && isdigit(text[1]) &&
+                isdigit(text[3]) && isdigit(text[4]) &&
+                isdigit(text[6]) && isdigit(text[7]) &&
+                isdigit(text[8]) && isdigit(text[9]))
+                result = tmp;
+        }
+    }
+    return result;
+}
+
+char validate_yyyymmdd_date_string_format(const char* text) {
+    char result = CHARS_NULL;
+    if (assigned(text) && strlen(text) == 10) {
+        char tmp = text[4];
+        if (tmp == text[7]) {
+            if (isdigit(text[0]) && isdigit(text[1]) &&
+                isdigit(text[2]) && isdigit(text[3]) &&
+                isdigit(text[5]) && isdigit(text[6]) &&
+                isdigit(text[8]) && isdigit(text[9]))
+                result = tmp;
+        }
+    }
+    return result;
+}
+

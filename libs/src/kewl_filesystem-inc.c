@@ -141,7 +141,7 @@ bool rename_file(const char* source_filename, const char* target_filename) {
         fclose(src);
         return false;
     }
-    char buffer[4096];
+    char buffer[4 * KILOBYTE];
     size_t bytes_read;
     while ((bytes_read = fread(buffer, 1, sizeof(buffer), src)) > 0)
         if (fwrite(buffer, 1, bytes_read, tgt) != bytes_read) {
@@ -161,13 +161,13 @@ bool create_moded_nested_directories(const char* path, mode_t mode) {
     char temp[256];
     snprintf(temp, sizeof(temp), "%s", path);
     size_t len = strlen(temp);
-    if (temp[len - 1] == '/') temp[len - 1] = CHARS_NULL;
+    if (temp[len - 1] == CHARS_SLASH) temp[len - 1] = CHARS_NULL;
     char* p = NULL;
     for (p = temp + 1; *p; p++)
-        if (*p == '/') {
+        if (*p == CHARS_SLASH) {
             *p = CHARS_NULL;
             if (mkdir(temp, mode) != 0 && errno != EEXIST) return false;
-            *p = '/';
+            *p = CHARS_SLASH;
         }
     if (mkdir(temp, mode) != 0 && errno != EEXIST) return false;
     return true;
@@ -211,7 +211,7 @@ char* list_directory(const char* path, const char* separator) {
     DIR* dir;
     struct dirent* entry;
     size_t separator_len = strlen(separator);
-    size_t buffer_size = 1024; // Initial buffer size
+    size_t buffer_size = MEH_DEFAULT_BUFFER_SIZE; // Initial buffer size
     char* result = ce_malloc(buffer_size);
     if (result == NULL) return NULL;
     result[0] = CHARS_NULL; // Initialize as an empty string

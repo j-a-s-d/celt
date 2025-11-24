@@ -351,3 +351,6 @@ bool parse_xyz_floats_string(const char* text, const char separator, float* x, f
 bool parse_xyz_doubles_string(const char* text, const char separator, double* x, double* y, double* z);
 bool parse_xyz_long_doubles_string(const char* text, const char separator, long double* x, long double* y, long double* z);
 
+// Returns the separator char after validating a xx yy zz format of numeric pairs, otherwise returns '\0'. Useful for hh:mm:ss, dd/mm/yy, etc.
+char validate_numeric_xx_yy_zz_string(const char* text);
+

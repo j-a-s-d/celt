@@ -57,7 +57,7 @@ int increment_and_get_signals_count(void) {
 }
 
 bool safe_signal_write(const char* message) {
-    char buffer[512];
+    char buffer[MEH_DEFAULT_BUFFER_SIZE];
     size_t index = 0;
     while (message[index] != CHARS_NULL && index < sizeof(buffer) - 1) {
         buffer[index] = message[index];

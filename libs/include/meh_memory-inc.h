@@ -12,6 +12,8 @@
 #warning This is intended to be part of the MeH C Library.
 #endif
 
+#define MEH_DEFAULT_BUFFER_SIZE (1 * KILOBYTE)
+
 /* MeH.MEMORY -- Alignment Definitions */
 
 // checks if the pointer is aligned with the specified alignment (in bytes)

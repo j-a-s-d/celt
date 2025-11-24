@@ -1407,11 +1407,11 @@ bool parse_json_strings_array_with_reference(const char* json, parsed_string_cal
 
 #define PARSER_XYZ(fn, def) \
     if (text == NULL || x == NULL || y == NULL || z == NULL) return false; \
-    char tmp_buffer[1024]; \
-    strncpy(tmp_buffer, text, sizeof(tmp_buffer) - 1); \
-    tmp_buffer[sizeof(tmp_buffer) - 1] = CHARS_NULL; \
+    char buffer[MEH_DEFAULT_BUFFER_SIZE]; \
+    strncpy(buffer, text, sizeof(buffer) - 1); \
+    buffer[sizeof(buffer) - 1] = CHARS_NULL; \
     char sep_str[2] = {separator, CHARS_NULL}; \
-    *x = fn(strtok(tmp_buffer, sep_str), 0); \
+    *x = fn(strtok(buffer, sep_str), 0); \
     *y = fn(strtok(NULL, sep_str), 0); \
     *z = fn(strtok(NULL, sep_str), 0); \
     return true
@@ -1442,5 +1442,19 @@ bool parse_xyz_doubles_string(const char* text, const char separator, double* x,
 
 bool parse_xyz_long_doubles_string(const char* text, const char separator, long double* x, long double* y, long double* z) {
     PARSER_XYZ(str_to_long_double_def, long_double_NaN);
+}
+
+char validate_numeric_xx_yy_zz_string(const char* text) {
+    char result = CHARS_NULL;
+    if (assigned(text) && strlen(text) == 8) {
+        char tmp = text[2];
+        if (tmp == text[5]) {
+            if (isdigit(text[0]) && isdigit(text[1]) &&
+                isdigit(text[3]) && isdigit(text[4]) &&
+                isdigit(text[6]) && isdigit(text[7]))
+                result = tmp;
+        }
+    }
+    return result;
 }
 

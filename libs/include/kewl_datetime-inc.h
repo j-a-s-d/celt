@@ -295,3 +295,13 @@ static inline bool is_leap_year(int year) {
  */
 int get_days_in_month(int year, int month);
 
+/**
+ * Function to check for length and format of a ##/##/#### string and return the used separator. It returns '\0' if it is not validated.
+ */
+char validate_ddmmyyyy_date_string_format(const char* text);
+
+/**
+ * Function to check for length and format of a ####/##/## string and return the used separator. It returns '\0' if it is not validated.
+ */
+char validate_yyyymmdd_date_string_format(const char* text);
+
