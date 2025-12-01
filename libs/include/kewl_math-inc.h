@@ -81,6 +81,53 @@ static inline double dms_to_decimal_degrees(int degrees, int minutes, double sec
     return decimal_degrees;
 }
 
+// GEOMETRY
+
+/**
+ * Normalizes the angle to be within 0 and 360.
+ */
+static inline double normalize_circular_angle(double angle) {
+    while (angle < 0.0) angle += 360.0;
+    while (angle >= 360.0) angle -= 360.0;
+    return angle;
+}
+
+/**
+ * Gets the opposite point in a circle.
+ */
+static inline double get_circular_opposite_point(double value) {
+    value = normalize_circular_angle(value);
+    return value >= 180.0 ? value - 180.0 : value + 180.0;
+}
+
+/**
+ * Checks if 'point' angle is between 'start' and 'end' angles on a circle (inclusive).
+ */
+static inline bool is_circular_point_between(double point, double start, double end) {
+    point = normalize_circular_angle(point);
+    start = normalize_circular_angle(start);
+    end = normalize_circular_angle(end);
+    return start <= end
+        ? ((point >= start) && (point < end)) // normal interval (no wrap-around)
+        : ((point >= start) || (point < end)); // wrap-around interval (e.g. start=350, end=10)
+}
+
+/**
+ * Calculates the circular distance moving clockwise from 'from' to 'to'.
+ */
+static inline double get_circular_distance(double from, double to) {
+    double result = normalize_circular_angle(to) - normalize_circular_angle(from);
+    if (result < 0.0) result += 360.0;
+    return result;
+}
+
+/**
+ * Calculates the offset percentage of 'point' between 'start' and 'end'.
+ */
+static inline double get_circular_offset_percentage_between(double point, double start, double end) {
+    return (get_circular_distance(start, point) / get_circular_distance(start, end)) * 100.0;
+}
+
 // STATISTICS
 
 /**

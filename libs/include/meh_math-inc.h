@@ -136,22 +136,27 @@ static const int PRIMES_UP_TO_1000[] = {
 // same as IN_RANGE but bitwise optimized for signed integers and performance-critical code
 #define IN_RANGE_FAST(x, min, max) ((((x) - (min)) | ((max) - (x))) >= 0) // if x is outside the range, one of the subtractions will be negative, setting the sign bit
 
+// determines if the provided value is an even number
 static inline bool is_even(intmax_t num) {
     return num % 2 == 0 ? true : false;
 }
 
+// determines if the provided value is an odd number
 static inline bool is_odd(intmax_t num) {
     return num % 2 != 0 ? true : false;
 }
 
+// determines if the first provided value is divisible by the second provided value
 static inline bool is_divisible_by(intmax_t number, intmax_t factor) {
     return number % factor == 0;
 }
 
+// converts the provided value from degrees to radians
 static inline double degrees_to_radians(double degrees) {
     return degrees * VALUE_DEGREES_TO_RADIANS;
 }
 
+// converts the provided value from radians to degrees
 static inline double radians_to_degrees(double radians) {
     return radians * VALUE_RADIANS_TO_DEGREES;
 }

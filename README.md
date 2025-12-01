@@ -41,6 +41,9 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 01-dec-2025 -- *20251201L*
+	- [KeWL] added `normalize_circular_angle`, `get_circular_opposite_point`, `is_circular_point_between`, `get_circular_distance` and `get_circular_offset_percentage_between`
+	- other minor adjustments
 * 24-nov-2025 -- *20251124L*
 	- [MeH] added `MEH_DEFAULT_BUFFER_SIZE`
 	- [KeWL] added `validate_numeric_xx_yy_zz_string`, `validate_ddmmyyyy_date_string_format` and `validate_yyyymmdd_date_string_format`

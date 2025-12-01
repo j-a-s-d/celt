@@ -2036,6 +2036,7 @@ static inline bool deserialize_item_into_map(werks_kvm_dt** const map, const cha
         const char* ser = kv->value + strlen(typ); \
         if (has_content(ser)) blk \
     }
+    if (!has_content(item)) return true;
     if (strcmp(item, STRINGS_BRACKETS_CLOSE) == 0) {
         if ((*map)->parent == NULL) return false;
         *map = (*map)->parent;
