@@ -41,6 +41,8 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 05-dec-2025 -- *20251205L*
+	- [WeRKS] added `werks_kvm_untyped_treatment_dt`, `WERKS_KVM_UNTYPED_TREATMENT_DEFAULT`, `werks_kvm_get_untyped_treatment` and `werks_kvm_set_untyped_treatment`
 * 01-dec-2025 -- *20251201L*
 	- [KeWL] added `normalize_circular_angle`, `get_circular_opposite_point`, `is_circular_point_between`, `get_circular_distance` and `get_circular_offset_percentage_between`
 	- other minor adjustments

@@ -109,6 +109,16 @@ typedef enum {
     WERKS_KVM_TYPE_BOOL = 60
 } werks_kvm_type_dt;
 
+typedef enum {
+    WERKS_KVM_UNTYPED_STOPS, // stricter (default), stops reading/importing
+    WERKS_KVM_UNTYPED_IS_IGNORED, // lenient, ignores the untyped keys
+    WERKS_KVM_UNTYPED_IS_STRING // most lenient, assumes the keys as of string type
+} werks_kvm_untyped_treatment_dt;
+
+#ifndef WERKS_KVM_UNTYPED_TREATMENT_DEFAULT
+    #define WERKS_KVM_UNTYPED_TREATMENT_DEFAULT WERKS_KVM_UNTYPED_STOPS
+#endif
+
 // life-cycle
 
 werks_kvm_dt* werks_kvm_create(ssize_t initial_capacity);
@@ -346,6 +356,9 @@ char** werks_kvm_get_keys_as_sorted_array_with_sentinel(werks_kvm_dt* map);
 
 const char* werks_kvm_get_eol_replacement(werks_kvm_dt* map);
 void werks_kvm_set_eol_replacement(werks_kvm_dt* map, const char* eol);
+
+werks_kvm_untyped_treatment_dt werks_kvm_get_untyped_treatment(werks_kvm_dt* map);
+void werks_kvm_set_untyped_treatment(werks_kvm_dt* map, werks_kvm_untyped_treatment_dt behaviour);
 
 char* werks_kvm_save_to_string(werks_kvm_dt* map);
 bool werks_kvm_read_from_string(werks_kvm_dt* map, const char* props);

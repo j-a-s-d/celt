@@ -9,6 +9,7 @@ struct WERKS_KVM_ALIGNMENT werks_kvm_dt {
     werks_kvm_dt* parent;
     bool packable;
     char* eol_replacement;
+    werks_kvm_untyped_treatment_dt untyped_treatment;
     // arrays
     uint8_t* checksums;
     char** keys;
@@ -149,6 +150,7 @@ werks_kvm_dt* werks_kvm_create(ssize_t initial_capacity) {
         set_map_flags(result, true, true, true, true, true, true, true, true, true, true);
         set_map_events(result, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
         result->eol_replacement = strdup(WERKS_KVM_MULTILINE_STRINGS_EOL);
+        result->untyped_treatment = WERKS_KVM_UNTYPED_TREATMENT_DEFAULT;
         result->parent = NULL;
         result->packable = false; // initial capacity is not zappable on purpose
         result->component_instance = kewl_component_create(result, WERKS_KVM_TYPE_NAME);
@@ -760,6 +762,7 @@ werks_kvm_dt* werks_kvm_clone(werks_kvm_dt* const map) {
         }
         result->size = map->size;
         result->eol_replacement = strdup(WERKS_KVM_MULTILINE_STRINGS_EOL);
+        result->untyped_treatment = map->untyped_treatment;
         result->parent = map->parent;
         result->packable = false;
         result->component_instance = kewl_component_create(result, WERKS_KVM_TYPE_NAME);
@@ -1894,6 +1897,14 @@ void werks_kvm_set_eol_replacement(werks_kvm_dt* const map, const char* eol) {
     }
 }
 
+werks_kvm_untyped_treatment_dt werks_kvm_get_untyped_treatment(werks_kvm_dt* const map) {
+    return map == NULL ? WERKS_KVM_UNTYPED_TREATMENT_DEFAULT : map->untyped_treatment;
+}
+
+void werks_kvm_set_untyped_treatment(werks_kvm_dt* map, werks_kvm_untyped_treatment_dt behaviour) {
+    if (assigned(map)) map->untyped_treatment = behaviour;
+}
+
 static inline char* stringify_item_value(werks_kvm_dt* const map, int index) {
     switch (map->types[index]) {
         case WERKS_KVM_TYPE_BUFFER: return bytes_to_hex(((werks_kvm_buffer_dt*)map->values[index])->bp, ((werks_kvm_buffer_dt*)map->values[index])->sz);
@@ -2107,7 +2118,11 @@ static inline bool deserialize_item_into_map(werks_kvm_dt** const map, const cha
         result = werks_kvm_set_double(*map, kv->key, str_to_double_def(ser, 0.0));
     }) else ON_WERKS_KVM_TYPE_VAL_DO(STRINGS_PARENTHESES_OPEN WERKS_KVM_TYPE_NAME_LONG_DOUBLE STRINGS_PARENTHESES_CLOSE, {
         result = werks_kvm_set_long_double(*map, kv->key, str_to_long_double_def(ser, 0.0));
-    });
+    }) else if ((*map)->untyped_treatment == WERKS_KVM_UNTYPED_IS_STRING) {
+        result = werks_kvm_set_string(*map, kv->key, kv->value);
+    } else {
+        result = (*map)->untyped_treatment == WERKS_KVM_UNTYPED_IS_IGNORED;
+    }
     string_key_value_destroy(kv);
     return result;
 #undef ON_WERKS_KVM_TYPE_VAL_DO

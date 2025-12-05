@@ -671,6 +671,18 @@ int main(void) {
     __auto char* saved4 = werks_kvm_export_to_json_object_string(u_map);
     Tests.print("-|||||||||||||||||||||||||||||-\n%s\n-|||||||||||||||||||||||||||||-\n", saved4);
     werks_kvm_destroy(u_map);
+    werks_kvm_clear(m_map);
+    Tests.run("werks_kvm_get_items_count m_map 0", werks_kvm_get_items_count(m_map) == 0);
+    Tests.run("werks_kvm_get_untyped_treatment STOPS", werks_kvm_get_untyped_treatment(m_map) == WERKS_KVM_UNTYPED_STOPS);
+    werks_kvm_read_from_string(m_map, "item1=this\nitem2=that\nitem3=(string)hello");
+    Tests.run("werks_kvm_get_items_count m_map 0", werks_kvm_get_items_count(m_map) == 0);
+    werks_kvm_set_untyped_treatment(m_map, WERKS_KVM_UNTYPED_IS_IGNORED);
+    werks_kvm_read_from_string(m_map, "item1=this\nitem2=that\nitem3=(string)hello");
+    Tests.run("werks_kvm_get_items_count m_map 1", werks_kvm_get_items_count(m_map) == 1);
+    werks_kvm_clear(m_map);
+    werks_kvm_set_untyped_treatment(m_map, WERKS_KVM_UNTYPED_IS_STRING);
+    werks_kvm_read_from_string(m_map, "item1=this\nitem2=that\nitem3=(string)hello");
+    Tests.run("werks_kvm_get_items_count m_map 3", werks_kvm_get_items_count(m_map) == 3);
     werks_kvm_destroy(m_map);
     return Tests.end();
 }
