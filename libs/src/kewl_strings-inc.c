@@ -1243,6 +1243,21 @@ char* replace_all_occurrences(const char* str, const char* target, const char* r
     return result;
 }
 
+char* replace_substring(const char* str, ssize_t pos, ssize_t len, const char* rep) {
+    if (str == NULL || rep == NULL) return NULL;
+    size_t ori_len = strlen(str);
+    size_t rep_len = strlen(rep);
+    size_t new_len = ori_len - len + rep_len;
+    if (pos < 0 || len < 0 || (size_t)pos + len > ori_len) // invalid range
+        return NULL;
+    RET_MALLOC_SIZE(char, new_len + 1, {
+        memcpy(result, str, pos); // copy prefix
+        memcpy(result + pos, rep, rep_len); // copy replacement
+        memcpy(result + pos + rep_len, str + pos + len, ori_len - (pos + len)); // copy suffix
+        result[new_len] = CHARS_NULL;
+    });
+}
+
 ssize_t measure_string_format(const char* fmt, ...) {
     va_list args;
     va_start(args, fmt);
@@ -1444,7 +1459,18 @@ bool parse_xyz_long_doubles_string(const char* text, const char separator, long 
     PARSER_XYZ(str_to_long_double_def, long_double_NaN);
 }
 
-char validate_numeric_xx_yy_zz_string(const char* text) {
+char validate_numeric_xxcyy_string(const char* text) {
+    char result = CHARS_NULL;
+    if (assigned(text) && strlen(text) == 5) {
+        char tmp = text[2];
+        if (isdigit(text[0]) && isdigit(text[1]) &&
+            isdigit(text[3]) && isdigit(text[4]))
+            result = tmp;
+    }
+    return result;
+}
+
+char validate_numeric_xxcyyczz_string(const char* text) {
     char result = CHARS_NULL;
     if (assigned(text) && strlen(text) == 8) {
         char tmp = text[2];

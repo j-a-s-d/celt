@@ -324,6 +324,9 @@ char* replace_last_occurrence(const char* str, const char* target, const char* r
 // Returns a new string with all occurrences of 'target' replaced by 'replacement' in 'str'.
 char* replace_all_occurrences(const char* str, const char* target, const char* replacement);
 
+// Returns a new string with the portion starting at 'pos' with a size of 'len' replaced with the 'rep' content.
+char* replace_substring(const char* str, ssize_t pos, ssize_t len, const char* rep);
+
 // FORMATTING
 
 ssize_t measure_string_format(const char* fmt, ...);
@@ -351,6 +354,9 @@ bool parse_xyz_floats_string(const char* text, const char separator, float* x, f
 bool parse_xyz_doubles_string(const char* text, const char separator, double* x, double* y, double* z);
 bool parse_xyz_long_doubles_string(const char* text, const char separator, long double* x, long double* y, long double* z);
 
+// Returns the separator char after validating a xx yy format of numeric pairs (of 2 integer digits each), otherwise returns '\0'. Useful for hh:mm, dd/mm, etc.
+char validate_numeric_xxcyy_string(const char* text);
+
 // Returns the separator char after validating a xx yy zz format of numeric pairs, otherwise returns '\0'. Useful for hh:mm:ss, dd/mm/yy, etc.
-char validate_numeric_xx_yy_zz_string(const char* text);
+char validate_numeric_xxcyyczz_string(const char* text);
 

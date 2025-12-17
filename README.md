@@ -41,6 +41,8 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 17-dec-2025 -- *20251217L*
+	- [KeWL] added `validate_numeric_xxcyy_string` and `replace_substring`
 * 05-dec-2025 -- *20251205L*
 	- [WeRKS] added `werks_kvm_untyped_treatment_dt`, `WERKS_KVM_UNTYPED_TREATMENT_DEFAULT`, `werks_kvm_get_untyped_treatment` and `werks_kvm_set_untyped_treatment`
 * 01-dec-2025 -- *20251201L*
@@ -48,7 +50,7 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 	- other minor adjustments
 * 24-nov-2025 -- *20251124L*
 	- [MeH] added `MEH_DEFAULT_BUFFER_SIZE`
-	- [KeWL] added `validate_numeric_xx_yy_zz_string`, `validate_ddmmyyyy_date_string_format` and `validate_yyyymmdd_date_string_format`
+	- [KeWL] added `validate_numeric_xxcyyczz_string`, `validate_ddmmyyyy_date_string_format` and `validate_yyyymmdd_date_string_format`
 	- other minor adjustments
 * 21-nov-2025 -- *20251121L*
 	- [MeH] added `free_and_null_array_items` and `FREE_ARRAY_ITEMS`

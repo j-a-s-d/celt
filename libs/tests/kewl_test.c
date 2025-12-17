@@ -1150,6 +1150,12 @@ static inline void test_str_functions() {
     Tests.run("copy_substring NO index", !copy_substring(source, destination, -1, 5) && streq(destination, STRINGS_NOTHING));
     Tests.run("copy_substring NO length", !copy_substring(source, destination, 6, 0) && streq(destination, STRINGS_NOTHING));
     Tests.run("copy_substring YES", copy_substring(source, destination, 6, 5) && streq(destination, "World"));
+    Tests.run("replace_substring NO null 1", replace_substring(NULL, 6, 5, "You") == NULL);
+    Tests.run("replace_substring NO -1 1", replace_substring(source, -1, 5, "You") == NULL);
+    Tests.run("replace_substring NO -1 2", replace_substring(source, 6, -1, "You") == NULL);
+    Tests.run("replace_substring NO null 2", replace_substring(source, 6, 5, NULL) == NULL);
+    __auto char* nd = replace_substring(source, 6, 5, "You");
+    Tests.run("replace_substring YES", streq(nd, "Hello You!"));
     int y, m, d;
     Tests.run("parse_xyz_ints_string", parse_xyz_ints_string("2025-11-15", '-', &y, &m, &d) && y == 2025 && m == 11 && d == 15);
     Tests.print("Parsed: year %d, month %d, day %d\n", y, m, d);
@@ -1171,18 +1177,28 @@ static inline void test_str_functions() {
     long double ld1, ld2, ld3;
     Tests.run("parse_xyz_long_doubles_string", parse_xyz_long_doubles_string("-58.521461,-34.600583,0.0", ',', &ld1, &ld2, &ld3) && long_double_equal(ld1, -58.521461, 0.00001) && long_double_equal(ld2, -34.600583, 0.00001) && long_double_equal(ld3, 0.0, 0.00001));
     Tests.print("Parsed: longitude %Lf, latitude %Lf, altitude %Lf\n", ld1, ld2, ld3);
-    char tmpc = validate_numeric_xx_yy_zz_string(NULL);
-    Tests.run("validate_numeric_xx_yy_zz_string NO null", tmpc == CHARS_NULL);
-    tmpc = validate_numeric_xx_yy_zz_string("xx:yy:zz");
-    Tests.run("validate_numeric_xx_yy_zz_string NO numeric", tmpc == CHARS_NULL);
-    tmpc = validate_numeric_xx_yy_zz_string("11.22");
-    Tests.run("validate_numeric_xx_yy_zz_string NO short", tmpc == CHARS_NULL);
-    tmpc = validate_numeric_xx_yy_zz_string("11:22:33:44");
-    Tests.run("validate_numeric_xx_yy_zz_string NO large", tmpc == CHARS_NULL);
-    tmpc = validate_numeric_xx_yy_zz_string("11.22:33");
-    Tests.run("validate_numeric_xx_yy_zz_string NO diff", tmpc == CHARS_NULL);
-    tmpc = validate_numeric_xx_yy_zz_string("11:22:33");
-    Tests.run("validate_numeric_xx_yy_zz_string YES", tmpc == CHARS_COLON);
+    char tmpc = validate_numeric_xxcyy_string(NULL);
+    Tests.run("validate_numeric_xxcyy_string NO null", tmpc == CHARS_NULL);
+    tmpc = validate_numeric_xxcyy_string("xx:yy");
+    Tests.run("validate_numeric_xxcyy_string NO numeric", tmpc == CHARS_NULL);
+    tmpc = validate_numeric_xxcyy_string("11");
+    Tests.run("validate_numeric_xxcyy_string NO short", tmpc == CHARS_NULL);
+    tmpc = validate_numeric_xxcyy_string("11:22:33");
+    Tests.run("validate_numeric_xxcyy_string NO large", tmpc == CHARS_NULL);
+    tmpc = validate_numeric_xxcyy_string("11:22");
+    Tests.run("validate_numeric_xxcyy_string YES", tmpc == CHARS_COLON);
+    tmpc = validate_numeric_xxcyyczz_string(NULL);
+    Tests.run("validate_numeric_xxcyyczz_string NO null", tmpc == CHARS_NULL);
+    tmpc = validate_numeric_xxcyyczz_string("xx:yy:zz");
+    Tests.run("validate_numeric_xxcyyczz_string NO numeric", tmpc == CHARS_NULL);
+    tmpc = validate_numeric_xxcyyczz_string("11.22");
+    Tests.run("validate_numeric_xxcyyczz_string NO short", tmpc == CHARS_NULL);
+    tmpc = validate_numeric_xxcyyczz_string("11:22:33:44");
+    Tests.run("validate_numeric_xxcyyczz_string NO large", tmpc == CHARS_NULL);
+    tmpc = validate_numeric_xxcyyczz_string("11.22:33");
+    Tests.run("validate_numeric_xxcyyczz_string NO diff", tmpc == CHARS_NULL);
+    tmpc = validate_numeric_xxcyyczz_string("11:22:33");
+    Tests.run("validate_numeric_xxcyyczz_string YES", tmpc == CHARS_COLON);
 }
 
 void test_dbg_utilities() {
