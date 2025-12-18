@@ -61,8 +61,10 @@ typedef struct werks_expreval_constants_dt werks_expreval_constants_dt;
 werks_expreval_constants_dt* werks_expreval_constants_make();
 ssize_t werks_expreval_constants_count(werks_expreval_constants_dt* constants);
 bool werks_expreval_constants_drop(werks_expreval_constants_dt* constants, const char* name);
+bool werks_expreval_constants_drop_all(werks_expreval_constants_dt* const constants);
 bool werks_expreval_constants_has(werks_expreval_constants_dt* constants, const char* name);
 bool werks_expreval_constants_set(werks_expreval_constants_dt* constants, const char* name, WERKS_EXPREVAL_TYPE value);
+bool werks_expreval_constants_set_all(werks_expreval_constants_dt* const constants, WERKS_EXPREVAL_TYPE value);
 WERKS_EXPREVAL_TYPE werks_expreval_constants_get(werks_expreval_constants_dt* constants, const char* name);
 
 // evaluator

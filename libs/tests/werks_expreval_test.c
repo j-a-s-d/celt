@@ -61,6 +61,10 @@ int main(void) {
     Tests.print("Result: " WERKS_EXPREVAL_FORMAT STRINGS_LF, result);
     result = werks_expreval_evaluate_expression(evaluator, "1 + 2");
     Tests.run("werks_expreval_evaluate_expression YES 2", werks_expreval_constants_get_error(evaluator) == WERKS_EXPREVAL_ERROR_NONE && !WERKS_EXPREVAL_ISNAN(result));
+    result = werks_expreval_evaluate_expression(evaluator, "123");
+    Tests.run("werks_expreval_evaluate_expression YES 3", werks_expreval_constants_get_error(evaluator) == WERKS_EXPREVAL_ERROR_NONE && !WERKS_EXPREVAL_ISNAN(result));
+    result = werks_expreval_evaluate_expression(evaluator, "$y");
+    Tests.run("werks_expreval_evaluate_expression YES 4", werks_expreval_constants_get_error(evaluator) == WERKS_EXPREVAL_ERROR_NONE && !WERKS_EXPREVAL_ISNAN(result));
     Tests.print("Result: " WERKS_EXPREVAL_FORMAT STRINGS_LF, result);
     test_bad_expr(evaluator, NULL);
     test_bad_expr(evaluator, "");
@@ -130,6 +134,15 @@ int main(void) {
     werks_expreval_expressions_list_reverse_loop(list, loop_handler);
     Tests.run("werks_expreval_expressions_list_reverse_loop", loop_done);
     werks_expreval_expressions_list_destroy(list);
+    werks_expreval_constants_set(cs, "x", 4.0);
+    Tests.run("werks_expreval_constants_count 2", werks_expreval_constants_count(cs) == 2);
+    Tests.run("werks_expreval_constants_get x 4", werks_expreval_constants_get(cs, "x") == 4.0);
+    Tests.run("werks_expreval_constants_get y 5", werks_expreval_constants_get(cs, "y") == 5.0);
+    Tests.run("werks_expreval_constants_set_all", werks_expreval_constants_set_all(cs, 123.0));
+    Tests.run("werks_expreval_constants_get x 123", werks_expreval_constants_get(cs, "x") == 123.0);
+    Tests.run("werks_expreval_constants_get y 123", werks_expreval_constants_get(cs, "y") == 123.0);
+    Tests.run("werks_expreval_constants_drop_all", werks_expreval_constants_drop_all(cs));
+    Tests.run("werks_expreval_constants_count 0", werks_expreval_constants_count(cs) == 0);
     werks_expreval_destroy(evaluator);
     return Tests.end();
 }

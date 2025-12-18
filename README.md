@@ -41,6 +41,8 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 18-dec-2025 -- *20251218L*
+	- [WeRKS] added `werks_expreval_constants_set_all` and `werks_expreval_constants_drop_all`
 * 17-dec-2025 -- *20251217L*
 	- [KeWL] added `validate_numeric_xxcyy_string` and `replace_substring`
 * 05-dec-2025 -- *20251205L*

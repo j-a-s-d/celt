@@ -34,8 +34,16 @@ bool werks_expreval_constants_drop(werks_expreval_constants_dt* const constants,
     if (assigned(constants) && has_content(name))
         for (int i = 0; i < WERKS_EXPREVAL_CONST_MAX_COUNT; i++)
             if (strcmp(constants->names[i], name) == 0)
-                return store_const(constants, i, "", 0.0);
+                return store_const(constants, i, STRINGS_NOTHING, 0.0);
     return false;
+}
+
+bool werks_expreval_constants_drop_all(werks_expreval_constants_dt* const constants) {
+    bool result;
+    if ((result = assigned(constants)))
+        for (int i = 0; i < WERKS_EXPREVAL_CONST_MAX_COUNT; i++)
+            result &= store_const(constants, i, STRINGS_NOTHING, 0.0);
+    return result;
 }
 
 bool werks_expreval_constants_has(werks_expreval_constants_dt* const constants, const char* name) {
@@ -58,6 +66,14 @@ bool werks_expreval_constants_set(werks_expreval_constants_dt* const constants, 
                     return store_const(constants, i, name, value);
     }
     return false;
+}
+
+bool werks_expreval_constants_set_all(werks_expreval_constants_dt* const constants, WERKS_EXPREVAL_TYPE value) {
+    bool result;
+    if ((result = assigned(constants)))
+        for (int i = 0; i < WERKS_EXPREVAL_CONST_MAX_COUNT; i++)
+            constants->values[i] = value;
+    return result;
 }
 
 WERKS_EXPREVAL_TYPE werks_expreval_constants_get(werks_expreval_constants_dt* const constants, const char* name) {
