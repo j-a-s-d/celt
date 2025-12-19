@@ -391,6 +391,10 @@ typedef bool (*werks_kvm_on_before_store_item_handler_fn)(werks_kvm_dt* map, con
 void werks_kvm_set_on_before_store_item(werks_kvm_dt* map, werks_kvm_on_before_store_item_handler_fn handler);
 werks_kvm_on_before_store_item_handler_fn werks_kvm_get_on_before_store_item(werks_kvm_dt* map);
 
+typedef bool (*werks_kvm_on_before_overwrite_item_handler_fn)(werks_kvm_dt* map, const char* key, werks_kvm_type_dt type, void* value);
+void werks_kvm_set_on_before_overwrite_item(werks_kvm_dt* map, werks_kvm_on_before_overwrite_item_handler_fn handler);
+werks_kvm_on_before_overwrite_item_handler_fn werks_kvm_get_on_before_overwrite_item(werks_kvm_dt* map);
+
 typedef bool (*werks_kvm_on_before_rename_item_handler_fn)(werks_kvm_dt* map, const char* key, const char* new_key);
 void werks_kvm_set_on_before_rename_item(werks_kvm_dt* map, werks_kvm_on_before_rename_item_handler_fn handler);
 werks_kvm_on_before_rename_item_handler_fn werks_kvm_get_on_before_rename_item(werks_kvm_dt* map);

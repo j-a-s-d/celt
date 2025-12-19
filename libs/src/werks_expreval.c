@@ -369,3 +369,17 @@ void werks_expreval_expressions_list_reverse_loop(werks_expreval_expressions_lis
         });
 }
 
+void werks_expreval_expressions_list_loop_with_reference(werks_expreval_expressions_list_dt* const list, werks_expreval_expressions_list_loop_with_reference_handler_fn handler, void* reference) {
+    if (assigned(list) && assigned(handler))
+        PTRHOLDER_EACH_CASTED(list->expressions_entries, werks_expreval_expressions_entry_dt, entry, {
+            handler(list, &entry->data, reference);
+        });
+}
+
+void werks_expreval_expressions_list_reverse_loop_with_reference(werks_expreval_expressions_list_dt* const list, werks_expreval_expressions_list_loop_with_reference_handler_fn handler, void* reference) {
+    if (assigned(list) && assigned(handler))
+        PTRHOLDER_REVERSE_EACH_CASTED(list->expressions_entries, werks_expreval_expressions_entry_dt, entry, {
+            handler(list, &entry->data, reference);
+        });
+}
+

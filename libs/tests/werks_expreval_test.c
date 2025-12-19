@@ -26,6 +26,11 @@ void loop_handler(__unused werks_expreval_expressions_list_dt* list, werks_expre
     loop_done = true;
 }
 
+void loop_with_reference_handler(__unused werks_expreval_expressions_list_dt* list, werks_expreval_expressions_data_dt* data, void* reference) {
+    Tests.print("looping with reference \"%s\" = " WERKS_EXPREVAL_FORMAT "\n", data->expression, data->current);
+    loop_done = assigned(reference);
+}
+
 int main(void) {
     Tests.begin("WeRKS EXPREVAL");
     werks_expreval_dt* evaluator = werks_expreval_make();
@@ -133,6 +138,11 @@ int main(void) {
     loop_done = false;
     werks_expreval_expressions_list_reverse_loop(list, loop_handler);
     Tests.run("werks_expreval_expressions_list_reverse_loop", loop_done);
+    werks_expreval_expressions_list_loop_with_reference(list, loop_with_reference_handler, list);
+    Tests.run("werks_expreval_expressions_list_loop_with_reference", loop_done);
+    loop_done = false;
+    werks_expreval_expressions_list_reverse_loop_with_reference(list, loop_with_reference_handler, list);
+    Tests.run("werks_expreval_expressions_list_reverse_loop_with_reference", loop_done);
     werks_expreval_expressions_list_destroy(list);
     werks_expreval_constants_set(cs, "x", 4.0);
     Tests.run("werks_expreval_constants_count 2", werks_expreval_constants_count(cs) == 2);

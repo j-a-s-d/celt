@@ -41,6 +41,8 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 19-dec-2025 -- *20251219L*
+	- [WeRKS] added `werks_expreval_expressions_list_loop_with_reference_handler_fn`, `werks_expreval_expressions_list_loop_with_reference`, `werks_expreval_expressions_list_reverse_loop_with_reference`, `werks_kvm_on_before_store_item_handler_fn`, `werks_kvm_set_on_before_store_item` and `werks_kvm_get_on_before_store_item`
 * 18-dec-2025 -- *20251218L*
 	- [WeRKS] added `werks_expreval_constants_set_all` and `werks_expreval_constants_drop_all`
 * 17-dec-2025 -- *20251217L*

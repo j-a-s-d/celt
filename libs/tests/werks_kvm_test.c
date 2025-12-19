@@ -46,6 +46,11 @@ bool on_before_store_item(__unused werks_kvm_dt* map, const char* key, __unused 
     return false;
 }
 
+bool on_before_overwrite_item(__unused werks_kvm_dt* map, const char* key, __unused werks_kvm_type_dt type, __unused void* value) {
+    Tests.print("%s\n", key);
+    return false;
+}
+
 bool on_before_delete_item(__unused werks_kvm_dt* map, const char* key) {
     Tests.print("%s\n", key);
     return false;
@@ -438,12 +443,24 @@ int main(void) {
     printf("werks_kvm_delete_typed_items\n");
     werks_kvm_delete_typed_items(my_map, WERKS_KVM_TYPE_INT);
     Tests.run("werks_kvm_is_packable YES", werks_kvm_is_packable(my_map));
-    Tests.run("werks_kvm_get_on_before_store_item ___map", werks_kvm_get_on_before_store_item(___map) == NULL);
-    werks_kvm_set_on_before_store_item(___map, on_before_store_item);
-    Tests.run("werks_kvm_set_on_before_store_item ___map", werks_kvm_get_on_before_store_item(___map) != NULL);
-    Tests.run("werks_kvm_set_int integer2 NO", werks_kvm_set_int(my_map, "integer2", 42));
-    werks_kvm_set_on_before_store_item(___map, NULL);
-    Tests.run("werks_kvm_set_int integer2 YES", werks_kvm_set_int(my_map, "integer2", 42));;
+    Tests.run("werks_kvm_get_on_before_store_item my_map", werks_kvm_get_on_before_store_item(my_map) == NULL);
+    werks_kvm_set_on_before_store_item(my_map, on_before_store_item);
+    Tests.run("werks_kvm_set_on_before_store_item my_map", werks_kvm_get_on_before_store_item(my_map) != NULL);
+    Tests.run("werks_kvm_set_int integer2 NO", !werks_kvm_set_int(my_map, "integer2", 42));
+    werks_kvm_set_on_before_store_item(my_map, NULL);
+    Tests.run("werks_kvm_set_int integer2 YES", werks_kvm_set_int(my_map, "integer2", 42));
+    int* int4x = werks_kvm_get_int(my_map, "integer2");
+    Tests.run("werks_kvm_get_int integer2 42 1", *int4x == 42);
+    Tests.run("werks_kvm_get_on_before_overwrite_item my_map", werks_kvm_get_on_before_overwrite_item(my_map) == NULL);
+    werks_kvm_set_on_before_overwrite_item(my_map, on_before_overwrite_item);
+    Tests.run("werks_kvm_set_on_before_overwrite_item my_map", werks_kvm_get_on_before_overwrite_item(my_map) != NULL);
+    Tests.run("werks_kvm_set_int integer2 NO", !werks_kvm_set_int(my_map, "integer2", 43));
+    int4x = werks_kvm_get_int(my_map, "integer2");
+    Tests.run("werks_kvm_get_int integer2 42 2", *int4x == 42);
+    werks_kvm_set_on_before_overwrite_item(my_map, NULL);
+    Tests.run("werks_kvm_set_int integer2 YES", werks_kvm_set_int(my_map, "integer2", 43));
+    int4x = werks_kvm_get_int(my_map, "integer2");
+    Tests.run("werks_kvm_get_int integer2 43 3", *int4x == 43);
     Tests.run("werks_kvm_pack", werks_kvm_pack(my_map));
     Tests.print("Count: %zu | Size: %zu | Capacity: %zu\n", werks_kvm_get_items_count(my_map), werks_kvm_get_size(my_map), werks_kvm_get_capacity(my_map));
     Tests.run("werks_kvm_is_packable NO", !werks_kvm_is_packable(my_map));

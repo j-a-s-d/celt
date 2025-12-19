@@ -26,6 +26,7 @@ struct WERKS_KVM_ALIGNMENT werks_kvm_dt {
     werks_kvm_on_before_read_from_string_handler_fn on_before_read_from_string;
     werks_kvm_on_before_write_to_string_handler_fn on_before_write_to_string;
     werks_kvm_on_before_store_item_handler_fn on_before_store_item;
+    werks_kvm_on_before_overwrite_item_handler_fn on_before_overwrite_item;
     werks_kvm_on_before_rename_item_handler_fn on_before_rename_item;
     werks_kvm_on_before_delete_item_handler_fn on_before_delete_item;
     werks_kvm_on_before_transfer_item_handler_fn on_before_transfer_item;
@@ -110,6 +111,7 @@ static inline void set_map_events(werks_kvm_dt* const map,
     werks_kvm_on_before_read_from_string_handler_fn on_before_read_from_string_handler,
     werks_kvm_on_before_write_to_string_handler_fn on_before_write_to_string_handler,
     werks_kvm_on_before_store_item_handler_fn on_before_store_item_handler,
+    werks_kvm_on_before_overwrite_item_handler_fn on_before_overwrite_item_handler,
     werks_kvm_on_before_rename_item_handler_fn on_before_rename_item_handler,
     werks_kvm_on_before_delete_item_handler_fn on_before_delete_item_handler,
     werks_kvm_on_before_transfer_item_handler_fn on_before_transfer_item_handler,
@@ -119,6 +121,7 @@ static inline void set_map_events(werks_kvm_dt* const map,
         map->on_before_read_from_string = on_before_read_from_string_handler;
         map->on_before_write_to_string = on_before_write_to_string_handler;
         map->on_before_store_item = on_before_store_item_handler;
+        map->on_before_overwrite_item = on_before_overwrite_item_handler;
         map->on_before_rename_item = on_before_rename_item_handler;
         map->on_before_delete_item = on_before_delete_item_handler;
         map->on_before_transfer_item = on_before_transfer_item_handler;
@@ -148,7 +151,7 @@ werks_kvm_dt* werks_kvm_create(ssize_t initial_capacity) {
         }
         reset_map_dimensions(result, initial_capacity);
         set_map_flags(result, true, true, true, true, true, true, true, true, true, true);
-        set_map_events(result, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+        set_map_events(result, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
         result->eol_replacement = strdup(WERKS_KVM_MULTILINE_STRINGS_EOL);
         result->untyped_treatment = WERKS_KVM_UNTYPED_TREATMENT_DEFAULT;
         result->parent = NULL;
@@ -161,7 +164,7 @@ werks_kvm_dt* werks_kvm_create(ssize_t initial_capacity) {
 void werks_kvm_destroy(werks_kvm_dt* const map) {
     if (map == NULL) return;
     map->allow_events = false;
-    set_map_events(map, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+    set_map_events(map, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
     for (ssize_t i = 0; i < map->size; i++)
         UNUSED(destroy_map_item(map, i));
     free_items_arrays(map->checksums, map->types, map->keys, map->values);
@@ -325,6 +328,9 @@ static bool store_item(werks_kvm_dt* const map, werks_kvm_type_dt type, const ch
         } else if (assigned(map->keys[i]) && strcmp(map->keys[i], key) == 0) {
             if (!map->allow_retype && map->types[i] != type) return false;
             if (map->values[i] != value) {
+                if (map->allow_events && assigned(map->on_before_overwrite_item))
+                    if (!map->on_before_overwrite_item(map, key, type, value))
+                        return false;
                 free_value(map->types[i], map->values[i]);
                 map->values[i] = value;
             }
@@ -755,7 +761,7 @@ werks_kvm_dt* werks_kvm_clone(werks_kvm_dt* const map) {
         }
         reset_map_dimensions(result, map->capacity);
         set_map_flags(result, map->allow_set, map->allow_rename, map->allow_retype, map->allow_delete, map->allow_transfer, map->allow_copy, map->allow_pack, map->allow_loop, map->allow_persistence, map->allow_events);
-        set_map_events(result, map->on_before_read_from_file, map->on_before_write_to_file, map->on_before_read_from_string, map->on_before_write_to_string, map->on_before_store_item, map->on_before_rename_item, map->on_before_delete_item, map->on_before_transfer_item, map->on_before_copy_item);
+        set_map_events(result, map->on_before_read_from_file, map->on_before_write_to_file, map->on_before_read_from_string, map->on_before_write_to_string, map->on_before_store_item, map->on_before_overwrite_item, map->on_before_rename_item, map->on_before_delete_item, map->on_before_transfer_item, map->on_before_copy_item);
         if (!werks_kvm_read_items(result, map)) {
             werks_kvm_destroy(result);
             return NULL;
@@ -2240,6 +2246,14 @@ werks_kvm_on_before_store_item_handler_fn werks_kvm_get_on_before_store_item(wer
 
 void werks_kvm_set_on_before_store_item(werks_kvm_dt* const map, werks_kvm_on_before_store_item_handler_fn handler) {
     if (assigned(map)) map->on_before_store_item = handler;
+}
+
+werks_kvm_on_before_overwrite_item_handler_fn werks_kvm_get_on_before_overwrite_item(werks_kvm_dt* const map) {
+    return assigned(map) ? map->on_before_overwrite_item : NULL;
+}
+
+void werks_kvm_set_on_before_overwrite_item(werks_kvm_dt* const map, werks_kvm_on_before_overwrite_item_handler_fn handler) {
+    if (assigned(map)) map->on_before_overwrite_item = handler;
 }
 
 werks_kvm_on_before_rename_item_handler_fn werks_kvm_get_on_before_rename_item(werks_kvm_dt* const map) {

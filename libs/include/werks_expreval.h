@@ -109,6 +109,10 @@ typedef void (*werks_expreval_expressions_list_loop_handler_fn)(werks_expreval_e
 void werks_expreval_expressions_list_loop(werks_expreval_expressions_list_dt* list, werks_expreval_expressions_list_loop_handler_fn handler);
 void werks_expreval_expressions_list_reverse_loop(werks_expreval_expressions_list_dt* list, werks_expreval_expressions_list_loop_handler_fn handler);
 
+typedef void (*werks_expreval_expressions_list_loop_with_reference_handler_fn)(werks_expreval_expressions_list_dt* list, werks_expreval_expressions_data_dt* data, void* reference);
+void werks_expreval_expressions_list_loop_with_reference(werks_expreval_expressions_list_dt* list, werks_expreval_expressions_list_loop_with_reference_handler_fn handler, void* reference);
+void werks_expreval_expressions_list_reverse_loop_with_reference(werks_expreval_expressions_list_dt* list, werks_expreval_expressions_list_loop_with_reference_handler_fn handler, void* reference);
+
 #ifdef __cplusplus
 }
 #endif
