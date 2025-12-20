@@ -13,6 +13,7 @@
 #endif
 
 #define MEH_DEFAULT_BUFFER_SIZE (1 * KILOBYTE)
+#define MEH_DEFAULT_SENTINEL_LIMIT (1 * KILOBYTE)
 
 /* MeH.MEMORY -- Alignment Definitions */
 

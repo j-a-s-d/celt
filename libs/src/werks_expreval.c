@@ -306,6 +306,23 @@ bool werks_expreval_expressions_list_add(werks_expreval_expressions_list_dt* con
     return kewl_ptrholder_add(list->expressions_entries, (kewl_ptrholder_ptr_dt)entry);
 }
 
+bool werks_expreval_expressions_list_add_from_array_with_sentinel(werks_expreval_expressions_list_dt* list, const char** array) {
+    if (list == NULL || array == NULL) return false;
+    ssize_t size = string_array_find_null_sentinel(array, WERKS_EXPREVAL_SENTINEL_LIMIT);
+    bool result = true;
+    for (ssize_t i = 0; i < size; i++)
+        result &= werks_expreval_expressions_list_add(list, array[i]);
+    return result;
+}
+
+bool werks_expreval_expressions_list_add_from_array_with_size(werks_expreval_expressions_list_dt* list, const char** array, ssize_t size) {
+    if (list == NULL || array == NULL || size < 0) return false;
+    bool result = true;
+    for (ssize_t i = 0; i < size; i++)
+        result &= werks_expreval_expressions_list_add(list, array[i]);
+    return result;
+}
+
 static bool remove_entry(kewl_ptrholder_dt* expressions_entries, werks_expreval_expressions_entry_dt* entry) {
     if (expressions_entries == NULL || entry == NULL) return false;
     ce_free(entry->original);
@@ -325,8 +342,8 @@ bool werks_expreval_expressions_list_delete(werks_expreval_expressions_list_dt* 
     return false;
 }
 
-void werks_expreval_expressions_list_reevaluate(werks_expreval_expressions_list_dt* const list, werks_expreval_dt* evaluator) {
-    if (list == NULL) return;
+void werks_expreval_expressions_list_reevaluate(werks_expreval_expressions_list_dt* const list, werks_expreval_dt* const evaluator) {
+    if (list == NULL || evaluator == NULL) return;
     list->evaluation_rounds++;
     PTRHOLDER_EACH_CASTED(list->expressions_entries, werks_expreval_expressions_entry_dt, entry, {
         entry->data.last = entry->data.current;
@@ -335,6 +352,13 @@ void werks_expreval_expressions_list_reevaluate(werks_expreval_expressions_list_
         if ((entry->data.modified = (evaluator->error == WERKS_EXPREVAL_ERROR_NONE) && !WERKS_EXPREVAL_EQUAL(entry->data.current, entry->data.last, WERKS_EXPREVAL_EPSILON)))
             if (assigned(list->on_result_change))
                 list->on_result_change(list, &entry->data);
+    });
+}
+
+void werks_expreval_expressions_list_treat(werks_expreval_expressions_list_dt* const list, WERKS_EXPREVAL_TREATER_TYPE treater) {
+    if (list == NULL || treater == NULL) return;
+    PTRHOLDER_EACH_CASTED(list->expressions_entries, werks_expreval_expressions_entry_dt, entry, {
+        entry->data.current = treater(entry->data.current);
     });
 }
 

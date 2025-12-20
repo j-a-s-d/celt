@@ -41,6 +41,9 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 20-dec-2025 -- *20251220L*
+	- [MeH] added `MEH_DEFAULT_SENTINEL_LIMIT`
+	- [WeRKS] added `WERKS_EXPREVAL_TREATER_TYPE`, `werks_expreval_expressions_list_treat`, `werks_stringlist_from_array_with_sentinel` and `werks_expreval_expressions_list_add_from_array_with_size`
 * 19-dec-2025 -- *20251219L*
 	- [WeRKS] added `werks_expreval_expressions_list_loop_with_reference_handler_fn`, `werks_expreval_expressions_list_loop_with_reference`, `werks_expreval_expressions_list_reverse_loop_with_reference`, `werks_kvm_on_before_store_item_handler_fn`, `werks_kvm_set_on_before_store_item` and `werks_kvm_get_on_before_store_item`
 * 18-dec-2025 -- *20251218L*

@@ -38,16 +38,49 @@ extern "C" {
     #define WERKS_EXPREVAL_LIST_GROW_PADDING 0.0f
 #endif
 
-#define WERKS_EXPREVAL_CONST_MAX_COUNT 64
-#define WERKS_EXPREVAL_CONST_MAX_NAME 8
-#define WERKS_EXPREVAL_CONST_PREFIX '$'
+#ifndef WERKS_EXPREVAL_CONST_MAX_COUNT
+    #define WERKS_EXPREVAL_CONST_MAX_COUNT 64
+#endif
 
-#define WERKS_EXPREVAL_TYPE double // other values: float and long double
-#define WERKS_EXPREVAL_NAN double_NaN // other values: float_NaN and long_double_NaN
-#define WERKS_EXPREVAL_ISNAN double_isNaN // other values: float_isNaN and long_double_isNaN
-#define WERKS_EXPREVAL_EQUAL double_equal // other values: float_equal and long_double_equal
-#define WERKS_EXPREVAL_EPSILON MEH_DOUBLE_EPSILON // other values: MEH_FLOAT_EPSILON and MEH_LONG_DOUBLE_EPSILON
-#define WERKS_EXPREVAL_FORMAT double_string_format // other values: float_string_format and long_double_string_format
+#ifndef WERKS_EXPREVAL_CONST_MAX_NAME
+    #define WERKS_EXPREVAL_CONST_MAX_NAME 8
+#endif
+
+#ifndef WERKS_EXPREVAL_CONST_PREFIX
+    #define WERKS_EXPREVAL_CONST_PREFIX '$'
+#endif
+
+#ifndef WERKS_EXPREVAL_TYPE
+    #define WERKS_EXPREVAL_TYPE double // other values: float and long double
+#endif
+
+#ifndef WERKS_EXPREVAL_NAN
+    #define WERKS_EXPREVAL_NAN double_NaN // other values: float_NaN and long_double_NaN
+#endif
+
+#ifndef WERKS_EXPREVAL_ISNAN
+    #define WERKS_EXPREVAL_ISNAN double_isNaN // other values: float_isNaN and long_double_isNaN
+#endif
+
+#ifndef WERKS_EXPREVAL_EQUAL
+    #define WERKS_EXPREVAL_EQUAL double_equal // other values: float_equal and long_double_equal
+#endif
+
+#ifndef WERKS_EXPREVAL_EPSILON
+    #define WERKS_EXPREVAL_EPSILON MEH_DOUBLE_EPSILON // other values: MEH_FLOAT_EPSILON and MEH_LONG_DOUBLE_EPSILON
+#endif
+
+#ifndef WERKS_EXPREVAL_FORMAT
+    #define WERKS_EXPREVAL_FORMAT double_string_format // other values: float_string_format and long_double_string_format
+#endif
+
+#ifndef WERKS_EXPREVAL_TREATER_TYPE
+    #define WERKS_EXPREVAL_TREATER_TYPE trt_double_fn // other values: trt_float_fn and trt_long_double_fn
+#endif
+
+#ifndef WERKS_EXPREVAL_SENTINEL_LIMIT
+    #define WERKS_EXPREVAL_SENTINEL_LIMIT MEH_DEFAULT_SENTINEL_LIMIT
+#endif
 
 #define WERKS_EXPREVAL_ERROR_INVALID -1
 #define WERKS_EXPREVAL_ERROR_NONE 0
@@ -95,9 +128,12 @@ typedef struct WERKS_EXPREVAL_LIST_ALIGNMENT {
 werks_expreval_expressions_list_dt* werks_expreval_expressions_list_make();
 const werks_expreval_expressions_data_dt* werks_expreval_expressions_list_get(werks_expreval_expressions_list_dt* list, const char* expression);
 bool werks_expreval_expressions_list_add(werks_expreval_expressions_list_dt* list, const char* expression);
+bool werks_expreval_expressions_list_add_from_array_with_sentinel(werks_expreval_expressions_list_dt* list, const char** array);
+bool werks_expreval_expressions_list_add_from_array_with_size(werks_expreval_expressions_list_dt* list, const char** array, ssize_t size);
 bool werks_expreval_expressions_list_delete(werks_expreval_expressions_list_dt* list, const char* expression);
 size_t werks_expreval_expressions_list_get_count(werks_expreval_expressions_list_dt* list);
 void werks_expreval_expressions_list_reevaluate(werks_expreval_expressions_list_dt* list, werks_expreval_dt* evaluator);
+void werks_expreval_expressions_list_treat(werks_expreval_expressions_list_dt* list, WERKS_EXPREVAL_TREATER_TYPE treater);
 ssize_t werks_expreval_expressions_list_get_rounds(werks_expreval_expressions_list_dt* list);
 void werks_expreval_expressions_list_destroy(werks_expreval_expressions_list_dt* list);
 

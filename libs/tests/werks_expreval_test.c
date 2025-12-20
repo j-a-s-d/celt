@@ -31,6 +31,11 @@ void loop_with_reference_handler(__unused werks_expreval_expressions_list_dt* li
     loop_done = assigned(reference);
 }
 
+double treater(double value) {
+    Tests.print("treating " WERKS_EXPREVAL_FORMAT "\n");
+    return value + 1.0;
+}
+
 int main(void) {
     Tests.begin("WeRKS EXPREVAL");
     werks_expreval_dt* evaluator = werks_expreval_make();
@@ -143,6 +148,11 @@ int main(void) {
     loop_done = false;
     werks_expreval_expressions_list_reverse_loop_with_reference(list, loop_with_reference_handler, list);
     Tests.run("werks_expreval_expressions_list_reverse_loop_with_reference", loop_done);
+    const werks_expreval_expressions_data_dt* data_before_treat = werks_expreval_expressions_list_get(list, "$y + 1");
+    Tests.run("data_before_treat 6", data_before_treat->current == 6.0);
+    werks_expreval_expressions_list_treat(list, treater);
+    const werks_expreval_expressions_data_dt* data_after_treat = werks_expreval_expressions_list_get(list, "$y + 1");
+    Tests.run("data_after_treat 7", data_after_treat->current == 7.0);
     werks_expreval_expressions_list_destroy(list);
     werks_expreval_constants_set(cs, "x", 4.0);
     Tests.run("werks_expreval_constants_count 2", werks_expreval_constants_count(cs) == 2);
