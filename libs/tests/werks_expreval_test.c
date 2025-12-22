@@ -153,6 +153,8 @@ int main(void) {
     werks_expreval_expressions_list_treat(list, treater);
     const werks_expreval_expressions_data_dt* data_after_treat = werks_expreval_expressions_list_get(list, "$y + 1");
     Tests.run("data_after_treat 7", data_after_treat->current == 7.0);
+    Tests.run("werks_expreval_expressions_list_get_current_value NO 0", werks_expreval_expressions_list_get_current_value(list, "$y + 2", 0.0) == 0.0);
+    Tests.run("werks_expreval_expressions_list_get_current_value YES 7", werks_expreval_expressions_list_get_current_value(list, "$y + 1", 0.0) == 7.0);
     werks_expreval_expressions_list_destroy(list);
     werks_expreval_constants_set(cs, "x", 4.0);
     Tests.run("werks_expreval_constants_count 2", werks_expreval_constants_count(cs) == 2);

@@ -41,6 +41,8 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 22-dec-2025 -- *20251222L*
+	- [WeRKS] added `werks_expreval_expressions_list_get_current_value`
 * 20-dec-2025 -- *20251220L*
 	- [MeH] added `MEH_DEFAULT_SENTINEL_LIMIT`
 	- [WeRKS] added `WERKS_EXPREVAL_TREATER_TYPE`, `werks_expreval_expressions_list_treat`, `werks_stringlist_from_array_with_sentinel` and `werks_expreval_expressions_list_add_from_array_with_size`

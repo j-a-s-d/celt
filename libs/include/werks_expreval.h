@@ -127,6 +127,10 @@ typedef struct WERKS_EXPREVAL_LIST_ALIGNMENT {
 
 werks_expreval_expressions_list_dt* werks_expreval_expressions_list_make();
 const werks_expreval_expressions_data_dt* werks_expreval_expressions_list_get(werks_expreval_expressions_list_dt* list, const char* expression);
+static inline WERKS_EXPREVAL_TYPE werks_expreval_expressions_list_get_current_value(werks_expreval_expressions_list_dt* list, const char* expression, WERKS_EXPREVAL_TYPE default_value) {
+    const werks_expreval_expressions_data_dt* data = werks_expreval_expressions_list_get(list, expression);
+    return assigned(data) ? data->current : default_value;
+}
 bool werks_expreval_expressions_list_add(werks_expreval_expressions_list_dt* list, const char* expression);
 bool werks_expreval_expressions_list_add_from_array_with_sentinel(werks_expreval_expressions_list_dt* list, const char** array);
 bool werks_expreval_expressions_list_add_from_array_with_size(werks_expreval_expressions_list_dt* list, const char** array, ssize_t size);
