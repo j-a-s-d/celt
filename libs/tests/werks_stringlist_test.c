@@ -647,12 +647,19 @@ int main(void) {
     werks_stringlist_clear(skz);
     AUTO_STRING(jesz, werks_stringlist_write_to_json_array_string(skz));
     Tests.run("werks_stringlist_write_to_json_array_string skz empty", streq(jesz, "[]"));
-    Tests.run("werks_stringlist_formatted_append NO", !werks_stringlist_formatted_append(skz, NULL));
+    Tests.run("werks_stringlist_formatted_append NO 1", !werks_stringlist_formatted_append(NULL, "[%s]", "world"));
+    Tests.run("werks_stringlist_formatted_append NO 2", !werks_stringlist_formatted_append(skz, NULL, "world"));
     Tests.run("werks_stringlist_formatted_append YES", werks_stringlist_formatted_append(skz, "[%s]", "world"));
-    Tests.run("werks_stringlist_formatted_prepend NO", !werks_stringlist_formatted_prepend(skz, NULL));
+    Tests.run("werks_stringlist_formatted_prepend NO 1", !werks_stringlist_formatted_prepend(NULL, "<<%s>>", "hello"));
+    Tests.run("werks_stringlist_formatted_prepend NO 2", !werks_stringlist_formatted_prepend(skz, NULL, "hello"));
     Tests.run("werks_stringlist_formatted_prepend YES", werks_stringlist_formatted_prepend(skz, "<<%s>>", "hello"));
     Tests.run("werks_stringlist_get 0", streq(werks_stringlist_get(skz, 0), "<<hello>>"));
     Tests.run("werks_stringlist_get 1", streq(werks_stringlist_get(skz, 1), "[world]"));
+    Tests.run("werks_stringlist_formatted_set skz 0 NO 1", !werks_stringlist_formatted_set(NULL, 0, "<[%s]>", "TEST"));
+    Tests.run("werks_stringlist_formatted_set skz 0 NO 2", !werks_stringlist_formatted_set(skz, 100, "<[%s]>", "TEST"));
+    Tests.run("werks_stringlist_formatted_set skz 0 NO 3", !werks_stringlist_formatted_set(skz, 0, NULL, "TEST"));
+    Tests.run("werks_stringlist_formatted_set skz 0 YES", werks_stringlist_formatted_set(skz, 0, "<[%s]>", "TEST"));
+    Tests.run("werks_stringlist_get 0", streq(werks_stringlist_get(skz, 0), "<[TEST]>"));
     werks_stringlist_destroy(skz);
     return Tests.end();
 }

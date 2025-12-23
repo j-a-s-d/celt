@@ -41,6 +41,8 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 23-dec-2025 -- *20251223L*
+	- [WeRKS] added `werks_stringlist_formatted_set`
 * 22-dec-2025 -- *20251222L*
 	- [WeRKS] added `werks_expreval_expressions_list_get_current_value`
 * 20-dec-2025 -- *20251220L*

@@ -66,6 +66,7 @@ void werks_stringlist_pack(werks_stringlist_dt* sl);
 
 const char* werks_stringlist_get(werks_stringlist_dt* sl, ssize_t index);
 bool werks_stringlist_set(werks_stringlist_dt* sl, ssize_t index, const char* value);
+bool werks_stringlist_formatted_set(werks_stringlist_dt* sl, ssize_t index, const char* fmt, ...);
 
 // addition
 
@@ -77,8 +78,8 @@ bool werks_stringlist_prepend_all(werks_stringlist_dt* sl, werks_stringlist_dt* 
 bool werks_stringlist_prepend(werks_stringlist_dt* sl, const char* value);
 bool werks_stringlist_include_all(werks_stringlist_dt* sl, werks_stringlist_dt* nl);
 bool werks_stringlist_include(werks_stringlist_dt* sl, const char* value);
-bool werks_stringlist_formatted_append(werks_stringlist_dt* const sl, const char* fmt, ...);
-bool werks_stringlist_formatted_prepend(werks_stringlist_dt* const sl, const char* fmt, ...);
+bool werks_stringlist_formatted_append(werks_stringlist_dt* sl, const char* fmt, ...);
+bool werks_stringlist_formatted_prepend(werks_stringlist_dt* sl, const char* fmt, ...);
 
 // deletion
 

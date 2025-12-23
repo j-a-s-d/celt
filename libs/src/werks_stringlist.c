@@ -249,6 +249,22 @@ bool werks_stringlist_set(werks_stringlist_dt* const sl, ssize_t index, const ch
     return true;
 }
 
+bool werks_stringlist_formatted_set(werks_stringlist_dt* const sl, ssize_t index, const char* fmt, ...) {
+    if (is_dead(sl) || fmt == NULL || is_oob(sl, index) || sl->frozen) return false;
+    va_list args;
+    va_start(args, fmt);
+    ssize_t size = get_string_format_size(fmt, args);
+    if (size < 0) {
+        va_end(args);
+        return false; // encoding error
+    }
+    char* value = perform_string_format(size, fmt, args);
+    replace_string(sl, index, value);
+    va_end(args);
+    ce_free(value);
+    return true;
+}
+
 static inline char* extract_string(werks_stringlist_dt* const sl, ssize_t index) {
     char* result = sl->strings[index];
     UNUSED(forget_string(sl, index));
