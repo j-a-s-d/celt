@@ -41,6 +41,8 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 28-dec-2025 -- *20251228L*
+	- [WeRKS] added `chunk_read_handler_with_reference_fn`, `read_binary_file_by_chunk_with_reference`, `line_read_handler_with_reference_fn`, `read_text_file_by_line_with_reference`, `byte_read_handler_with_reference_fn` and `read_binary_file_by_byte_with_reference`
 * 23-dec-2025 -- *20251223L*
 	- [WeRKS] added `werks_stringlist_formatted_set`
 * 22-dec-2025 -- *20251222L*
