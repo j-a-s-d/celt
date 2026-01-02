@@ -241,3 +241,7 @@ typedef void (*setter_uint64_fn)(void*, uint64_t);
 typedef void (*setter_bool_fn)(void*, bool);
 #endif
 
+/* Ce.POINTERS -- Other */
+
+typedef int (*qsort_comparator_fn)(const void *, const void *);
+

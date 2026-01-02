@@ -154,7 +154,13 @@ static inline void test_mth_utilities() {
     Tests.run("is_circular_point_between YES 40 in 30..50", is_circular_point_between(40.0, 30.0, 50.0));
     Tests.run("is_circular_point_between NO -40 in 30..50", !is_circular_point_between(-40.0, 30.0, 50.0));
     Tests.run("get_circular_distance 0..10", double_equal(get_circular_distance(0.0, 10.0), 10.0, 0.000001));
+    Tests.run("get_circular_distance 10..0", double_equal(get_circular_distance(10.0, 0.0), 350.0, 0.000001));
     Tests.run("get_circular_distance 350..10", double_equal(get_circular_distance(350.0, 10.0), 20.0, 0.000001));
+    Tests.run("get_circular_distance 10..350", double_equal(get_circular_distance(10.0, 350.0), 340.0, 0.000001));
+    Tests.run("get_circular_shortest_offset 0..10", double_equal(get_circular_shortest_offset(0.0, 10.0), 10.0, 0.000001));
+    Tests.run("get_circular_shortest_offset 10..0", double_equal(get_circular_shortest_offset(10.0, 0.0), -10.0, 0.000001));
+    Tests.run("get_circular_shortest_offset 350..10", double_equal(get_circular_shortest_offset(350.0, 10.0), 20.0, 0.000001));
+    Tests.run("get_circular_shortest_offset 10..350", double_equal(get_circular_shortest_offset(10.0, 350.0), -20.0, 0.000001));
     Tests.run("get_circular_offset_percentage_between 0 in 0..10", double_equal(get_circular_offset_percentage_between(0.0, 0.0, 10.0), 0.0, 0.000001));
     Tests.run("get_circular_offset_percentage_between 1 in 0..10", double_equal(get_circular_offset_percentage_between(1.0, 0.0, 10.0), 10.0, 0.000001));
     Tests.run("get_circular_offset_percentage_between 0 in 350..10", double_equal(get_circular_offset_percentage_between(0.0, 350.0, 10.0), 50.0, 0.000001));

@@ -113,12 +113,20 @@ static inline bool is_circular_point_between(double point, double start, double 
 }
 
 /**
- * Calculates the circular distance moving clockwise from 'from' to 'to'.
+ * Calculates the circular distance moving clockwise from 'from' to 'to'. Results will be always positive.
  */
 static inline double get_circular_distance(double from, double to) {
     double result = normalize_circular_angle(to) - normalize_circular_angle(from);
     if (result < 0.0) result += 360.0;
     return result;
+}
+
+/**
+ * Calculates the shortest circular offset between 'from' and 'to'. Results will be always between -180.0 and 180.0.
+ */
+static inline double get_circular_shortest_offset(double from, double to) {
+    double angle = normalize_circular_angle(to - from);
+    return angle <= 180.0 ? angle : angle - 360.0;
 }
 
 /**
