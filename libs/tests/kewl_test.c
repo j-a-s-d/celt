@@ -1251,6 +1251,14 @@ void show_ptr_int_item_ref(__unused kewl_ptrholder_dt* arr, kewl_ptrholder_ptr_d
         Tests.print("This element points to nothing\n");
 }
 
+static int int_ptrs_comparator(const void* a, const void* b) {
+    const int v1 = *(const int*)a;
+    const int v2 = *(const int*)b;
+    if (v1 < v2) return -1;
+    else if (v1 > v2) return 1;
+    else return 0;
+}
+
 void test_ptrholder() {
     kewl_ptrholder_dt* da = kewl_ptrholder_create(2);
     Tests.run("kewl_ptrholder_create", da != NULL);
@@ -1315,6 +1323,21 @@ void test_ptrholder() {
     Tests.run("kewl_ptrholder_has &b NO", !kewl_ptrholder_has(da, (kewl_ptrholder_ptr_dt)&b));
     Tests.run("kewl_ptrholder_has &a YES", kewl_ptrholder_has(da, (kewl_ptrholder_ptr_dt)&a));
     Tests.run("kewl_ptrholder_get_size 1", kewl_ptrholder_get_size(da) == 1);
+    Tests.run("kewl_ptrholder_add &c", kewl_ptrholder_add(da, (kewl_ptrholder_ptr_dt)&c));
+    Tests.run("kewl_ptrholder_add &b", kewl_ptrholder_add(da, (kewl_ptrholder_ptr_dt)&b));
+    Tests.run("kewl_ptrholder_get_size 3", kewl_ptrholder_get_size(da) == 3);
+    kewl_ptrholder_loop(da, show_ptr_int_item);
+    kewl_ptrholder_sort(da, int_ptrs_comparator);
+    Tests.run("kewl_ptrholder_get_size 3", kewl_ptrholder_get_size(da) == 3);
+    kewl_ptrholder_loop(da, show_ptr_int_item);
+    kewl_ptrholder_reverse(da);
+    Tests.run("kewl_ptrholder_get_size 3", kewl_ptrholder_get_size(da) == 3);
+    kewl_ptrholder_loop(da, show_ptr_int_item);
+    kewl_ptrholder_clear(da);
+    Tests.run("kewl_ptrholder_get_size 0", kewl_ptrholder_get_size(da) == 0);
+    kewl_ptrholder_reverse(da);
+    kewl_ptrholder_sort(da, int_ptrs_comparator);
+    Tests.run("kewl_ptrholder_get_size 0", kewl_ptrholder_get_size(da) == 0);
     kewl_ptrholder_destroy(da);
 }
 

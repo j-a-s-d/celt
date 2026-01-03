@@ -175,6 +175,25 @@ void kewl_ptrholder_loop_with_reference(kewl_ptrholder_dt* const holder, kewl_pt
             cb(holder, holder->data[i], ref);
 }
 
+void kewl_ptrholder_sort(kewl_ptrholder_dt* holder, kewl_ptrholder_sorter_fn comparator) {
+    if (both_assigned(holder, comparator) && holder->size > 0)
+        qsort(holder->data, holder->size, sizeof(KEWL_PTRHOLDER_POINTER_TYPE), comparator);
+}
+
+void kewl_ptrholder_reverse(kewl_ptrholder_dt* holder) {
+    if (assigned(holder) && holder->size > 0) {
+        int left = 0;
+        int right = holder->size - 1;
+        while (left < right) {
+            KEWL_PTRHOLDER_POINTER_TYPE temp = holder->data[left];
+            holder->data[left] = holder->data[right];
+            holder->data[right] = temp;
+            left++;
+            right--;
+        }
+    }
+}
+
 void kewl_ptrholder_clear(kewl_ptrholder_dt* const holder) {
     if (assigned(holder)) holder->size = 0;
 }

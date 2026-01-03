@@ -370,15 +370,6 @@ size_t werks_expreval_expressions_list_get_count(werks_expreval_expressions_list
     return assigned(list) ? kewl_ptrholder_get_size(list->expressions_entries) : 0;
 }
 
-void werks_expreval_expressions_list_destroy(werks_expreval_expressions_list_dt* const list) {
-    if (list == NULL) return;
-    PTRHOLDER_REVERSE_EACH_CASTED(list->expressions_entries, werks_expreval_expressions_entry_dt, entry, {
-        remove_entry(list->expressions_entries, entry);
-    });
-    kewl_ptrholder_destroy(list->expressions_entries);
-    free(list);
-}
-
 void werks_expreval_expressions_list_loop(werks_expreval_expressions_list_dt* const list, werks_expreval_expressions_list_loop_handler_fn handler) {
     if (assigned(list) && assigned(handler))
         PTRHOLDER_EACH_CASTED(list->expressions_entries, werks_expreval_expressions_entry_dt, entry, {
@@ -405,5 +396,44 @@ void werks_expreval_expressions_list_reverse_loop_with_reference(werks_expreval_
         PTRHOLDER_REVERSE_EACH_CASTED(list->expressions_entries, werks_expreval_expressions_entry_dt, entry, {
             handler(list, &entry->data, reference);
         });
+}
+
+static int experssions_entries_ascending_sorter(const void* a, const void* b) {
+    const werks_expreval_expressions_entry_dt* entry1 = *(const void**)a;
+    const werks_expreval_expressions_entry_dt* entry2 = *(const void**)b;
+    WERKS_EXPREVAL_TYPE v1 = entry1->data.current;
+    WERKS_EXPREVAL_TYPE v2 = entry2->data.current;
+    if (v1 < v2) return -1;
+    else if (v1 > v2) return 1;
+    else return 0;
+}
+
+static int experssions_entries_descending_sorter(const void* a, const void* b) {
+    const werks_expreval_expressions_entry_dt* entry1 = *(const void**)a;
+    const werks_expreval_expressions_entry_dt* entry2 = *(const void**)b;
+    WERKS_EXPREVAL_TYPE v1 = entry1->data.current;
+    WERKS_EXPREVAL_TYPE v2 = entry2->data.current;
+    if (v1 < v2) return 1;
+    else if (v1 > v2) return -1;
+    else return 0;
+}
+
+void werks_expreval_expressions_list_sort_by_value_ascending(werks_expreval_expressions_list_dt* list) {
+    if (assigned(list))
+        kewl_ptrholder_sort(list->expressions_entries, experssions_entries_ascending_sorter);
+}
+
+void werks_expreval_expressions_list_sort_by_value_descending(werks_expreval_expressions_list_dt* list) {
+    if (assigned(list))
+        kewl_ptrholder_sort(list->expressions_entries, experssions_entries_descending_sorter);
+}
+
+void werks_expreval_expressions_list_destroy(werks_expreval_expressions_list_dt* const list) {
+    if (list == NULL) return;
+    PTRHOLDER_REVERSE_EACH_CASTED(list->expressions_entries, werks_expreval_expressions_entry_dt, entry, {
+        remove_entry(list->expressions_entries, entry);
+    });
+    kewl_ptrholder_destroy(list->expressions_entries);
+    free(list);
 }
 

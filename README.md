@@ -41,6 +41,9 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 03-jan-2026 -- *20260103L*
+	- [KeWL] added `kewl_ptrholder_sorter_fn`, `kewl_ptrholder_sort` and `kewl_ptrholder_reverse`
+	- [WeRKS] added `werks_expreval_expressions_list_sort_by_value_ascending` and `werks_expreval_expressions_list_sort_by_value_descending`
 * 02-jan-2026 -- *20260102L*
 	- [Ce] added `qsort_comparator_fn`
 	- [KeWL] added `get_circular_shortest_offset`

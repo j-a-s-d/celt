@@ -46,6 +46,8 @@ typedef struct kewl_ptrholder_dt kewl_ptrholder_dt;
 
 typedef KEWL_PTRHOLDER_POINTER_TYPE kewl_ptrholder_ptr_dt;
 
+typedef qsort_comparator_fn kewl_ptrholder_sorter_fn;
+
 typedef void (*kewl_ptr_item_callback_fn)(kewl_ptrholder_dt* holder, kewl_ptrholder_ptr_dt ptr);
 typedef void (*kewl_ptr_item_with_reference_callback_fn)(kewl_ptrholder_dt* holder, kewl_ptrholder_ptr_dt ptr, void* ref);
 
@@ -68,6 +70,8 @@ kewl_ptrholder_ptr_dt kewl_ptrholder_get(kewl_ptrholder_dt* holder, size_t index
 char* kewl_ptrholder_stringify(kewl_ptrholder_dt* holder, char separator);
 void kewl_ptrholder_loop(kewl_ptrholder_dt* holder, kewl_ptr_item_callback_fn cb);
 void kewl_ptrholder_loop_with_reference(kewl_ptrholder_dt* holder, kewl_ptr_item_with_reference_callback_fn cb, void* ref);
+void kewl_ptrholder_sort(kewl_ptrholder_dt* holder, kewl_ptrholder_sorter_fn comparator);
+void kewl_ptrholder_reverse(kewl_ptrholder_dt* holder);
 void kewl_ptrholder_clear(kewl_ptrholder_dt* holder);
 void kewl_ptrholder_destroy(kewl_ptrholder_dt* holder);
 
