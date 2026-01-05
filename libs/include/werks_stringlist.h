@@ -95,8 +95,10 @@ bool werks_stringlist_remove_prefixed(werks_stringlist_dt* sl, const char* prefi
 bool werks_stringlist_remove_not_prefixed(werks_stringlist_dt* sl, const char* prefix);
 bool werks_stringlist_remove_suffixed(werks_stringlist_dt* sl, const char* suffix);
 bool werks_stringlist_remove_not_suffixed(werks_stringlist_dt* sl, const char* suffix);
-bool werks_stringlist_remove_containing(werks_stringlist_dt* const sl, const char* text);
-bool werks_stringlist_remove_not_containing(werks_stringlist_dt* const sl, const char* text);
+bool werks_stringlist_remove_containing(werks_stringlist_dt* sl, const char* text);
+bool werks_stringlist_remove_not_containing(werks_stringlist_dt* sl, const char* text);
+bool werks_stringlist_remove_all_containing_any(werks_stringlist_dt* sl, werks_stringlist_dt* nl);
+bool werks_stringlist_remove_all_not_containing_any(werks_stringlist_dt* sl, werks_stringlist_dt* nl);
 bool werks_stringlist_exclude_all(werks_stringlist_dt* sl, werks_stringlist_dt* nl);
 bool werks_stringlist_keep_all(werks_stringlist_dt* sl, werks_stringlist_dt* nl);
 
@@ -153,12 +155,12 @@ void werks_stringlist_loop_prefixed(werks_stringlist_dt* sl, const char* prefix,
 void werks_stringlist_reverse_loop_prefixed(werks_stringlist_dt* sl, const char* prefix, werks_stringlist_loop_handler_fn handler);
 void werks_stringlist_loop_suffixed(werks_stringlist_dt* sl, const char* suffix, werks_stringlist_loop_handler_fn handler);
 void werks_stringlist_reverse_loop_suffixed(werks_stringlist_dt* sl, const char* suffix, werks_stringlist_loop_handler_fn handler);
-void werks_stringlist_loop_from_to(werks_stringlist_dt* const sl, ssize_t from_index, ssize_t to_index, werks_stringlist_loop_handler_fn handler);
-void werks_stringlist_reverse_loop_from_to(werks_stringlist_dt* const sl, ssize_t from_index, ssize_t to_index, werks_stringlist_loop_handler_fn handler);
+void werks_stringlist_loop_from_to(werks_stringlist_dt* sl, ssize_t from_index, ssize_t to_index, werks_stringlist_loop_handler_fn handler);
+void werks_stringlist_reverse_loop_from_to(werks_stringlist_dt* sl, ssize_t from_index, ssize_t to_index, werks_stringlist_loop_handler_fn handler);
 
 typedef char* (*werks_stringlist_treat_handler_fn)(werks_stringlist_dt* sl, ssize_t index, const char* string);
 void werks_stringlist_treat(werks_stringlist_dt* sl, werks_stringlist_treat_handler_fn handler);
-void werks_stringlist_reverse_treat(werks_stringlist_dt* const sl, werks_stringlist_treat_handler_fn handler);
+void werks_stringlist_reverse_treat(werks_stringlist_dt* sl, werks_stringlist_treat_handler_fn handler);
 
 typedef void (*werks_stringlist_loop_with_reference_handler_fn)(werks_stringlist_dt* sl, ssize_t index, const char* string, void* reference);
 void werks_stringlist_loop_with_reference(werks_stringlist_dt* sl, werks_stringlist_loop_with_reference_handler_fn handler, void* reference);
@@ -167,12 +169,12 @@ void werks_stringlist_loop_prefixed_with_reference(werks_stringlist_dt* sl, cons
 void werks_stringlist_reverse_loop_prefixed_with_reference(werks_stringlist_dt* sl, const char* prefix, werks_stringlist_loop_with_reference_handler_fn handler, void* reference);
 void werks_stringlist_loop_suffixed_with_reference(werks_stringlist_dt* sl, const char* suffix, werks_stringlist_loop_with_reference_handler_fn handler, void* reference);
 void werks_stringlist_reverse_loop_suffixed_with_reference(werks_stringlist_dt* sl, const char* suffix, werks_stringlist_loop_with_reference_handler_fn handler, void* reference);
-void werks_stringlist_loop_from_to_with_reference(werks_stringlist_dt* const sl, ssize_t from_index, ssize_t to_index, werks_stringlist_loop_with_reference_handler_fn handler, void* reference);
-void werks_stringlist_reverse_loop_from_to_with_reference(werks_stringlist_dt* const sl, ssize_t from_index, ssize_t to_index, werks_stringlist_loop_with_reference_handler_fn handler, void* reference);
+void werks_stringlist_loop_from_to_with_reference(werks_stringlist_dt* sl, ssize_t from_index, ssize_t to_index, werks_stringlist_loop_with_reference_handler_fn handler, void* reference);
+void werks_stringlist_reverse_loop_from_to_with_reference(werks_stringlist_dt* sl, ssize_t from_index, ssize_t to_index, werks_stringlist_loop_with_reference_handler_fn handler, void* reference);
 
 typedef char* (*werks_stringlist_treat_with_reference_handler_fn)(werks_stringlist_dt* sl, ssize_t index, const char* string, void* reference);
 void werks_stringlist_treat_with_reference(werks_stringlist_dt* sl, werks_stringlist_treat_with_reference_handler_fn handler, void* reference);
-void werks_stringlist_reverse_treat_with_reference(werks_stringlist_dt* const sl, werks_stringlist_treat_with_reference_handler_fn handler, void* reference);
+void werks_stringlist_reverse_treat_with_reference(werks_stringlist_dt* sl, werks_stringlist_treat_with_reference_handler_fn handler, void* reference);
 
 #if defined(__GNUC__) && !defined(__clang__)
     #define werks_stringlist_each(l, parameter, code_block) \

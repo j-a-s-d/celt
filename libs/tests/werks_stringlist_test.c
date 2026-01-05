@@ -661,6 +661,28 @@ int main(void) {
     Tests.run("werks_stringlist_formatted_set skz 0 YES", werks_stringlist_formatted_set(skz, 0, "<[%s]>", "TEST"));
     Tests.run("werks_stringlist_get 0", streq(werks_stringlist_get(skz, 0), "<[TEST]>"));
     werks_stringlist_destroy(skz);
+    werks_stringlist_dt* scr = werks_stringlist_make();
+    werks_stringlist_read_from_string(scr, "Hello World,Test,Hello Mundo,Hola,Testing,Hey", ",");
+    Tests.run("werks_stringlist_get_size scr 6", werks_stringlist_get_size(scr) == 6);
+    Tests.run("werks_stringlist_remove_containing scr Test", werks_stringlist_remove_containing(scr, "Test"));
+    Tests.run("werks_stringlist_get_size scr 4", werks_stringlist_get_size(scr) == 4);
+    Tests.run("werks_stringlist_remove_not_containing scr He", werks_stringlist_remove_not_containing(scr, "He"));
+    Tests.run("werks_stringlist_get_size scr 3", werks_stringlist_get_size(scr) == 3);
+    werks_stringlist_destroy(scr);
+    werks_stringlist_dt* sdr = werks_stringlist_make();
+    werks_stringlist_read_from_string(sdr, "Hello World,Test,Hello Mundo,Hola,Testing,Hey", ",");
+    Tests.run("werks_stringlist_get_size sdr 6", werks_stringlist_get_size(sdr) == 6);
+    werks_stringlist_dt* srr = werks_stringlist_make();
+    werks_stringlist_read_from_string(srr, "He,Test", ",");
+    Tests.run("werks_stringlist_get_size srr 2", werks_stringlist_get_size(srr) == 2);
+    Tests.run("werks_stringlist_remove_all_containing_any sdr srr", werks_stringlist_remove_all_containing_any(sdr, srr));
+    Tests.run("werks_stringlist_get_size sdr 1", werks_stringlist_get_size(sdr) == 1);
+    werks_stringlist_read_from_string(sdr, "Hello World,Test,Hello Mundo,Hola,Testing,Hey", ",");
+    Tests.run("werks_stringlist_get_size sdr 7", werks_stringlist_get_size(sdr) == 7);
+    Tests.run("werks_stringlist_remove_all_not_containing_any sdr srr", werks_stringlist_remove_all_not_containing_any(sdr, srr));
+    Tests.run("werks_stringlist_get_size sdr 5", werks_stringlist_get_size(sdr) == 5);
+    werks_stringlist_destroy(sdr);
+    werks_stringlist_destroy(srr);
     return Tests.end();
 }
 

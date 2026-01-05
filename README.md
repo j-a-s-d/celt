@@ -41,6 +41,9 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 05-jan-2026 -- *20260105L*
+	- [MeH] added `SIZED_ARRAY_EACH`
+	- [WeRKS] added `werks_stringlist_remove_all_containing_any` and `werks_stringlist_remove_all_not_containing_any`
 * 03-jan-2026 -- *20260103L*
 	- [KeWL] added `kewl_ptrholder_sorter_fn`, `kewl_ptrholder_sort` and `kewl_ptrholder_reverse`
 	- [WeRKS] added `werks_expreval_expressions_list_sort_by_value_ascending` and `werks_expreval_expressions_list_sort_by_value_descending`

@@ -46,6 +46,9 @@
 #define ARRAY_ITER(var, array) \
     for (ssize_t var = 0; var < (int)ARRAY_SIZE(array); var++)
 
+#define SIZED_ARRAY_EACH(var, array, size) \
+    for (__typeof__(*(array)) *var = (array); var < (array) + size; ++var)
+
 #define ARRAY_EACH(var, array) \
-    for (__typeof__(*(array)) *var = (array); var < (array) + ARRAY_SIZE(array); ++var)
+    SIZED_ARRAY_EACH(var, array, ARRAY_SIZE(array))
 

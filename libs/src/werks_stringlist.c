@@ -997,6 +997,40 @@ bool werks_stringlist_suffix_all(werks_stringlist_dt* const sl, const char* suff
     return true;
 }
 
+bool werks_stringlist_remove_all_containing_any(werks_stringlist_dt* const sl, werks_stringlist_dt* nl) {
+    if (ptreq(sl, nl) || is_dead(sl) || is_dead(nl) || !has_items(nl) || sl->frozen) return false;
+    bool result = false;
+    for (ssize_t i = 0; i < nl->size; i++)
+        if (has_content(nl->strings[i]))
+            for (ssize_t h = sl->size - 1; h >= 0; h--)
+                if (contains_string(sl->strings[h], nl->strings[i])) {
+                    ce_free(sl->strings[h]);
+                    UNUSED(forget_string(sl, h));
+                    result = true;
+                }
+    return result;
+}
+
+bool werks_stringlist_remove_all_not_containing_any(werks_stringlist_dt* const sl, werks_stringlist_dt* nl) {
+    if (ptreq(sl, nl) || is_dead(sl) || is_dead(nl) || !has_items(nl) || sl->frozen) return false;
+    bool result = false;
+    for (ssize_t h = sl->size - 1; h >= 0; h--) {
+        bool keep = false;
+        for (ssize_t i = 0; i < nl->size; i++)
+            if (has_content(nl->strings[i]))
+                if (contains_string(sl->strings[h], nl->strings[i])) {
+                    keep = true;
+                    break;
+                }
+        if (!keep) {
+            ce_free(sl->strings[h]);
+            UNUSED(forget_string(sl, h));
+            result = true;
+        }
+    }
+    return result;
+}
+
 bool werks_stringlist_exclude_all(werks_stringlist_dt* const sl, werks_stringlist_dt* const ns) {
     if (ptreq(sl, ns) || is_dead(sl) || is_dead(ns) || !has_items(ns) || sl->frozen) return false;
     for (ssize_t i = 0; i < ns->size; i++)
