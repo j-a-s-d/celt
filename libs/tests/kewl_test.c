@@ -633,7 +633,18 @@ static inline void test_str_functions() {
     Tests.run("is_ascii_string STRINGS_NOTHING", !is_ascii_string(STRINGS_NOTHING));
     Tests.run("is_ascii_string STRINGS_SPACE", is_ascii_string(STRINGS_SPACE));
     Tests.run("is_ascii_string hello", is_ascii_string("hello"));
+    Tests.run("is_ascii_string hello\\tworld", is_ascii_string("hello\tworld"));
     Tests.run("is_ascii_string Café", !is_ascii_string("Café")); // 'é' is not ASCII
+    Tests.run("is_ascii_readable_char \\0", !is_ascii_readable_char('\0'));
+    Tests.run("is_ascii_readable_char \\s", is_ascii_readable_char(' '));
+    Tests.run("is_ascii_readable_char A", is_ascii_readable_char('A'));
+    Tests.run("is_ascii_readable_char \\xC3", !is_ascii_readable_char(cc));
+    Tests.run("is_ascii_readable_string NULL", !is_ascii_readable_string(NULL));
+    Tests.run("is_ascii_readable_string STRINGS_NOTHING", !is_ascii_readable_string(STRINGS_NOTHING));
+    Tests.run("is_ascii_readable_string STRINGS_SPACE", is_ascii_readable_string(STRINGS_SPACE));
+    Tests.run("is_ascii_readable_string hello", is_ascii_readable_string("hello"));
+    Tests.run("is_ascii_readable_string hello\\tworld", !is_ascii_readable_string("hello\tworld"));
+    Tests.run("is_ascii_readable_string Café", !is_ascii_readable_string("Café")); // 'é' is not ASCII
     Tests.run("get_utf8_char_length 1", get_utf8_char_length("A"[0]) == 1); // ASCII, 1 byte
     Tests.run("get_utf8_char_length 2", get_utf8_char_length("ñ"[0]) == 2); // U+00F1, 2 bytes (C3 B1)
     Tests.run("get_utf8_char_length 3", get_utf8_char_length("ह"[0]) == 3); // U+0939 (Devanagari HA), 3 bytes (E0 A4 B9)

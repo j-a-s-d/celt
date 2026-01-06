@@ -39,6 +39,7 @@ static inline bool has_content(const char* str) {
 }
 
 bool is_ascii_string(const char* str);
+bool is_ascii_readable_string(const char* str);
 bool is_hex_string(const char* str);
 bool is_alphanumeric_string(const char* str);
 bool is_numeric_string(const char* str);
@@ -63,6 +64,10 @@ ssize_t get_utf8_string_length(const char* str);
 
 static inline bool is_ascii_char(const char chr) {
     return (unsigned char)chr <= 127;
+}
+
+static inline bool is_ascii_readable_char(const char chr) {
+    return (chr >= 32 && chr <= 126);
 }
 
 static inline bool is_hex_char(const char chr) {

@@ -41,6 +41,8 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 06-jan-2026 -- *20260106L*
+	- [KeWL] added `is_ascii_readable_char` and `is_ascii_readable_string`
 * 05-jan-2026 -- *20260105L*
 	- [MeH] added `SIZED_ARRAY_EACH`
 	- [WeRKS] added `werks_stringlist_remove_all_containing_any` and `werks_stringlist_remove_all_not_containing_any`

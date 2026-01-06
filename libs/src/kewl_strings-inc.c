@@ -39,6 +39,14 @@ bool is_ascii_string(const char* str) {
     return true;
 }
 
+bool is_ascii_readable_string(const char* str) {
+    if (str == NULL || str[0] == CHARS_NULL) return false;
+    for (int i = 0; str[i] != CHARS_NULL; i++)
+        if (!is_ascii_readable_char(str[i]))
+            return false;
+    return true;
+}
+
 bool is_hex_string(const char* str) {
     if (str == NULL || str[0] == CHARS_NULL) return false;
     for (int i = 0; str[i] != CHARS_NULL; i++)
