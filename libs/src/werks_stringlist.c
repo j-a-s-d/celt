@@ -28,7 +28,8 @@ static inline void reset_dimensions(werks_stringlist_dt* const sl, ssize_t initi
 }
 
 werks_stringlist_dt* werks_stringlist_create(ssize_t initial_capacity) {
-    if (initial_capacity <= 0) return NULL;
+    if (initial_capacity < 0) return NULL;
+    if (initial_capacity == 0) initial_capacity = WERKS_STRINGLIST_INITIAL_CAPACITY;
     RET_MALLOC(werks_stringlist_dt, {
         result->strings = TYPE_MALLOC(char*, initial_capacity);
         if (result->strings == NULL) {

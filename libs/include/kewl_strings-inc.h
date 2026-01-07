@@ -199,6 +199,9 @@ int decode_utf8_escape(const char* str, char* out);
 
 // MUTATION
 
+// Unescape single characters from the provided string. Note that multiple character escapes like Octal (\nnn), Hex (\xnn), etc, are not unscaped.
+char* unescape_single_chars(const char* src);
+
 char* strreverse(char* str);
 char* to_lower_case(const char* str);
 char* to_upper_case(const char* str);

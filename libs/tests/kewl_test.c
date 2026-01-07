@@ -710,6 +710,11 @@ static inline void test_str_functions() {
     Tests.run("strreverse xxcc", strcmp(tt, "XXCC") == 0);
     free(tt);
     Tests.run("strreverse NULL", strreverse(NULL) == NULL);
+    Tests.run("unescape_single_chars NULL", unescape_single_chars(NULL) == NULL);
+    __auto char* nstr = unescape_single_chars("\\sHello\\sWorld\\s");
+    Tests.run("unescape_single_chars nstr", streq(nstr, " Hello World "));
+    __auto char* mstr = unescape_single_chars("Hello\\sWorld\\u0021");
+    Tests.run("unescape_single_chars mstr", streq(mstr, "Hello World\\u0021"));
     Tests.run("treat_chars s2", streq(s2, "ccXX") && treat_chars(s2, strlen(s2), char_treater) && streq(s2, "CCXX"));
     Tests.run("treat_chars s2 NULL", !treat_chars(s2, strlen(s2), NULL));
     Tests.run("treat_chars s2 0 s2", !treat_chars(s2, 0, char_treater));

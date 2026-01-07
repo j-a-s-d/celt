@@ -41,6 +41,10 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 07-jan-2026 -- *20260107L*
+	- [KeWL] added `unescape_single_chars`
+	- [WeRKS] added `werks_stringlist_delete_first`
+	- other minor adjustments
 * 06-jan-2026 -- *20260106L*
 	- [KeWL] added `is_ascii_readable_char` and `is_ascii_readable_string`
 * 05-jan-2026 -- *20260105L*

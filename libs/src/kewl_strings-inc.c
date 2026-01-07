@@ -165,6 +165,42 @@ char* remove_char(const char* str, char chr) {
     return result;
 }
 
+char* unescape_single_chars(const char* src) {
+    if (src == NULL) return NULL;
+    size_t idx = 0;
+    RET_MALLOC_SIZE(char, strlen(src) + 1, {
+        while (*src) {
+            if (*src == '\\') {
+                src++; // move past the backslash
+                switch (*src) {
+                    case 's': result[idx] = CHARS_SPACE; break; // space
+                    case 't': result[idx] = CHARS_TAB; break; // horizontal tab
+                    case 'n': result[idx] = CHARS_LF; break; // newline
+                    case 'r': result[idx] = CHARS_CR; break; // carriage return
+                    case 'a': result[idx] = '\a'; break; // audible bell
+                    case 'b': result[idx] = '\b'; break; // backspace
+                    case 'v': result[idx] = '\v'; break; // vertical tab
+                    case 'f': result[idx] = '\f'; break; // form feed
+                    case '\\': result[idx] = CHARS_BACKSLASH; break; // backslash
+                    case '\"': result[idx] = CHARS_QUOTE; break; // double quote
+                    case '\'': result[idx] = CHARS_APOSTROPHE; break; // single quote
+                    case '?': result[idx] = CHARS_QUESTION; break; // question mark
+                    case '0': result[idx] = CHARS_NULL; break; // null character
+                    default:
+                        result[idx++] = CHARS_BACKSLASH;
+                        result[idx] = *src;
+                        break;
+                }
+            } else
+                result[idx] = *src;
+            src++;
+            idx++;
+        }
+        result[idx] = CHARS_NULL;
+        result = realloc(result, idx + 1);
+    });
+}
+
 char* strreverse(char* str) {
     if (assigned(str)) {
         size_t len = strlen(str), i, j;

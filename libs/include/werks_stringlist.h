@@ -85,6 +85,9 @@ bool werks_stringlist_formatted_prepend(werks_stringlist_dt* sl, const char* fmt
 
 void werks_stringlist_clear(werks_stringlist_dt* sl);
 bool werks_stringlist_delete(werks_stringlist_dt* sl, ssize_t index);
+static inline bool werks_stringlist_delete_first(werks_stringlist_dt* sl) {
+    return werks_stringlist_delete(sl, 0);
+}
 bool werks_stringlist_delete_last(werks_stringlist_dt* sl);
 bool werks_stringlist_delete_from_to(werks_stringlist_dt* sl, ssize_t from_index, ssize_t to_index);
 bool werks_stringlist_drop_last(werks_stringlist_dt* sl, ssize_t amount);
