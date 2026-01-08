@@ -166,6 +166,8 @@ double local_hms_to_utc_decimal_hours(int local_hours, int local_minutes, int lo
  */
 void utc_decimal_hours_to_local_hms(double utc_decimal_hour, double gmt_offset, int result[3], int* day_shift);
 
+// DATETIME
+
 /**
  * datetime_dt structure.
  */
@@ -294,6 +296,21 @@ static inline bool is_leap_year(int year) {
  * Function to determine the amount of days in a month.
  */
 int get_days_in_month(int year, int month);
+
+/**
+ * Function to determine the absolute amount of days between two time_t dates. On error it returns -1.
+ */
+long get_days_between_time_t(time_t t1, time_t t2);
+
+/**
+ * Function to determine the absolute amount of days between two ymd dates. On error it returns -1.
+ */
+long get_days_between_ymd(int y1, int m1, int d1, int y2, int m2, int d2);
+
+/**
+ * Function to determine the absolute amount of days between two datetimes. On error it returns -1.
+ */
+long get_days_between_datetime(datetime_dt* start, datetime_dt* end);
 
 /**
  * Function to check for length and format of a ##/##/#### string and return the used separator. It returns '\0' if it is not validated.

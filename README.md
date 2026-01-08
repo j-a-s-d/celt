@@ -10,7 +10,7 @@ C eXTRA LiBRARiES & TOOLS
 
 ## LIBRARIES
 
-An opinionated mashup of decades of c code (with 2000+ test cases and 0 memory leaks/invalid memory accesses) structured in a bunch of libraries mostly for c99+, mostly for linux, mostly for gcc and clang, which doesn't use any external dependency (except indicated) not even libm/math.h (but it's compatible of course).
+An opinionated mashup of decades of c code (with 2100+ test cases and 0 memory leaks/invalid memory accesses) structured in a bunch of libraries mostly for c99+, mostly for linux, mostly for gcc and clang, which doesn't use any external dependency (except indicated) not even libm/math.h (but it's compatible of course).
 In all of this libraries, name casing is snake, data types are suffixed as _dt and function types (such as callback types) are suffixed as _fn.
 
 * [`Ce`](libs/docs/ce.md) *mostly c89+ (plus some c99+ typedefs), for most compilers, only headers with macros and typedefs*
@@ -41,6 +41,8 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 08-jan-2026 -- *20260108L*
+	- [KeWL] added `get_days_between_time_t`, `get_days_between_ymd` and `get_days_between_datetime`
 * 07-jan-2026 -- *20260107L*
 	- [KeWL] added `unescape_single_chars`
 	- [WeRKS] added `werks_stringlist_delete_first`

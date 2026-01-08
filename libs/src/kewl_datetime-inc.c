@@ -293,6 +293,36 @@ elapsed_time_dt get_datetime_elapsed_time(datetime_dt* start, datetime_dt* end) 
     return DEFAULT_ELAPSED_TIME;
 }
 
+long get_days_between_time_t(time_t t1, time_t t2) {
+    double seconds = difftime(t2, t1);
+    return labs((long)double_round(seconds / (24 * 60 * 60)));
+}
+
+long get_days_between_ymd(int y1, int m1, int d1, int y2, int m2, int d2) {
+    // initialize structs tm (months are 0-11, years are years since 1900)
+    struct tm date1 = {0};
+    date1.tm_year = y1 - 1900;
+    date1.tm_mon = m1 - 1;
+    date1.tm_mday = d1;
+    struct tm date2 = {0};
+    date2.tm_year = y2 - 1900;
+    date2.tm_mon = m2 - 1;
+    date2.tm_mday = d2;
+    // convert to time_t
+    time_t t1 = mktime(&date1);
+    time_t t2 = mktime(&date2);
+    return t1 == -1 || t2 == -1 ? -1 : get_days_between_time_t(t1, t2);
+}
+
+long get_days_between_datetime(datetime_dt* start, datetime_dt* end) {
+    if (both_assigned(start, end)) {
+        time_t tstart = datetime_to_time_t(start);
+        time_t tend = datetime_to_time_t(end);
+        return get_days_between_time_t(tstart, tend);
+    }
+    return -1;
+}
+
 char validate_ddmmyyyy_date_string_format(const char* text) {
     char result = CHARS_NULL;
     if (assigned(text) && strlen(text) == 10) {

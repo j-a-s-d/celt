@@ -398,6 +398,12 @@ static inline void test_datetime_utilities() {
     Tests.run("validate_yyyymmdd_date_string_format NO diff", tmpc == CHARS_NULL);
     tmpc = validate_yyyymmdd_date_string_format("0011-22-33");
     Tests.run("validate_yyyymmdd_date_string_format YES", tmpc == CHARS_MINUS);
+    long dbw = get_days_between_ymd(2026, 1, 7, 2026, 1, 6);
+    Tests.run("get_days_between_ymd newer", dbw == 1);
+    dbw = get_days_between_ymd(2025, 1, 7, 2026, 1, 6);
+    Tests.run("get_days_between_ymd older", dbw == 364);
+    dbw = get_days_between_ymd(2026, 1, 7, 2026, 1, 7);
+    Tests.run("get_days_between_ymd same", dbw == 0);
 }
 
 static inline void test_strhashset() {
