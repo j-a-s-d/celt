@@ -41,6 +41,9 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 18-jan-2026 -- *20260118L*
+	- [KeWL] added `is_circular_point_before`, `bool_to_int_char`, `is_uppercase_char`, `is_lowercase_char`, `is_digit_char`, `is_uppercase_string` and `is_lowercase_string`
+	- other minor adjustments
 * 08-jan-2026 -- *20260108L*
 	- [KeWL] added `get_days_between_time_t`, `get_days_between_ymd` and `get_days_between_datetime`
 * 07-jan-2026 -- *20260107L*

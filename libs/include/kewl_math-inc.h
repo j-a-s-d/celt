@@ -136,6 +136,13 @@ static inline double get_circular_offset_percentage_between(double point, double
     return (get_circular_distance(start, point) / get_circular_distance(start, end)) * 100.0;
 }
 
+/**
+ * Checks if 'point1' angle is before 'point2'.
+ */
+static inline bool is_circular_point_before(double point1, double point2) {
+    return get_circular_shortest_offset(point1, point2) > 0.0;
+}
+
 // STATISTICS
 
 /**

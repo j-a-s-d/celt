@@ -43,6 +43,8 @@ bool is_ascii_readable_string(const char* str);
 bool is_hex_string(const char* str);
 bool is_alphanumeric_string(const char* str);
 bool is_numeric_string(const char* str);
+bool is_uppercase_string(const char* str);
+bool is_lowercase_string(const char* str);
 
 static inline bool streq(const char* a, const char* b) {
     return both_assigned(a, b) && strcmp(a, b) == 0;
@@ -62,15 +64,27 @@ ssize_t get_utf8_string_length(const char* str);
 
 // CHARACTERS
 
-static inline bool is_ascii_char(const char chr) {
+static inline bool is_ascii_char(char chr) {
     return (unsigned char)chr <= 127;
 }
 
-static inline bool is_ascii_readable_char(const char chr) {
+static inline bool is_ascii_readable_char(char chr) {
     return (chr >= 32 && chr <= 126);
 }
 
-static inline bool is_hex_char(const char chr) {
+static inline bool is_uppercase_char(char chr) {
+    return (chr >= 'A' && chr <= 'Z');
+}
+
+static inline bool is_lowercase_char(char chr) {
+    return (chr >= 'a' && chr <= 'f');
+}
+
+static inline bool is_digit_char(char chr) {
+    return (chr >= '0' && chr <= '9');
+}
+
+static inline bool is_hex_char(char chr) {
     return (chr >= '0' && chr <= '9') ||
            (chr >= 'a' && chr <= 'f') ||
            (chr >= 'A' && chr <= 'F');
@@ -100,6 +114,10 @@ static inline bool treat_chars(char* str, ssize_t limit, trt_char_fn treater) {
 // CONVERSION
 
 #define strchar(value) ((char[2]){value, CHARS_NULL})
+
+static inline char bool_to_int_char(bool value) {
+    return value ? CHARS_NUMBER_ONE : CHARS_NUMBER_ZERO;
+}
 
 static inline const char* strbool(bool value) {
     return value ? "true" : "false";
@@ -354,13 +372,13 @@ static inline bool copy_substring(const char* src, char* dst, int pos, int len) 
     return false;
 }
 
-bool parse_xyz_shorts_string(const char* text, const char separator, short* x, short* y, short* z);
-bool parse_xyz_ints_string(const char* text, const char separator, int* x, int* y, int* z);
-bool parse_xyz_longs_string(const char* text, const char separator, long* x, long* y, long* z);
-bool parse_xyz_long_longs_string(const char* text, const char separator, long long* x, long long* y, long long* z);
-bool parse_xyz_floats_string(const char* text, const char separator, float* x, float* y, float* z);
-bool parse_xyz_doubles_string(const char* text, const char separator, double* x, double* y, double* z);
-bool parse_xyz_long_doubles_string(const char* text, const char separator, long double* x, long double* y, long double* z);
+bool parse_xyz_shorts_string(const char* text, char separator, short* x, short* y, short* z);
+bool parse_xyz_ints_string(const char* text, char separator, int* x, int* y, int* z);
+bool parse_xyz_longs_string(const char* text, char separator, long* x, long* y, long* z);
+bool parse_xyz_long_longs_string(const char* text, char separator, long long* x, long long* y, long long* z);
+bool parse_xyz_floats_string(const char* text, char separator, float* x, float* y, float* z);
+bool parse_xyz_doubles_string(const char* text, char separator, double* x, double* y, double* z);
+bool parse_xyz_long_doubles_string(const char* text, char separator, long double* x, long double* y, long double* z);
 
 // Returns the separator char after validating a xx yy format of numeric pairs (of 2 integer digits each), otherwise returns '\0'. Useful for hh:mm, dd/mm, etc.
 char validate_numeric_xxcyy_string(const char* text);

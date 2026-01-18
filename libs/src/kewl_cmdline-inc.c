@@ -12,7 +12,7 @@ unit_container(cmdline_, {
     size_t command_number;
 }) = {0, 0};
 
-static cmdline_data_dt* cmdline_parse_input(const char* line) {
+cmdline_data_dt* cmdline_parse_input(const char* line) {
     char temp[KEWL_CMDLINE_MAX_LINE_SIZE];
     strcpy(temp, line);
     char* command = strtok(temp, STRINGS_SPACE);

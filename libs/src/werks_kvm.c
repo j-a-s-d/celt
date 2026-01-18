@@ -8,6 +8,7 @@ struct WERKS_KVM_ALIGNMENT werks_kvm_dt {
     kewl_component_dt* component_instance;
     werks_kvm_dt* parent;
     bool packable;
+    // options
     char* eol_replacement;
     werks_kvm_untyped_treatment_dt untyped_treatment;
     // arrays
@@ -2062,8 +2063,12 @@ static inline bool deserialize_item_into_map(werks_kvm_dt** const map, const cha
     bool result = false;
     string_key_value_dt* kv = string_key_value_parse(item, WERKS_KVM_KEYVALUE_SEPARATOR);
     ON_WERKS_KVM_TYPE_VAL_DO(STRINGS_PARENTHESES_OPEN WERKS_KVM_TYPE_NAME_KVM STRINGS_PARENTHESES_CLOSE, {
+        const char* inherited_eol = werks_kvm_get_eol_replacement(*map);
+        werks_kvm_untyped_treatment_dt inherited_behaviour = werks_kvm_get_untyped_treatment(*map);
         result = werks_kvm_set_kvm(*map, kv->key);
         *map = werks_kvm_get_kvm(*map, kv->key);
+        werks_kvm_set_untyped_treatment(*map, inherited_behaviour);
+        werks_kvm_set_eol_replacement(*map, inherited_eol);
     }) else ON_WERKS_KVM_TYPE_VAL_DO(STRINGS_PARENTHESES_OPEN WERKS_KVM_TYPE_NAME_BUFFER STRINGS_PARENTHESES_CLOSE, {
         uint8_t* bytes = NULL;
         ssize_t bytes_len = 0;

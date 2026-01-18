@@ -16,11 +16,11 @@
 #endif
 
 #ifndef KEWL_CMDLINE_MAX_PARAMS
-    #define KEWL_CMDLINE_MAX_PARAMS 64
+    #define KEWL_CMDLINE_MAX_PARAMS 128
 #endif
 
 #ifndef KEWL_CMDLINE_MAX_LINE_SIZE
-    #define KEWL_CMDLINE_MAX_LINE_SIZE 256
+    #define KEWL_CMDLINE_MAX_LINE_SIZE 512
 #endif
 
 typedef struct KEWL_CMDLINE_ALIGNMENT {
@@ -32,6 +32,9 @@ typedef struct KEWL_CMDLINE_ALIGNMENT {
 
 typedef bool (*cmdline_prompt_display_handler_fn)(size_t line_number);
 typedef bool (*cmdline_command_data_handler_fn)(cmdline_data_dt* cmd_data);
+
+// NOTE: this is published for cases where it is required to parse a command manually.
+cmdline_data_dt* cmdline_parse_input(const char* line);
 
 // NOTE: this is required for cases where "free_commands" is false (ex. history keeping)
 void cmdline_free_command_data(cmdline_data_dt* cmd_data);

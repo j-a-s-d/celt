@@ -81,6 +81,26 @@ bool is_numeric_string(const char* str) {
     return digit_found; // Must have at least one digit
 }
 
+bool is_uppercase_string(const char* str) {
+    if (str == NULL) return false;
+    while (*str) {
+        if (is_lowercase_char(*str))
+            return false;
+        str++;
+    }
+    return true;
+}
+
+bool is_lowercase_string(const char* str) {
+    if (str == NULL) return false;
+    while (*str) {
+        if (is_uppercase_char(*str))
+            return false;
+        str++;
+    }
+    return true;
+}
+
 bool contains_char(const char* str, char chr) {
     if (assigned(str))
         while (*str != CHARS_NULL) {
