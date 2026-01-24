@@ -235,6 +235,7 @@ bool werks_stringlist_suffix(werks_stringlist_dt* sl, ssize_t index, const char*
 
 // separated-values
 
+char* werks_stringlist_consolidate(werks_stringlist_dt* sl);
 char* werks_stringlist_join(werks_stringlist_dt* sl, const char* separator);
 werks_stringlist_dt* werks_stringlist_split(const char* value, const char* separator);
 char* werks_stringlist_write_to_string(werks_stringlist_dt* sl, char separator);

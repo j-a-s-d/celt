@@ -877,6 +877,15 @@ static inline void test_str_functions() {
     Tests.run("string_array_contains bar YES", string_array_contains(size, arr, "bar"));
     Tests.run("string_array_contains inexistent NO", !string_array_contains(size, arr, "no"));
     Tests.run("string_array_contains NULL NO", !string_array_contains(size, arr, NULL));
+    tmp = string_array_consolidate_with_sentinel(arr, 100);
+    Tests.run("string_array_consolidate_with_sentinel", strcmp(tmp, "foobarbazquxbar") == 0);
+    free(tmp);
+    tmp = string_array_consolidate(size, arr);
+    Tests.run("string_array_consolidate", strcmp(tmp, "foobarbazquxbar") == 0);
+    free(tmp);
+    tmp = string_array_consolidate_range(size, arr, 1, 3);
+    Tests.run("string_array_consolidate_range", strcmp(tmp, "barbazqux") == 0);
+    free(tmp);
     tmp = string_array_join_range(size, arr, 1, 3, "--");
     Tests.run("string_array_join_range", strcmp(tmp, "bar--baz--qux") == 0);
     free(tmp);

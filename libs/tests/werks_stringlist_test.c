@@ -80,9 +80,13 @@ int main(void) {
     Tests.run("werks_stringlist_get 5", streq(werks_stringlist_get(sl, 5), "literal4"));
     Tests.run("werks_stringlist_delete 5", werks_stringlist_delete(sl, 5));
     Tests.run("werks_stringlist_get_size == 5", werks_stringlist_get_size(sl) == 5);
+    char* consolidated = werks_stringlist_consolidate(sl);
+    Tests.run("werks_stringlist_consolidate", assigned(consolidated));
+    Tests.print("consolidated: %s\n", consolidated);
+    free(consolidated);
     char* joined = werks_stringlist_join(sl, ";");
     Tests.run("werks_stringlist_join", assigned(joined));
-    Tests.print("%s\n", joined);
+    Tests.print("joined: %s\n", joined);
     werks_stringlist_dt* slsp = werks_stringlist_split(joined, ";");
     free(joined);
     Tests.run("werks_stringlist_get_size slsp == 5", werks_stringlist_get_size(slsp) == 5);

@@ -41,6 +41,9 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 24-jan-2026 -- *20260124L*
+	- [KeWL] added `string_array_consolidate_range`, `string_array_consolidate_with_sentinel` and `string_array_consolidate`
+	- [WeRKS] added `werks_stringlist_consolidate`
 * 18-jan-2026 -- *20260118L*
 	- [KeWL] added `is_circular_point_before`, `bool_to_int_char`, `is_uppercase_char`, `is_lowercase_char`, `is_digit_char`, `is_uppercase_string` and `is_lowercase_string`
 	- other minor adjustments

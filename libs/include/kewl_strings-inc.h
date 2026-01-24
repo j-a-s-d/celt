@@ -241,6 +241,14 @@ ssize_t string_array_find_last(ssize_t size, const char* array[], const char* ta
 static inline bool string_array_contains(ssize_t size, const char* array[], const char* target) {
     return string_array_find_first(size, array, target) > -1;
 }
+char* string_array_consolidate_range(ssize_t size, const char* array[], ssize_t from, ssize_t to);
+static inline char* string_array_consolidate(ssize_t size, const char* array[]) {
+    return string_array_consolidate_range(size, array, 0, size - 1);
+}
+static inline char* string_array_consolidate_with_sentinel(const char* array[], ssize_t limit) {
+    ssize_t size = string_array_find_null_sentinel((const char**)array, limit);
+    return size > 0 ? string_array_consolidate_range(size, array, 0, size - 1) : NULL;
+}
 char* string_array_join_range(ssize_t size, const char* array[], ssize_t from, ssize_t to, const char* separator);
 static inline char* string_array_join(ssize_t size, const char* array[], const char* separator) {
     return string_array_join_range(size, array, 0, size - 1, separator);

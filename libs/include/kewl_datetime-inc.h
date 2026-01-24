@@ -269,7 +269,7 @@ static inline bool equal_datetimes(datetime_dt* dt1, datetime_dt* dt2) {
 }
 
 /**
- * Function to determine if the second datetime_dt instance has a lower value than the first one.
+ * Function to determine if the second datetime_dt instance is newer than the first one.
  */
 bool is_newer_datetime(datetime_dt* dt1, datetime_dt* dt2);
 

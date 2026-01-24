@@ -851,15 +851,33 @@ char* string_array_join_range(ssize_t size, const char* array[], ssize_t from, s
     ssize_t sep_length = strlen(sep);
     ssize_t total_length = 0;
     for (int i = from; i < to + 1; i++) {
-        total_length += strlen(array[i]);
-        if (i < to) total_length += sep_length;
+        if (assigned(array[i])) {
+            total_length += strlen(array[i]);
+            if (i < to) total_length += sep_length;
+        }
     }
     RET_MALLOC_SIZE(char, total_length + 1, {
         result[0] = CHARS_NULL;
         for (ssize_t i = from; i < to + 1; i++) {
-            strcat(result, array[i]);
-            if (i < to) strcat(result, sep);
+            if (assigned(array[i])) {
+                strcat(result, array[i]);
+                if (i < to) strcat(result, sep);
+            }
         }
+    });
+}
+
+char* string_array_consolidate_range(ssize_t size, const char* array[], ssize_t from, ssize_t to) {
+    if (size <= 0 || array == NULL || from > to || from < 0 || to >= size) return NULL;
+    ssize_t total_length = 0;
+    for (int i = from; i < to + 1; i++)
+        if (assigned(array[i]))
+            total_length += strlen(array[i]);
+    RET_MALLOC_SIZE(char, total_length + 1, {
+        result[0] = CHARS_NULL;
+        for (ssize_t i = from; i < to + 1; i++)
+            if (assigned(array[i]))
+                strcat(result, array[i]);
     });
 }
 

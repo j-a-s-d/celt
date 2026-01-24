@@ -538,6 +538,12 @@ bool werks_stringlist_reverse(werks_stringlist_dt* const sl) {
     return result;
 }
 
+char* werks_stringlist_consolidate(werks_stringlist_dt* const sl) {
+    return is_dead(sl) ? NULL : string_array_consolidate_range(
+        sl->size, (const char**)sl->strings, 0, sl->size - 1
+    );
+}
+
 char* werks_stringlist_join(werks_stringlist_dt* const sl, const char* separator) {
     return is_dead(sl) ? NULL : string_array_join_range(
         sl->size, (const char**)sl->strings, 0, sl->size - 1, separator
