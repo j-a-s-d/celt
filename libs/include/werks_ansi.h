@@ -17,6 +17,10 @@ extern "C" {
 #define WERKS_ANSI
 
 #define ANSI_ESCAPE "\x1b" // hex for octal: \033
+#define ANSI_CODE_CURSOR_REPOSITION_FORMAT ANSI_ESCAPE "[%d;%dH"
+#define ANSI_CODE_CURSOR_POSITION ANSI_ESCAPE "[6n"
+#define ANSI_CODE_CURSOR_HIDE ANSI_ESCAPE "[?25l"
+#define ANSI_CODE_CURSOR_SHOW ANSI_ESCAPE "[?25h"
 #define ANSI_CODE_RESET ANSI_ESCAPE "[0m"
 #define ANSI_CODE_BOLD ANSI_ESCAPE "[1m"
 #define ANSI_CODE_UNDERLINED ANSI_ESCAPE "[4m"
@@ -204,4 +208,5 @@ static inline char* ansi_bg_bright_white(const char* str) {
 
 bool has_ansi_codes(const char* input);
 char* strip_ansi_codes(const char* input);
+void printf_at(int row, int col, const char* format, ...);
 

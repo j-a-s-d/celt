@@ -41,6 +41,9 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 30-jan-2026 -- *20260130L*
+	- [GeM] added `get_terminal_cursor_position`
+	- [WeRKS] added `ANSI_CODE_CURSOR_REPOSITION_FORMAT ANSI_ESCAPE`, `ANSI_CODE_CURSOR_POSITION ANSI_ESCAPE`, `ANSI_CODE_CURSOR_HIDE ANSI_ESCAPE`, `ANSI_CODE_CURSOR_SHOW ANSI_ESCAPE` and `printf_at`
 * 24-jan-2026 -- *20260124L*
 	- [KeWL] added `string_array_consolidate_range`, `string_array_consolidate_with_sentinel` and `string_array_consolidate`
 	- [WeRKS] added `werks_stringlist_consolidate`

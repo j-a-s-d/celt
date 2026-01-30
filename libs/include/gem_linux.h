@@ -24,6 +24,37 @@ extern "C" {
 
 #include <stdlib.h>
 #include <unistd.h>
+#include <termios.h>
+
+/**
+ * Returns true if the function succeeded in obtaining the current
+ * row and column numbers from the current interactive terminal.
+ */
+static inline bool get_terminal_cursor_position(int* row, int* col) {
+    // fail if there is no interactive terminal available
+    if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO)) return false;
+    // save terminal
+    struct termios oldt, newt;
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    // disable ECHO + canonical mode
+    newt.c_lflag &= ~(ICANON | ECHO);
+    //newt.c_cc[VMIN] = 1; // read 1 char at a time
+    //newt.c_cc[VTIME] = 1; // 0.1s timeout
+    tcsetattr(STDIN_FILENO, TCSADRAIN, &newt);
+    // query (no echo visible)
+    printf("\x1b[6n"/*ANSI_CODE_CURSOR_POSITION*/);
+    fflush(stdout);
+    // fill buffer
+    char buf[32];
+    int bytes = read(STDIN_FILENO, buf, sizeof(buf) - 1);
+    buf[bytes] = '\0'/*CHARS_NULL*/;
+    // restore terminal
+    tcsetattr(STDIN_FILENO, TCSAFLUSH, &oldt);
+    fflush(stdout);
+    // read row;col
+    return bytes > 5 && sscanf(buf + 2, "%d;%d", row, col) == 2;
+}
 
 /**
  * Returns true if running with root privileges (effective UID == 0),
@@ -52,7 +83,7 @@ static inline bool under_sudo(void) {
    Returns the byte read on success, or -1 on failure (check errno).
    This function requires root privileges or the CAP_SYS_RAWIO capability to succeed.
    Works on Linux x86 systems. */
-int read_port_byte(unsigned short port) {
+static inline int read_port_byte(unsigned short port) {
     if (ioperm(port, 1, 1) != 0) // enable access to the port
         return -1;
     unsigned char value;

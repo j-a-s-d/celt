@@ -50,3 +50,12 @@ char* strip_ansi_codes(const char* input) {
     return output;
 }
 
+void printf_at(int row, int col, const char* format, ...) {
+    va_list args;
+    va_start(args, format);
+    printf(ANSI_CODE_CURSOR_REPOSITION_FORMAT, row, col);
+    vprintf(format, args);
+    va_end(args);
+    fflush(stdout);
+}
+
