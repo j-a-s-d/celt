@@ -664,6 +664,8 @@ int main(void) {
     Tests.run("werks_stringlist_formatted_set skz 0 NO 3", !werks_stringlist_formatted_set(skz, 0, NULL, "TEST"));
     Tests.run("werks_stringlist_formatted_set skz 0 YES", werks_stringlist_formatted_set(skz, 0, "<[%s]>", "TEST"));
     Tests.run("werks_stringlist_get 0", streq(werks_stringlist_get(skz, 0), "<[TEST]>"));
+    Tests.run("werks_stringlist_formatted_insert YES", werks_stringlist_formatted_insert(skz, 0, "[<%s>]", "testing"));
+    Tests.run("werks_stringlist_get 0", streq(werks_stringlist_get(skz, 0), "[<testing>]"));
     werks_stringlist_destroy(skz);
     werks_stringlist_dt* scr = werks_stringlist_make();
     werks_stringlist_read_from_string(scr, "Hello World,Test,Hello Mundo,Hola,Testing,Hey", ",");

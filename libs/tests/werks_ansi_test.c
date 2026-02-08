@@ -7,8 +7,8 @@ CE_MESSAGE("compile with: -Wall -Wfatal-errors -I../include -I../src -o ../bin/w
 
 int main(void) {
     Tests.begin("WeRKS ANSI");
-    char* bs = ansi_blue("hello");
-    char* bbs = ansi_bold(bs);
+    char* bs = ansi_blue(strdup("hello"));
+    char* bbs = ansi_bold(strdup(bs));
     Tests.run("ANSI ROUTINES", streq(bbs, ANSI_CODE_BOLD ANSI_CODE_BLUE "hello" ANSI_CODE_RESET ANSI_CODE_RESET));
     Tests.print("%s\n", bbs);
     free(bs);

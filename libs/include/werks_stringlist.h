@@ -80,6 +80,7 @@ bool werks_stringlist_include_all(werks_stringlist_dt* sl, werks_stringlist_dt* 
 bool werks_stringlist_include(werks_stringlist_dt* sl, const char* value);
 bool werks_stringlist_formatted_append(werks_stringlist_dt* sl, const char* fmt, ...);
 bool werks_stringlist_formatted_prepend(werks_stringlist_dt* sl, const char* fmt, ...);
+bool werks_stringlist_formatted_insert(werks_stringlist_dt* sl, ssize_t index, const char* fmt, ...);
 
 // deletion
 

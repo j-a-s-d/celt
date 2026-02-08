@@ -58,152 +58,152 @@ extern "C" {
 #define ANSI_CODE_BG_BRIGHT_CYAN ANSI_ESCAPE "[106m"
 #define ANSI_CODE_BG_BRIGHT_WHITE ANSI_ESCAPE "[107m"
 
-static inline char* ansi_reset_before(const char* str) {
-    return strprepend(strdup(str), ANSI_CODE_RESET);
+static inline char* ansi_reset_before(char* str) {
+    return strprepend(str, ANSI_CODE_RESET);
 }
 
-static inline char* ansi_reset_after(const char* str) {
-    return strappend(strdup(str), ANSI_CODE_RESET);
+static inline char* ansi_reset_after(char* str) {
+    return strappend(str, ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bold(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BOLD), ANSI_CODE_RESET);
+static inline char* ansi_bold(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BOLD), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_underlined(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_UNDERLINED), ANSI_CODE_RESET);
+static inline char* ansi_underlined(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_UNDERLINED), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_reversed(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_REVERSED), ANSI_CODE_RESET);
+static inline char* ansi_reversed(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_REVERSED), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_black(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BLACK), ANSI_CODE_RESET);
+static inline char* ansi_black(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BLACK), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_red(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_RED), ANSI_CODE_RESET);
+static inline char* ansi_red(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_RED), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_green(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_GREEN), ANSI_CODE_RESET);
+static inline char* ansi_green(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_GREEN), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_yellow(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_YELLOW), ANSI_CODE_RESET);
+static inline char* ansi_yellow(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_YELLOW), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_blue(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BLUE), ANSI_CODE_RESET);
+static inline char* ansi_blue(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BLUE), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_magenta(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_MAGENTA), ANSI_CODE_RESET);
+static inline char* ansi_magenta(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_MAGENTA), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_cyan(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_CYAN), ANSI_CODE_RESET);
+static inline char* ansi_cyan(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_CYAN), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_white(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_WHITE), ANSI_CODE_RESET);
+static inline char* ansi_white(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_WHITE), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bright_black(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BRIGHT_BLACK), ANSI_CODE_RESET);
+static inline char* ansi_bright_black(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BRIGHT_BLACK), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bright_red(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BRIGHT_RED), ANSI_CODE_RESET);
+static inline char* ansi_bright_red(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BRIGHT_RED), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bright_green(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BRIGHT_GREEN), ANSI_CODE_RESET);
+static inline char* ansi_bright_green(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BRIGHT_GREEN), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bright_yellow(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BRIGHT_YELLOW), ANSI_CODE_RESET);
+static inline char* ansi_bright_yellow(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BRIGHT_YELLOW), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bright_blue(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BRIGHT_BLUE), ANSI_CODE_RESET);
+static inline char* ansi_bright_blue(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BRIGHT_BLUE), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bright_magenta(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BRIGHT_MAGENTA), ANSI_CODE_RESET);
+static inline char* ansi_bright_magenta(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BRIGHT_MAGENTA), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bright_cyan(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BRIGHT_CYAN), ANSI_CODE_RESET);
+static inline char* ansi_bright_cyan(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BRIGHT_CYAN), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bright_white(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BRIGHT_WHITE), ANSI_CODE_RESET);
+static inline char* ansi_bright_white(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BRIGHT_WHITE), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bg_black(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BG_BLACK), ANSI_CODE_RESET);
+static inline char* ansi_bg_black(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BG_BLACK), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bg_red(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BG_RED), ANSI_CODE_RESET);
+static inline char* ansi_bg_red(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BG_RED), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bg_green(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BG_GREEN), ANSI_CODE_RESET);
+static inline char* ansi_bg_green(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BG_GREEN), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bg_yellow(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BG_YELLOW), ANSI_CODE_RESET);
+static inline char* ansi_bg_yellow(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BG_YELLOW), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bg_blue(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BG_BLUE), ANSI_CODE_RESET);
+static inline char* ansi_bg_blue(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BG_BLUE), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bg_magenta(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BG_MAGENTA), ANSI_CODE_RESET);
+static inline char* ansi_bg_magenta(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BG_MAGENTA), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bg_cyan(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BG_CYAN), ANSI_CODE_RESET);
+static inline char* ansi_bg_cyan(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BG_CYAN), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bg_white(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BG_WHITE), ANSI_CODE_RESET);
+static inline char* ansi_bg_white(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BG_WHITE), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bg_bright_black(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BG_BRIGHT_BLACK), ANSI_CODE_RESET);
+static inline char* ansi_bg_bright_black(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BG_BRIGHT_BLACK), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bg_bright_red(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BG_BRIGHT_RED), ANSI_CODE_RESET);
+static inline char* ansi_bg_bright_red(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BG_BRIGHT_RED), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bg_bright_green(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BG_BRIGHT_GREEN), ANSI_CODE_RESET);
+static inline char* ansi_bg_bright_green(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BG_BRIGHT_GREEN), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bg_bright_yellow(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BG_BRIGHT_YELLOW), ANSI_CODE_RESET);
+static inline char* ansi_bg_bright_yellow(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BG_BRIGHT_YELLOW), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bg_bright_blue(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BG_BRIGHT_BLUE), ANSI_CODE_RESET);
+static inline char* ansi_bg_bright_blue(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BG_BRIGHT_BLUE), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bg_bright_magenta(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BG_BRIGHT_MAGENTA), ANSI_CODE_RESET);
+static inline char* ansi_bg_bright_magenta(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BG_BRIGHT_MAGENTA), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bg_bright_cyan(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BG_BRIGHT_CYAN), ANSI_CODE_RESET);
+static inline char* ansi_bg_bright_cyan(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BG_BRIGHT_CYAN), ANSI_CODE_RESET);
 }
 
-static inline char* ansi_bg_bright_white(const char* str) {
-    return strappend(strprepend(strdup(str), ANSI_CODE_BG_BRIGHT_WHITE), ANSI_CODE_RESET);
+static inline char* ansi_bg_bright_white(char* str) {
+    return strappend(strprepend(str, ANSI_CODE_BG_BRIGHT_WHITE), ANSI_CODE_RESET);
 }
 
 bool has_ansi_codes(const char* input);

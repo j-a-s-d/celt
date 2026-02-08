@@ -464,6 +464,22 @@ bool werks_stringlist_formatted_prepend(werks_stringlist_dt* const sl, const cha
     return result;
 }
 
+bool werks_stringlist_formatted_insert(werks_stringlist_dt* sl, ssize_t index, const char* fmt, ...) {
+    if (is_dead(sl) || fmt == NULL || index < 0 || index > sl->size || sl->frozen) return false;
+    va_list args;
+    va_start(args, fmt);
+    ssize_t size = get_string_format_size(fmt, args);
+    if (size < 0) {
+        va_end(args);
+        return false; // encoding error
+    }
+    char* value = perform_string_format(size, fmt, args);
+    bool result = insert_string(sl, value, index);
+    va_end(args);
+    ce_free(value);
+    return result;
+}
+
 bool werks_stringlist_swap(werks_stringlist_dt* const sl, ssize_t index1, ssize_t index2) {
     if (is_dead(sl) || is_oob(sl, index1) || is_oob(sl, index2) || sl->frozen) return false;
     char* tmp1 = sl->strings[index1];

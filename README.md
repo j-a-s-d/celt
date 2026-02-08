@@ -41,6 +41,9 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 08-feb-2026 -- *20260208L*
+	- [WeRKS] added `werks_stringlist_formatted_insert`
+	- other minor adjustments
 * 30-jan-2026 -- *20260130L*
 	- [GeM] added `get_terminal_cursor_position`
 	- [WeRKS] added `ANSI_CODE_CURSOR_REPOSITION_FORMAT ANSI_ESCAPE`, `ANSI_CODE_CURSOR_POSITION ANSI_ESCAPE`, `ANSI_CODE_CURSOR_HIDE ANSI_ESCAPE`, `ANSI_CODE_CURSOR_SHOW ANSI_ESCAPE` and `printf_at`
