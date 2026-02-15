@@ -98,7 +98,40 @@ static inline void test_mth_utilities() {
     Tests.run("double_sqrt NO", double_isNaN(double_sqrt(-9.0f)));
     Tests.run("long_double_sqrt YES", (double)long_double_sqrt(9.0L) == 3.0);
     Tests.run("long_double_sqrt NO", long_double_isNaN(long_double_sqrt(-9.0L)));
-
+    Tests.run("float_sin 0", float_sin(0.0f) == 0.0f);
+    Tests.run("float_sin 0.707106", float_equal(float_sin(0.707106f), 0.649636f, 0.00001f));
+    Tests.run("float_sin 1", float_equal(float_sin(1.0f), 0.841471f, 0.00001f));
+    Tests.run("float_cos 0", float_cos(0.0f) == 1.0f);
+    Tests.run("float_cos 0.707106", float_equal(float_cos(0.707106f), 0.760245f, 0.00001f));
+    Tests.run("float_cos 1", float_equal(float_cos(1.0f), 0.540303f, 0.00001f));
+    Tests.run("float_atan 0", float_atan(0.0f) == 0.0f);
+    Tests.run("float_atan 0.707106", float_equal(float_atan(0.707106f), 0.616894f, 0.00001f));
+    Tests.run("float_atan 1", float_equal(float_atan(1.0f), 0.834921f, 0.00001f));
+    float atest = 2.356194; // 135 degrees (quadrant II)
+    Tests.run("float_atan2 2.356194", float_equal(float_atan2(float_sin(atest), float_cos(atest)), atest, 0.05f)); // 2.403332
+    Tests.run("double_sin 0", double_sin(0.0) == 0.0);
+    Tests.run("double_sin 0.707106", double_equal(double_sin(0.707106), 0.649636, 0.00001));
+    Tests.run("double_sin 1", double_equal(double_sin(1.0), 0.841471, 0.00001));
+    Tests.run("double_cos 0", double_cos(0.0) == 1.0);
+    Tests.run("double_cos 0.707106", double_equal(double_cos(0.707106), 0.760245, 0.00001));
+    Tests.run("double_cos 1", double_equal(double_cos(1.0), 0.540303, 0.00001));
+    Tests.run("double_atan 0", double_atan(0.0) == 0.0);
+    Tests.run("double_atan 0.707106", double_equal(double_atan(0.707106), 0.616894, 0.00001));
+    Tests.run("double_atan 1", double_equal(double_atan(1.0), 0.834921, 0.00001));
+    double dtest = 2.356194; // 135 degrees (quadrant II)
+    Tests.run("double_atan2 2.356194", double_equal(double_atan2(double_sin(dtest), double_cos(dtest)), dtest, 0.05f)); // 2.403332
+    Tests.run("long_double_sin 0", long_double_sin(0.0L) == 0.0L);
+    Tests.run("long_double_sin 0.707106", long_double_equal(long_double_sin(0.707106L), 0.649636L, 0.00001L));
+    Tests.run("long_double_sin 1", long_double_equal(long_double_sin(1.0L), 0.841471L, 0.00001L));
+    Tests.run("long_double_cos 0", long_double_cos(0.0L) == 1.0L);
+    Tests.run("long_double_cos 0.707106", long_double_equal(long_double_cos(0.707106L), 0.760245L, 0.00001L));
+    Tests.run("long_double_cos 1", long_double_equal(long_double_cos(1.0L), 0.540303L, 0.00001L));
+    Tests.run("long_double_atan 0", long_double_atan(0.0L) == 0.0L);
+    Tests.run("long_double_atan 0.707106", long_double_equal(long_double_atan(0.707106L), 0.616894L, 0.00001L));
+    Tests.run("long_double_atan 1", long_double_equal(long_double_atan(1.0L), 0.834921L, 0.00001L));
+    long double ltest = 2.356194L; // 135 degrees (quadrant II)
+    Tests.run("long_double_atan2 2.356194", long_double_equal(long_double_atan2(long_double_sin(ltest), long_double_cos(ltest)), ltest, 0.05f)); // 2.403332
+    
     float adcValue = 512.0f; // Example ADC reading
     float voltage = float_interpolate(adcValue, 0.0f, 1023.0f, 0.0f, 5.0f);
     printf("ADC value: %.2f maps to Voltage: %.3f V\n", adcValue, voltage);

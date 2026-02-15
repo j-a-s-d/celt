@@ -32,6 +32,78 @@ double double_sqrt(double x);
 long double long_double_sqrt(long double x);
 
 /**
+ * Calculates the cosine of the given float number.
+ * Analog functionality to: math.h, cosf, -lm.
+ */
+float float_cos(float x);
+
+/**
+ * Calculates the cosine of the given double number.
+ * Analog functionality to: math.h, cos, -lm.
+ */
+double double_cos(double x);
+
+/**
+ * Calculates the cosine of the given long double number.
+ * Analog functionality to: math.h, cosl, -lm.
+ */
+long double long_double_cos(long double x);
+
+/**
+ * Calculates the sine of the given float number.
+ * Analog functionality to: math.h, sinf, -lm.
+ */
+float float_sin(float x);
+
+/**
+ * Calculates the sine of the given double number.
+ * Analog functionality to: math.h, sin, -lm.
+ */
+double double_sin(double x);
+
+/**
+ * Calculates the sine of the given long double number.
+ * Analog functionality to: math.h, sinl, -lm.
+ */
+long double long_double_sin(long double x);
+
+/**
+ * Calculates the calculates the arc tangent (inverse tangent) of the given float number.
+ * Analog functionality to: math.h, atanf, -lm.
+ */
+float float_atan(float z);
+
+/**
+ * Calculates the calculates the arc tangent (inverse tangent) of the given double number.
+ * Analog functionality to: math.h, atan, -lm.
+ */
+double double_atan(double z);
+
+/**
+ * Calculates the calculates the arc tangent (inverse tangent) of the given double number.
+ * Analog functionality to: math.h, atanl, -lm.
+ */
+long double long_double_atan(long double z);
+
+/**
+ * Calculates the four-quadrant inverse tangent of the given point's float coordinates (y, x), returning the angle in [radians] between the positive x-axis and the point.
+ * Analog functionality to: math.h, atan2f, -lm.
+ */
+float float_atan2(float y, float x);
+
+/**
+ * Calculates the four-quadrant inverse tangent of the given point's double coordinates (y, x), returning the angle in [radians] between the positive x-axis and the point.
+ * Analog functionality to: math.h, atan2, -lm.
+ */
+double double_atan2(double y, double x);
+
+/**
+ * Calculates the four-quadrant inverse tangent of the given point's long double coordinates (y, x), returning the angle in [radians] between the positive x-axis and the point.
+ * Analog functionality to: math.h, atan2l, -lm.
+ */
+long double long_double_atan2(long double y, long double x);
+
+/**
  * Translates the value from the input range margins to the output range margins.
  * Returns NAN if input range is invalid in some way: logical equality, arithmetic equality
  * or near-zero check (it accepts a custom epsilon value, for ex. you can use the strictest
@@ -82,6 +154,33 @@ static inline double dms_to_decimal_degrees(int degrees, int minutes, double sec
 }
 
 // GEOMETRY
+
+/**
+ * Normalizes the provided float value to be within -PI and PI.
+ */
+static inline float float_normalize_pi_range(float x) {
+    while (x > VALUE_PI) x -= 2.0 * VALUE_PI;
+    while (x < -VALUE_PI) x += 2.0 * VALUE_PI;
+    return x;
+}
+
+/**
+ * Normalizes the provided double value to be within -PI and PI.
+ */
+static inline double double_normalize_pi_range(double x) {
+    while (x > VALUE_PI) x -= 2.0 * VALUE_PI;
+    while (x < -VALUE_PI) x += 2.0 * VALUE_PI;
+    return x;
+}
+
+/**
+ * Normalizes the provided long double value to be within -PI and PI.
+ */
+static inline long double long_double_normalize_pi_range(long double x) {
+    while (x > VALUE_PI) x -= 2.0 * VALUE_PI;
+    while (x < -VALUE_PI) x += 2.0 * VALUE_PI;
+    return x;
+}
 
 /**
  * Normalizes the angle to be within 0 and 360.

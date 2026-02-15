@@ -41,6 +41,8 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 15-feb-2026 -- *20260215L*
+	- [KeWL] added `float_sin`, `double_sin`, `long_double_sin`, `float_cos`, `double_cos`, `long_double_cos`, `float_atan`, `double_atan`, `long_double_atan`, `float_atan2`, `double_atan2` and `long_double_atan2`
 * 08-feb-2026 -- *20260208L*
 	- [WeRKS] added `werks_stringlist_formatted_insert`
 	- other minor adjustments
