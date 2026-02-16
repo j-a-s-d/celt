@@ -137,6 +137,68 @@ static inline double double_interpolate(double value, double input_min, double i
     return double_interpolate_custom(value, input_min, input_max, output_min, output_max, MEH_DOUBLE_EPSILON);
 }
 
+// OVERRIDES
+
+#ifndef kewl_sqrtf
+    #define kewl_sqrtf(x) float_sqrt(x)
+#endif
+
+#ifndef kewl_sqrt
+    #define kewl_sqrt(x) double_sqrt(x)
+#endif
+
+#ifndef kewl_sqrtl
+    #define kewl_sqrtl(x) long_double_sqrt(x)
+#endif
+
+#ifndef kewl_cosf
+    #define kewl_cosf(x) float_cos(x)
+#endif
+
+#ifndef kewl_cos
+    #define kewl_cos(x) double_cos(x)
+#endif
+
+#ifndef kewl_cosl
+    #define kewl_cosl(x) long_double_cos(x)
+#endif
+
+#ifndef kewl_sinf
+    #define kewl_sinf(x) float_sin(x)
+#endif
+
+#ifndef kewl_sin
+    #define kewl_sin(x) double_sin(x)
+#endif
+
+#ifndef kewl_sinl
+    #define kewl_sinl(x) long_double_sin(x)
+#endif
+
+#ifndef kewl_atanf
+    #define kewl_atanf(x) float_atan(x)
+#endif
+
+#ifndef kewl_atan
+    #define kewl_atan(x) double_atan(x)
+#endif
+
+#ifndef kewl_atanl
+    #define kewl_atanl(x) long_double_atan(x)
+#endif
+
+#ifndef kewl_atan2f
+    #define kewl_atan2f(y, x) float_atan2(y, x)
+#endif
+
+#ifndef kewl_atan2
+    #define kewl_atan2(y, x) double_atan2(y, x)
+#endif
+
+#ifndef kewl_atan2l
+    #define kewl_atan2l(y, x) long_double_atan2(y, x)
+#endif
+
 // CONVERSION
 
 /**
@@ -248,4 +310,49 @@ static inline bool is_circular_point_before(double point1, double point2) {
  * Calculates the histogram (frequency) of each byte in the provided buffer.
  */
 uint8_t* get_histogram(uint8_t* buffer, size_t length);
+
+/**
+ * Linear regression model structure.
+ */
+typedef struct {
+    double slope;
+    double intercept;
+    double reliability; // aka quality or r_squared
+    bool is_valid;
+} linear_model_dt;
+
+/**
+ * Function to get a linear regression model from the provided data.
+ */
+linear_model_dt fit_linear_regression_model(double x[], double y[], int amount);
+
+/**
+ * Function to predict the specified value for the provided linear regression model.
+ */
+static inline double predict_linear_regression_value(linear_model_dt model, double x) {
+    return (model.slope * x) + model.intercept;
+}
+
+/**
+ * Sinusoidal regression model structure.
+ */
+typedef struct {
+    double base;      // aka average
+    double amplitude; // how much it ups/downs from the average
+    double phase;     // the offset to the peak
+    double frequency; // aka omega
+    bool is_valid;
+} sinusoidal_model_dt;
+
+/**
+ * Function to get a sinusoidal regression model from the provided data.
+ */
+sinusoidal_model_dt fit_sinusoidal_regression_model(double x[], double y[], int amount, int period);
+
+/**
+ * Function to predict the specified value for the provided sinusoidal regression model.
+ */
+static inline double predict_sinusoidal_regression_value(sinusoidal_model_dt model, double x) {
+    return model.base + model.amplitude * double_sin(model.frequency * x + model.phase);
+}
 

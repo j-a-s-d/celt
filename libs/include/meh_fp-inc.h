@@ -51,34 +51,58 @@ static inline long double long_double_abs(long double x) {
     return (x < 0) ? -x : x;
 }
 
-// rounds the given float number
+// rounds the given float number (local alternative to: math.h, roundf, -lm)
 static inline int float_round(float x) {
     return (int)(x < 0 ? x - 0.5f : x + 0.5f);
 }
 
-// rounds the given double number
+// rounds the given double number (local alternative to: math.h, round, -lm)
 static inline int double_round(double x) {
     return (int)(x < 0 ? x - 0.5 : x + 0.5);
 }
 
-// rounds the given long double number
+// rounds the given long double number (local alternative to: math.h, roundl, -lm)
 static inline int long_double_round(long double x) {
     return (int)(x < 0 ? x - 0.5L : x + 0.5L);
 }
 
+#ifndef meh_fabsf
+    #define meh_fabsf(x) float_abs(x)
+#endif
+
+#ifndef meh_fabs
+    #define meh_fabs(x) double_abs(x)
+#endif
+
+#ifndef meh_fabsl
+    #define meh_fabsl(x) long_double_abs(x)
+#endif
+
+#ifndef meh_roundf
+    #define meh_roundf(x) float_round(x)
+#endif
+
+#ifndef meh_round
+    #define meh_round(x) double_round(x)
+#endif
+
+#ifndef meh_roundl
+    #define meh_roundl(x) long_double_round(x)
+#endif
+
 // returns true if the absolute difference between the two float numbers is smaller than a predefined small number (epsilon)
 static inline bool float_equal(float a, float b, float epsilon) {
-    return float_abs(a - b) < epsilon;
+    return meh_fabsf(a - b) < epsilon;
 }
 
 // returns true if the absolute difference between the two double numbers is smaller than a predefined small number (epsilon)
 static inline bool double_equal(double a, double b, double epsilon) {
-    return double_abs(a - b) < epsilon;
+    return meh_fabs(a - b) < epsilon;
 }
 
 // returns true if the absolute difference between the two long double numbers is smaller than a predefined small number (epsilon)
 static inline bool long_double_equal(long double a, long double b, long double epsilon) {
-    return long_double_abs(a - b) < epsilon;
+    return meh_fabsl(a - b) < epsilon;
 }
 
 #undef MEH_COMPARE_ARRAY
@@ -90,27 +114,27 @@ static inline bool long_double_equal(long double a, long double b, long double e
     return true;
 
 static inline bool float_array_equal(const float* arr1, const float* arr2, size_t size) {
-    MEH_COMPARE_FP_ARRAY(float, float_abs, MEH_FLOAT_EPSILON);
+    MEH_COMPARE_FP_ARRAY(float, meh_fabsf, MEH_FLOAT_EPSILON);
 }
 
 static inline bool double_array_equal(const double* arr1, const double* arr2, size_t size) {
-    MEH_COMPARE_FP_ARRAY(double, double_abs, MEH_DOUBLE_EPSILON);
+    MEH_COMPARE_FP_ARRAY(double, meh_fabs, MEH_DOUBLE_EPSILON);
 }
 
 static inline bool long_double_array_equal(const long double* arr1, const long double* arr2, size_t size) {
-    MEH_COMPARE_FP_ARRAY(long double, long_double_abs, MEH_LONG_DOUBLE_EPSILON);
+    MEH_COMPARE_FP_ARRAY(long double, meh_fabsl, MEH_LONG_DOUBLE_EPSILON);
 }
 
 static inline bool float_array_equal_custom(const float* arr1, const float* arr2, size_t size, float epsilon) {
-    MEH_COMPARE_FP_ARRAY(float, float_abs, epsilon);
+    MEH_COMPARE_FP_ARRAY(float, meh_fabsf, epsilon);
 }
 
 static inline bool double_array_equal_custom(const double* arr1, const double* arr2, size_t size, double epsilon) {
-    MEH_COMPARE_FP_ARRAY(double, double_abs, epsilon);
+    MEH_COMPARE_FP_ARRAY(double, meh_fabs, epsilon);
 }
 
 static inline bool long_double_array_equal_custom(const long double* arr1, const long double* arr2, size_t size, long double epsilon) {
-    MEH_COMPARE_FP_ARRAY(long double, long_double_abs, epsilon);
+    MEH_COMPARE_FP_ARRAY(long double, meh_fabsl, epsilon);
 }
 
 #undef MEH_COMPARE_FP_ARRAY

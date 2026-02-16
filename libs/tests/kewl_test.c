@@ -215,6 +215,32 @@ static inline void test_mth_utilities() {
     Tests.run("get_histogram", hist != NULL &&
         hist[0] == 2 && hist[42] == 2 && hist[200] == 1 && hist[255] == 1 &&
         hist[1] == 0 && hist[31] == 0 && hist[81] == 0 && hist[123] == 0);
+    
+    double x1_hour[] = {6, 8, 10, 12}; // 6 AM, 8 AM, 10 AM, 12 PM
+    double y1_temp[] = {15, 19, 25, 30}; // 15°, 19°, 25°, 30°
+    linear_model_dt lm = fit_linear_regression_model(x1_hour, y1_temp, 4);
+    Tests.run("fit_linear_regression_model", lm.is_valid);
+    Tests.run("fit_linear_regression_model slope", double_equal(lm.slope, 2.55, 0.01));
+    Tests.run("fit_linear_regression_model intercept", double_equal(lm.intercept, -0.70, 0.01));
+    Tests.run("fit_linear_regression_model reliability", double_equal(lm.reliability, 0.9946, 0.0001));
+    double l1_pred = predict_linear_regression_value(lm, 7.5); // 7:30 AM
+    double l2_pred = predict_linear_regression_value(lm, 11.0); // 11:00 AM
+    Tests.run("predict_linear_regression_value 7.5", double_equal(l1_pred, 18.43, 0.01));
+    Tests.run("predict_linear_regression_value 11", double_equal(l2_pred, 27.35, 0.01));
+
+    double x2_hour[] = {6, 12, 18, 24}; // 6 AM, 12 PM, 6 AM, 12 PM
+    double y2_temp[] = {15, 30, 25, 10}; // 15°, 30°, 25°, 10°
+    int period = 24;
+    sinusoidal_model_dt sm = fit_sinusoidal_regression_model(x2_hour, y2_temp, 4, period);
+    Tests.run("fit_sinusoidal_regression_model", sm.is_valid);
+    Tests.run("fit_sinusoidal_regression_model base", double_equal(sm.base, 20.00, 0.01));
+    Tests.run("fit_sinusoidal_regression_model amplitude", double_equal(sm.amplitude, 11.27, 0.01));
+    Tests.run("fit_sinusoidal_regression_model phase", double_equal(sm.phase, -2.02, 0.01));
+    Tests.run("fit_sinusoidal_regression_model frequency", double_equal(sm.frequency, 0.26, 0.01));
+    double s1_pred = predict_sinusoidal_regression_value(sm, 9.0); // 9 AM
+    double s2_pred = predict_sinusoidal_regression_value(sm, 15.0); // 15 PM
+    Tests.run("predict_sinusoidal_regression_value 9", double_equal(s1_pred, 23.64, 0.01));
+    Tests.run("predict_sinusoidal_regression_value 15", double_equal(s2_pred, 30.66, 0.01));
 }
 
 static inline void test_sampleprofiler() {
