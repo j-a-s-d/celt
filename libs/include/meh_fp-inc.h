@@ -31,6 +31,11 @@
 #define float_isNaN __builtin_isnanf
 #define double_isNaN __builtin_isnan
 #define long_double_isNaN __builtin_isnanl
+// NOTE: if you can't use the builtin isnan functions, you can write your own simply by comparing the value to itself (x != x).
+
+#define float_signbit __builtin_signbitf
+#define double_signbit __builtin_signbit
+#define long_double_signbit __builtin_signbitl
 
 #define float_string_format "%f"
 #define double_string_format "%f"
@@ -66,6 +71,60 @@ static inline int long_double_round(long double x) {
     return (int)(x < 0 ? x - 0.5L : x + 0.5L);
 }
 
+// returns the max float value between the two provided
+static inline double float_max(double a, double b) {
+    if (float_isNaN(a)) return b;
+    if (float_isNaN(b)) return a;
+    if (a == 0.0f && b == 0.0f)
+        return (!float_signbit(a) && float_signbit(b)) ? a : b;
+    return a > b ? a : b;
+}
+
+// returns the max double value between the two provided
+static inline double double_max(double a, double b) {
+    if (double_isNaN(a)) return b;
+    if (double_isNaN(b)) return a;
+    if (a == 0.0 && b == 0.0)
+        return (!double_signbit(a) && double_signbit(b)) ? a : b;
+    return a > b ? a : b;
+}
+
+// returns the max long double value between the two provided
+static inline long double long_double_max(double a, double b) {
+    if (long_double_isNaN(a)) return b;
+    if (long_double_isNaN(b)) return a;
+    if (a == 0.0L && b == 0.0L)
+        return (!long_double_signbit(a) && long_double_signbit(b)) ? a : b;
+    return a > b ? a : b;
+}
+
+// returns the min float value between the two provided
+static inline double float_min(double a, double b) {
+    if (float_isNaN(a)) return b;
+    if (float_isNaN(b)) return a;
+    if (a == 0.0f && b == 0.0f)
+        return float_signbit(b) ? b : a;
+    return a < b ? a : b;
+}
+
+// returns the min double value between the two provided
+static inline double double_min(double a, double b) {
+    if (double_isNaN(a)) return b;
+    if (double_isNaN(b)) return a;
+    if (a == 0.0 && b == 0.0)
+        return double_signbit(b) ? b : a;
+    return a < b ? a : b;
+}
+
+// returns the min long double value between the two provided
+static inline long double long_double_min(double a, double b) {
+    if (long_double_isNaN(a)) return b;
+    if (long_double_isNaN(b)) return a;
+    if (a == 0.0f && b == 0.0f)
+        return long_double_signbit(b) ? b : a;
+    return a < b ? a : b;
+}
+
 #ifndef meh_fabsf
     #define meh_fabsf(x) float_abs(x)
 #endif
@@ -88,6 +147,30 @@ static inline int long_double_round(long double x) {
 
 #ifndef meh_roundl
     #define meh_roundl(x) long_double_round(x)
+#endif
+
+#ifndef meh_fmaxf
+    #define meh_fmaxf(x) float_max(x)
+#endif
+
+#ifndef meh_fmax
+    #define meh_fmax(x) double_max(x)
+#endif
+
+#ifndef meh_fmaxl
+    #define meh_fmaxl(x) long_double_max(x)
+#endif
+
+#ifndef meh_fminf
+    #define meh_fminf(x) float_min(x)
+#endif
+
+#ifndef meh_fmin
+    #define meh_fmin(x) double_min(x)
+#endif
+
+#ifndef meh_fminl
+    #define meh_fminl(x) long_double_min(x)
 #endif
 
 // returns true if the absolute difference between the two float numbers is smaller than a predefined small number (epsilon)

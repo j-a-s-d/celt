@@ -41,6 +41,8 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 24-feb-2026 -- *20260224L*
+	- [MeH] added `float_signbit`, `double_signbit`, `long_double_signbit`, `float_max`, `double_max`, `long_double_max`, `float_min`, `double_min`, `long_double_min`, and the `meh_*` floating-point functions overrides for max and min
 * 16-feb-2026 -- *20260216L*
 	- [MeH] added the `meh_*` floating-point functions overrides
 	- [KeWL] added `linear_model_dt`, `fit_linear_regression_model`, `predict_linear_regression_value`, `sinusoidal_model_dt`, `fit_sinusoidal_regression_model`, `predict_sinusoidal_regression_value` and the `kewl_*` floating-point functions overrides
