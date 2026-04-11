@@ -76,3 +76,7 @@ bool falsy(void) {
 #include "kewl_cmdline-inc.c"
 #endif
 
+#ifndef KEWL_DISABLE_CHUNKSSTACK
+#include "kewl_chunksstack-inc.c"
+#endif
+

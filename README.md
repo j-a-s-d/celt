@@ -41,6 +41,9 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 11-apr-2026 -- *20260411L*
+	- [MeH] added `zeromem`
+	- [KeWL] added `kewl_chunksstack_dt`
 * 24-feb-2026 -- *20260224L*
 	- [MeH] added `float_signbit`, `double_signbit`, `long_double_signbit`, `float_max`, `double_max`, `long_double_max`, `float_min`, `double_min`, `long_double_min`, and the `meh_*` floating-point functions overrides for max and min
 * 16-feb-2026 -- *20260216L*

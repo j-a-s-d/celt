@@ -15,6 +15,8 @@
 #define MEH_DEFAULT_BUFFER_SIZE (1 * KILOBYTE)
 #define MEH_DEFAULT_SENTINEL_LIMIT (1 * KILOBYTE)
 
+#define zeromem(dst,len) memset((dst),0,(len))
+
 /* MeH.MEMORY -- Alignment Definitions */
 
 // checks if the pointer is aligned with the specified alignment (in bytes)
@@ -74,7 +76,7 @@ inline void _auto_cleanup(void* ptr) {
 
 static inline void zero_free(void* ptr, size_t size) {
     if (ptr == NULL) return;
-    memset(ptr, 0, size);
+    zeromem(ptr, size);
     ce_free(ptr);
 }
 

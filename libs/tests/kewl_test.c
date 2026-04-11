@@ -1548,6 +1548,48 @@ void test_component() {
     kewl_component_destroy(tc3);
 }
 
+void print_chunk(void* item, size_t index) {
+    Tests.print("[%zu]: %s\n", index, (char*)item);
+}
+
+void print_chunk_with_reference(void* item, size_t index, void* ref) {
+    Tests.print("%s [%zu]: %s\n", (char*)ref, index, (char*)item);
+}
+
+void test_chunksstack() {
+    kewl_chunksstack_dt* stack = kewl_chunksstack_create(2, 32);
+    Tests.run("kewl_chunks_stack_create", assigned(stack));
+    Tests.run("kewl_chunksstack_get_chunks_count 0", kewl_chunksstack_get_chunks_count(stack) == 0);
+    unsigned char buf[32] = {0};
+    memset(buf, 'A', 31);
+    kewl_chunksstack_push(stack, buf);
+    Tests.run("kewl_chunksstack_get_chunks_count 1", kewl_chunksstack_get_chunks_count(stack) == 1);
+    memset(buf, 'B', 31);
+    kewl_chunksstack_push(stack, buf);
+    Tests.run("kewl_chunksstack_get_chunks_count 2", kewl_chunksstack_get_chunks_count(stack) == 2);
+    memset(buf, 'C', 31);
+    kewl_chunksstack_push(stack, buf);
+    Tests.run("kewl_chunksstack_get_chunks_count 3", kewl_chunksstack_get_chunks_count(stack) == 3);
+    kewl_chunksstack_delete(stack, 0);
+    Tests.run("kewl_chunksstack_get_chunks_count 2", kewl_chunksstack_get_chunks_count(stack) == 2);
+    kewl_chunksstack_pack(stack);
+    Tests.run("kewl_chunksstack_get_chunks_count 2", kewl_chunksstack_get_chunks_count(stack) == 2);
+    Tests.print("looping stack elements:\n");
+    kewl_chunksstack_loop(stack, print_chunk);
+    kewl_chunksstack_loop_with_reference(stack, print_chunk_with_reference, "Item");
+    kewl_chunksstack_clear(stack);
+    Tests.run("kewl_chunksstack_clear", kewl_chunksstack_get_chunks_count(stack) == 0);
+    memset(buf, 'a', 32);
+    kewl_chunksstack_push(stack, buf);
+    memset(buf, 'b', 32);
+    kewl_chunksstack_push(stack, buf);
+    memset(buf, 'c', 31);
+    buf[31] = CHARS_NULL;
+    kewl_chunksstack_push(stack, buf);
+    Tests.print("[Buffer] bytes: %ld | content: %s\n", kewl_chunksstack_get_buffer_size(stack), kewl_chunksstack_get_buffer_pointer(stack));
+    kewl_chunksstack_destroy(stack);
+}
+
 int main(void) {
     Tests.begin("KeWL");
     AUTO_STRING(ts, get_timestamp());
@@ -1603,6 +1645,10 @@ int main(void) {
         
         printf("--- CMDLINE ---\n");
         test_cmdline();
+        printf("\n");
+        
+        printf("--- CHUNKSSTACK ---\n");
+        test_chunksstack();
         printf("\n");
         
         printf("--- COMPONENT ---\n");

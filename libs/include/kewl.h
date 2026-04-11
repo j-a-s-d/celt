@@ -91,6 +91,10 @@ bool falsy(void);
 #include "kewl_cmdline-inc.h"
 #endif
 
+#ifndef KEWL_DISABLE_CHUNKSSTACK
+#include "kewl_chunksstack-inc.h"
+#endif
+
 #ifdef __cplusplus
 }
 #endif
