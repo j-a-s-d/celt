@@ -49,7 +49,7 @@ int main(int argc, char* argv[]) {
     Tests.print("entry prefix: %s\n", werks_log_get_entry_prefix());
     Tests.print("entry suffix: %s\n", werks_log_get_entry_suffix());
     Tests.print("entry fields separator: %s\n", werks_log_get_entry_fields_separator());
-    __auto char* contents = read_file(filename);
+    __auto char* contents = read_text_file(filename);
     Tests.run("log contents", has_content(contents));
     Tests.print("filename: %s\n", werks_log_get_filename());
     Tests.print("contents (%p):\n%s\n", contents, contents);

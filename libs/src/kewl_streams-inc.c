@@ -5,9 +5,9 @@
  * Copyright (c) 2025 Javier Santo Domingo (j-a-s-d@coderesearchlabs.com)
  */
 
-char* read_chunk_from_stream(FILE* stream, size_t size, size_t* length) {
+unsigned char* read_chunk_from_stream(FILE* stream, size_t size, size_t* length) {
     if (stream == NULL || size == 0) return NULL;
-    char* buffer = ce_malloc(size + 1);
+    unsigned char* buffer = ce_malloc(size + 1);
     if (assigned(buffer)) {
         if ((*length = fread(buffer, 1, size, stream)) == 0) {
             ce_free(buffer);

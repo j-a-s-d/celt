@@ -2001,7 +2001,7 @@ bool werks_kvm_save_to_file(werks_kvm_dt* const map, const char* filename) {
     bool result = false;
     char* content = werks_kvm_save_to_string(map);
     if (assigned(content)) {
-        result = write_file(filename, content);
+        result = write_text_file(filename, content);
         ce_free(content);
     }
     return result;
@@ -2015,7 +2015,7 @@ bool werks_kvm_append_to_file(werks_kvm_dt* const map, const char* filename) {
     bool result = false;
     char* content = werks_kvm_save_to_string(map);
     if (assigned(content)) {
-        result = append_file(filename, content);
+        result = append_text_file(filename, content);
         ce_free(content);
     }
     return result;

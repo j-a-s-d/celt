@@ -21,10 +21,10 @@ CE_MESSAGE("\n\n*** compile with: -Wfatal-errors -I../include -o ../bin/kewl_tes
 static inline void test_fs_utilities() {
     const char* filename = "example.txt";
     const char* content = "Hello, World!\n";
-    Tests.run("write_file", write_file(filename, content));
+    Tests.run("write_text_file", write_text_file(filename, content));
 
-    char* data = read_file(filename);
-    Tests.run("read_file", assigned(data));
+    char* data = read_text_file(filename);
+    Tests.run("read_text_file", assigned(data));
     Tests.print("File content: %s\n", data);
     if (data) free(data);
 
@@ -34,9 +34,9 @@ static inline void test_fs_utilities() {
     Tests.run("get_file_size", size > -1);
     Tests.print("File size: %ld bytes\n", size);
 
-    Tests.run("append_file", append_file(filename, "This is appended content.\n"));
+    Tests.run("append_text_file", append_text_file(filename, "This is appended content.\n"));
 
-    data = read_file(filename);
+    data = read_text_file(filename);
     if (data) {
         Tests.print("Updated file content: %s\n", data);
         free(data);
@@ -569,20 +569,20 @@ static inline void test_strhashbag() {
 
 static inline void test_stream_functions() {
     const char* filename = "example.txt";
-    bool wrote = write_file(filename, "Hello, World!\nABC\n");
+    bool wrote = write_text_file(filename, "Hello, World!\nABC\n");
     FILE* f = fopen(filename, "rb");
     size_t chunkSize = 5;
     size_t len;
-    char* data = read_chunk_from_stream(f, chunkSize, &len);
+    unsigned char* data = read_chunk_from_stream(f, chunkSize, &len);
     Tests.run("read_chunk_from_stream", wrote && assigned(f) && assigned(data));
     Tests.print("Read: %zu bytes\n", len);
-    Tests.print("Data: %s\n", data);
+    Tests.print("Data: %s\n", (char*)data);
     free(data);
     rewind(f);
-    data = read_line_from_stream(f);
-    Tests.run("read_line_from_stream", assigned(data));
-    Tests.print("Data: %s\n", data);
-    free(data);
+    char* sdata = read_line_from_stream(f);
+    Tests.run("read_line_from_stream", assigned(sdata));
+    Tests.print("Data: %s\n", sdata);
+    free(sdata);
     fclose(f);
     UNUSED(delete_file(filename));
 }

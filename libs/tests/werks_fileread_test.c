@@ -12,13 +12,13 @@ bool chunks_read_flag = false;
 bool lines_read_flag = false;
 bool bytes_read_flag = false;
 
-bool chunk_processor(char* chunk, size_t length) {
+bool chunk_processor(unsigned char* chunk, size_t length) {
     if (chunk != NULL) chunks_read++;
     last_chunk_size = length;
     return true;
 }
 
-bool chunk_processor_with_reference(char* chunk, size_t length, void* ref) {
+bool chunk_processor_with_reference(unsigned char* chunk, size_t length, void* ref) {
     if (chunk != NULL) chunks_read++;
     last_chunk_size = length;
     if (ref != NULL) *(bool*)ref = true;

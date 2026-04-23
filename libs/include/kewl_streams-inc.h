@@ -11,7 +11,7 @@
 #warning This is intended to be part of the KeWL C Library.
 #endif
 
-char* read_chunk_from_stream(FILE* stream, size_t size, size_t* length);
+unsigned char* read_chunk_from_stream(FILE* stream, size_t size, size_t* length);
 char* read_line_from_stream(FILE* stream);
 
 bool redirected_stdout_call(prc_fn subroutine, const char* filename);

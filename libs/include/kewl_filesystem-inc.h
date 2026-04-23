@@ -38,8 +38,8 @@ static inline long get_file_size(const char* filename) {
     });
 }
 
-// Function to append content to a file
-static inline bool append_file(const char* filename, const char* content) {
+// Function to append content to a text file
+static inline bool append_text_file(const char* filename, const char* content) {
     FILE_OPERATION("a", false, {
         fwrite(content, 1, strlen(content), file);
         fflush(file);
@@ -48,8 +48,8 @@ static inline bool append_file(const char* filename, const char* content) {
     });
 }
 
-// Function to write content to a file
-static inline bool write_file(const char* filename, const char* content) {
+// Function to write content to a text file
+static inline bool write_text_file(const char* filename, const char* content) {
     FILE_OPERATION("w", false, {
         fwrite(content, 1, strlen(content), file);
         fflush(file);
@@ -58,8 +58,8 @@ static inline bool write_file(const char* filename, const char* content) {
     });
 }
 
-// Function to read the entire content of a file
-static inline char* read_file(const char* filename) {
+// Function to read the entire content of a text file
+static inline char* read_text_file(const char* filename) {
     FILE_OPERATION("r", NULL, {
         fseek(file, 0, SEEK_END);
         ssize_t length = ftell(file);

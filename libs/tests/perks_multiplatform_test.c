@@ -74,7 +74,7 @@ int main(void) {
     Tests.begin("PeRKS MULTIPLATFORM");
     const char* tmp_filename = "kewl_stdout_capture.tmp";
     redirected_stdout_call(test_echo, tmp_filename);
-    char* captured_output = read_file(tmp_filename);
+    char* captured_output = read_text_file(tmp_filename);
     Tests.run("echo", starts_with(captured_output, EXPECTED_ECHO_OUTPUT));
     Tests.print("captured:\n%s", captured_output);
     free(captured_output);
@@ -117,7 +117,7 @@ int main(void) {
     Tests.run("typename", streq(typename(TEST_LONG_DOUBLE_COMPLEX), "long double complex"));
     Tests.print("%s\n", typename(TEST_LONG_DOUBLE_COMPLEX));
     redirected_stdout_call(test_debug, tmp_filename);
-    captured_output = read_file(tmp_filename);
+    captured_output = read_text_file(tmp_filename);
     Tests.run("debug", starts_with(captured_output, EXPECTED_DEBUG_OUTPUT));
     Tests.print("captured:\n%s", captured_output);
     free(captured_output);

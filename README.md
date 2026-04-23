@@ -41,6 +41,9 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 22-apr-2026 -- *20260422L*
+	- [Ce] added nullptr definitions
+	- other minor adjustments
 * 11-apr-2026 -- *20260411L*
 	- [MeH] added `zeromem`
 	- [KeWL] added `kewl_chunksstack_dt`

@@ -19,13 +19,13 @@ extern "C" {
 // BY CHUNKS
 
 // Read chunk callback definition
-typedef bool (*chunk_read_handler_fn)(char* buffer, size_t length);
+typedef bool (*chunk_read_handler_fn)(unsigned char* buffer, size_t length);
 
 // Function to read a entire file chunk by chunk
 bool read_binary_file_by_chunk(const char* filename, size_t chunksize, chunk_read_handler_fn cb);
 
 // Read chunk callback definition with reference
-typedef bool (*chunk_read_handler_with_reference_fn)(char* buffer, size_t length, void* reference);
+typedef bool (*chunk_read_handler_with_reference_fn)(unsigned char* buffer, size_t length, void* reference);
 
 // Function to read a entire file chunk by chunk with reference
 bool read_binary_file_by_chunk_with_reference(const char* filename, size_t chunksize, chunk_read_handler_with_reference_fn cb, void* reference);

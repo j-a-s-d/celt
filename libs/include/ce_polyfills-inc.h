@@ -33,6 +33,20 @@
     #endif
 #endif
 
+/* Ce.POLYFILLS -- nullptr Definitions */
+
+/* NOTE: this is useful for MISRA C:2025 */
+
+/* ensures the nullptr_t type */
+#if !defined(nullptr_t)
+    typedef void* nullptr_t;
+#endif
+
+/* ensures the nullptr definition */
+#if !defined(nullptr)
+    #define nullptr ((nullptr_t)0)
+#endif
+
 /* Ce.POLYFILLS -- bool Type */
 
 /* ensures the bool type is always present (from c89 to c23) */

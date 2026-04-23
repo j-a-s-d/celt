@@ -56,7 +56,7 @@ int main(void) {
     Tests.print("%s\n", werks_i18n_get_current_language_name());
     Tests.run("werks_i18n_fetch_raw_text", streq(werks_i18n_fetch_raw_text("hello_world"), "Olá Mundo!"));
     Tests.print("%s\n", I18N.fetch_raw_text("hello_world"));
-    write_file("i18n.txt", "fr:hello_world=Salut Monde!\nit:hello_world=Ciao Mondo!\nde:hello_world=Hallo Welt!");
+    write_text_file("i18n.txt", "fr:hello_world=Salut Monde!\nit:hello_world=Ciao Mondo!\nde:hello_world=Hallo Welt!");
     Tests.run("werks_i18n_load_from_file", werks_i18n_load_from_file("i18n.txt"));
     Tests.run("werks_i18n_set_current_language FR NO", !werks_i18n_set_current_language("fr"));
     Tests.run("werks_i18n_accept_language FR", werks_i18n_accept_language("fr", "Français"));

@@ -8,7 +8,7 @@
 
 bool read_binary_file_by_chunk(const char* filename, size_t chunksize, chunk_read_handler_fn cb) {
     FILE_OPERATION("r", false, {
-        char* buffer;
+        unsigned char* buffer;
         size_t amount = 0;
         bool go = true;
         while (assigned(buffer = read_chunk_from_stream(file, chunksize, &amount))) {
@@ -23,7 +23,7 @@ bool read_binary_file_by_chunk(const char* filename, size_t chunksize, chunk_rea
 
 bool read_binary_file_by_chunk_with_reference(const char* filename, size_t chunksize, chunk_read_handler_with_reference_fn cb, void* reference) {
     FILE_OPERATION("r", false, {
-        char* buffer;
+        unsigned char* buffer;
         size_t amount = 0;
         bool go = true;
         while (assigned(buffer = read_chunk_from_stream(file, chunksize, &amount))) {
