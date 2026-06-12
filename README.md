@@ -41,6 +41,8 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 12-jun-2026 -- *20260612L*
+	- [WeRKS] added custom function support for the expression evaluator
 * 22-apr-2026 -- *20260422L*
 	- [Ce] added nullptr definitions
 	- other minor adjustments

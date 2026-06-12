@@ -137,7 +137,7 @@ DEFINE_EXPREVAL_FN(parse_number, {
 })
 
 DEFINE_EXPREVAL_FN(parse_factor, {
-    if (**expr == '(') {
+    if (**expr == CHARS_PARENTHESES_OPEN) {
         (*expr)++;
         if (**expr == CHARS_NULL) {
             evaluator->error = WERKS_EXPREVAL_ERROR_EXPRESSION;
@@ -145,7 +145,7 @@ DEFINE_EXPREVAL_FN(parse_factor, {
         }
         result = parse_expression(evaluator);
         if (evaluator->error == WERKS_EXPREVAL_ERROR_NONE) {
-            if (**expr != ')') {
+            if (**expr != CHARS_PARENTHESES_CLOSE) {
                 evaluator->error = WERKS_EXPREVAL_ERROR_EXPRESSION;
                 return WERKS_EXPREVAL_NAN;
             }
@@ -159,7 +159,7 @@ DEFINE_EXPREVAL_FN(parse_factor, {
         }
         char vn[WERKS_EXPREVAL_CONST_MAX_NAME];
         int i = 0;
-        while (isalnum(**expr) || **expr == '_') {
+        while (isalnum(**expr) || **expr == CHARS_UNDERSCORE) {
             vn[i++] = **expr;
             (*expr)++;
         }
@@ -175,7 +175,7 @@ DEFINE_EXPREVAL_FN(parse_factor, {
 DEFINE_EXPREVAL_FN(parse_term, {
     result = parse_factor(evaluator);
     if (evaluator->error == WERKS_EXPREVAL_ERROR_NONE)
-        while (**expr == '*' || **expr == '/') {
+        while (**expr == CHARS_ASTERISK || **expr == CHARS_SLASH) {
             char op = **expr;
             (*expr)++;
             if (**expr == CHARS_NULL) {
@@ -184,9 +184,9 @@ DEFINE_EXPREVAL_FN(parse_term, {
             }
             WERKS_EXPREVAL_TYPE factor = parse_factor(evaluator);
             if (evaluator->error == WERKS_EXPREVAL_ERROR_NONE) {
-                if (op == '*') {
+                if (op == CHARS_ASTERISK) {
                     result *= factor;
-                } else if (op == '/') {
+                } else if (op == CHARS_SLASH) {
                     result /= factor;
                 } else {
                     evaluator->error = WERKS_EXPREVAL_ERROR_EXPRESSION;
@@ -199,7 +199,7 @@ DEFINE_EXPREVAL_FN(parse_term, {
 DEFINE_EXPREVAL_FN(parse_expression, {
     result = parse_term(evaluator);
     if (evaluator->error == WERKS_EXPREVAL_ERROR_NONE)
-        while (**expr == '+' || **expr == '-') {
+        while (**expr == CHARS_PLUS || **expr == CHARS_MINUS) {
             char op = **expr;
             (*expr)++;
             if (**expr == CHARS_NULL) {
@@ -208,9 +208,9 @@ DEFINE_EXPREVAL_FN(parse_expression, {
             }
             WERKS_EXPREVAL_TYPE term = parse_term(evaluator);
             if (evaluator->error == WERKS_EXPREVAL_ERROR_NONE) {
-                if (op == '+') {
+                if (op == CHARS_PLUS) {
                     result += term;
-                } else if (op == '-') {
+                } else if (op == CHARS_MINUS) {
                     result -= term;
                 } else {
                     evaluator->error = WERKS_EXPREVAL_ERROR_EXPRESSION;
@@ -435,5 +435,132 @@ void werks_expreval_expressions_list_destroy(werks_expreval_expressions_list_dt*
     });
     kewl_ptrholder_destroy(list->expressions_entries);
     free(list);
+}
+
+werks_expreval_custom_fn werks_expreval_find_custom_function(const werks_expreval_custom_function_dt* registry, const char* name) {
+    if (assigned(registry) && has_content(name))
+        for (int i = 0; registry[i].name != NULL; i++)
+            if (strcmp(registry[i].name, name) == 0)
+                return registry[i].routine;
+    return NULL;
+}
+
+static WERKS_EXPREVAL_TYPE werks_expreval_internal_direct_eval_with_custom_functions(werks_expreval_dt* evaluator, const werks_expreval_custom_function_dt* registry, const char* expression) {
+    // remove whitespace
+    while (*expression && isspace((unsigned char)*expression)) expression++;
+    // verify if text starts with a valid function name (A-Z, a-z)
+    if (isalpha((unsigned char)*expression)) {
+        const char* p = expression;
+        while (isalnum((unsigned char)*p) || *p == CHARS_UNDERSCORE) p++;
+        if (*p == CHARS_PARENTHESES_OPEN) {
+            int name_len = p - expression;
+            char* func_name = (char*)ce_malloc(name_len + 1);
+            strncpy(func_name, expression, name_len);
+            func_name[name_len] = CHARS_NULL;
+            werks_expreval_custom_fn func = werks_expreval_find_custom_function(registry, func_name);
+            ce_free(func_name);
+            if (assigned(func)) {
+                // find balanced parenthesis
+                const char* start_args = p + 1;
+                const char* curr = start_args;
+                int open_parentheses = 1;
+                while (*curr && open_parentheses > 0) {
+                    if (*curr == CHARS_PARENTHESES_OPEN) open_parentheses++;
+                    if (*curr == CHARS_PARENTHESES_CLOSE) open_parentheses--;
+                    if (open_parentheses > 0) curr++;
+                }
+                if (*curr == CHARS_PARENTHESES_CLOSE) {
+                    // extract arguments
+                    int args_len = curr - start_args;
+                    char* args_text = (char*)ce_malloc(args_len + 1);
+                    strncpy(args_text, start_args, args_len);
+                    args_text[args_len] = CHARS_NULL;
+                    // separate arguments
+                    WERKS_EXPREVAL_TYPE* evaluated_args = NULL;
+                    int arg_count = 0;
+                    const char* arg_start = args_text;
+                    int inner_paren = 0;
+                    int i = 0;
+                    LOOP_FOREVER() {
+                        if (args_text[i] == CHARS_PARENTHESES_OPEN) inner_paren++;
+                        if (args_text[i] == CHARS_PARENTHESES_CLOSE) inner_paren--;
+                        if ((args_text[i] == CHARS_COMMA && inner_paren == 0) || args_text[i] == CHARS_NULL) {
+                            int single_arg_len = &args_text[i] - arg_start;
+                            if (single_arg_len > 0 || arg_count > 0) {
+                                char* single_arg_text = (char*)ce_malloc(single_arg_len + 1);
+                                strncpy(single_arg_text, arg_start, single_arg_len);
+                                single_arg_text[single_arg_len] = CHARS_NULL;
+                                // recursive evaluation
+                                WERKS_EXPREVAL_TYPE val = werks_expreval_evaluate_expression_with_custom_functions(evaluator, registry, single_arg_text);
+                                ce_free(single_arg_text);
+                                evaluated_args = (WERKS_EXPREVAL_TYPE*)ce_realloc(evaluated_args, (arg_count + 1) * sizeof(WERKS_EXPREVAL_TYPE));
+                                evaluated_args[arg_count] = val;
+                                arg_count++;
+                            }
+                            arg_start = &args_text[i] + 1;
+                        }
+                        if (args_text[i] == CHARS_NULL) break;
+                        i++;
+                    }
+                    // execute custom function
+                    WERKS_EXPREVAL_TYPE result = func(evaluated_args, arg_count);
+                    ce_free(evaluated_args);
+                    ce_free(args_text);
+                    // if there is extra text after ')' (ex: "ROUND(1.5) * 10") we add it
+                    if (*(curr + 1) != CHARS_NULL) {
+                        // stringify and eval
+                        char buffer[512];
+                        snprintf(buffer, sizeof(buffer), "%f%s", result, curr + 1);
+                        return werks_expreval_evaluate_expression_with_custom_functions(evaluator, registry, buffer);
+                    }
+                    return result;
+                }
+            }
+            return WERKS_EXPREVAL_NAN;
+        }
+    }
+    return werks_expreval_evaluate_expression(evaluator, expression);
+}
+
+static WERKS_EXPREVAL_TYPE werks_expreval_internal_evaluate_with_custom_functions(werks_expreval_dt* evaluator, const werks_expreval_custom_function_dt* registry, const char* expression) {
+    char* text = trim(expression);
+    int len = strlen(text);
+    if (starts_with(text, STRINGS_PARENTHESES_OPEN) && ends_with(text, STRINGS_PARENTHESES_CLOSE)) {
+        text[len - 1] = CHARS_NULL;
+        text++;
+        WERKS_EXPREVAL_TYPE result = werks_expreval_internal_evaluate_with_custom_functions(evaluator, registry, text);
+        ce_free(text - 1);
+        return result;
+    }
+    int open_parentheses = 0;
+    for (int i = len - 1; i >= 0; i--) {
+        if (text[i] == CHARS_PARENTHESES_OPEN) open_parentheses++;
+        if (text[i] == CHARS_PARENTHESES_CLOSE) open_parentheses--;
+        if (open_parentheses == 0) {
+            if (text[i] == CHARS_PLUS || text[i] == CHARS_MINUS || text[i] == CHARS_ASTERISK || text[i] == CHARS_SLASH) {
+                char* left_part = (char*)ce_malloc(i + 1);
+                strncpy(left_part, text, i);
+                left_part[i] = CHARS_NULL;
+                const char* right_part = text + i + 1;
+                double left_val = werks_expreval_internal_evaluate_with_custom_functions(evaluator, registry, left_part);
+                double right_val = werks_expreval_internal_evaluate_with_custom_functions(evaluator, registry, right_part);
+                char op = text[i];
+                ce_free(left_part);
+                if (op == CHARS_PLUS) return left_val + right_val;
+                if (op == CHARS_MINUS) return left_val - right_val;
+                if (op == CHARS_ASTERISK) return left_val * right_val;
+                if (op == CHARS_SLASH) return left_val / right_val;
+                return WERKS_EXPREVAL_NAN;
+            }
+        }
+    }
+    WERKS_EXPREVAL_TYPE result = werks_expreval_internal_direct_eval_with_custom_functions(evaluator, registry, text);
+    ce_free(text);
+    return result;
+}
+
+WERKS_EXPREVAL_TYPE werks_expreval_evaluate_expression_with_custom_functions(werks_expreval_dt* evaluator, const werks_expreval_custom_function_dt* registry, const char* expression) {
+    return both_assigned(evaluator, registry) && has_content(expression) ?
+        werks_expreval_internal_evaluate_with_custom_functions(evaluator, registry, expression) : WERKS_EXPREVAL_NAN;
 }
 

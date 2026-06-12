@@ -36,6 +36,28 @@ double treater(double value) {
     return value + 1.0;
 }
 
+double my_round(const double* args, int arg_count) {
+    if (arg_count < 1) return 0.0;
+    return double_round(args[0]);
+}
+
+double my_sum(const double* args, int arg_count) {
+    double total = 0.0;
+    for (int i = 0; i < arg_count; i++) total += args[i];
+    return total;
+}
+
+double my_get_1(__unused const double* args, __unused int arg_count) {
+    return 1.0;
+}
+
+werks_expreval_custom_function_dt function_registry[] = {
+    {"ROUND", my_round},
+    {"SUM", my_sum},
+    {"GET_1", my_get_1},
+    {NULL, NULL} // end of list marker
+};
+
 int main(void) {
     Tests.begin("WeRKS EXPREVAL");
     werks_expreval_dt* evaluator = werks_expreval_make();
@@ -169,6 +191,30 @@ int main(void) {
     Tests.run("werks_expreval_constants_get y 123", werks_expreval_constants_get(cs, "y") == 123.0);
     Tests.run("werks_expreval_constants_drop_all", werks_expreval_constants_drop_all(cs));
     Tests.run("werks_expreval_constants_count 0", werks_expreval_constants_count(cs) == 0);
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions (12.34) 12.34", werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, "(12.34)") == 12.34);
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions NULL NaN", double_isNaN(werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, NULL)));
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions EMPTY NaN", double_isNaN(werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, STRINGS_NOTHING)));
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions ( NaN", double_isNaN(werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, "(")));
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions ) NaN", double_isNaN(werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, ")")));
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions () NaN", double_isNaN(werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, "()")));
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions BAD(12.34) NaN", double_isNaN(werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, "BAD(12.34)")));
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions GET_1 NaN", double_isNaN(werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, "GET_1")));
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions GET_1( NaN", double_isNaN(werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, "GET_1(")));
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions GET_1) NaN", double_isNaN(werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, "GET_1)")));
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions GET_1() 1", werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, "GET_1()") == 1.0);
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions GET_1( ) 1", werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, "GET_1( )") == 1.0);
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions ROUND(30.12 + 10.5) 41", werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, "ROUND(30.12 + 10.5)") == 41.0);
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions SUM(10.5, 20.5, 30.0) 61", werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, "SUM(10.5, 20.5, 30.0)") == 61.0);
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions ROUND(SUM(1.2, 2.3)) 4", werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, "ROUND(SUM(1.2, 2.3))") == 4.0);
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions ROUND(SUM(1.2, 2.3) + 1.0) 5", werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, "ROUND(SUM(1.2, 2.3) + 1.0)") == 5.0);
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions ROUND(SUM(1.2, 2.3) + 1.0) + 1.0 6", werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, "ROUND(SUM(1.2, 2.3) + 1.0) + GET_1()") == 6.0);
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions ROUND(SUM(1.2, 2.3)) + ROUND(SUM(1.2, 2.3)) 8", werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, "ROUND(ROUND(SUM(1.2, 2.3)) + ROUND(SUM(1.2, 2.3)))") == 8.0);
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions ROUND(SUM(1.2, 2.3)) + ROUND(SUM(1.2, 2.3)) - 1.0 7", werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, "ROUND(ROUND(SUM(1.2, 2.3)) + ROUND(SUM(1.2, 2.3))) - 1.0") == 7.0);
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions (ROUND(SUM(1.2, 2.3)) + ROUND(SUM(1.2, 2.3)) - 1.0) 7", werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, "(ROUND(ROUND(SUM(1.2, 2.3)) + ROUND(SUM(1.2, 2.3))) - 1.0)") == 7.0);
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions ROUND(SUM(1.2, 2.3)) + ROUND(SUM(1.2, 2.3)) - 1.0 + 2.0 9", werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, "ROUND(ROUND(SUM(1.2, 2.3)) + ROUND(SUM(1.2, 2.3))) - 1.0 + 2.0") == 9.0);
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions ROUND(SUM(1.2, 2.3)) + 2.0 + ROUND(SUM(1.2, 2.3)) - 1.0 9", werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, "ROUND(ROUND(SUM(1.2, 2.3)) + 2.0 + ROUND(SUM(1.2, 2.3))) - 1.0") == 9.0);
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions 2.0 + ROUND(SUM(1.2, 2.3)) + ROUND(SUM(1.2, 2.3)) - 1.0 9", werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, "2.0 + ROUND(ROUND(SUM(1.2, 2.3)) + ROUND(SUM(1.2, 2.3))) - 1.0") == 9.0);
+    Tests.run("werks_expreval_evaluate_expression_with_custom_functions 2.0 * (ROUND(SUM(1.2, 2.3)) + ROUND(SUM(1.2, 2.3))) - 1.0 15", werks_expreval_evaluate_expression_with_custom_functions(evaluator, function_registry, "2.0 * (ROUND(SUM(1.2, 2.3)) + ROUND(SUM(1.2, 2.3))) - 1.0") == 15.0);
     werks_expreval_destroy(evaluator);
     return Tests.end();
 }

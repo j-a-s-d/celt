@@ -155,6 +155,18 @@ typedef void (*werks_expreval_expressions_list_loop_with_reference_handler_fn)(w
 void werks_expreval_expressions_list_loop_with_reference(werks_expreval_expressions_list_dt* list, werks_expreval_expressions_list_loop_with_reference_handler_fn handler, void* reference);
 void werks_expreval_expressions_list_reverse_loop_with_reference(werks_expreval_expressions_list_dt* list, werks_expreval_expressions_list_loop_with_reference_handler_fn handler, void* reference);
 
+// functions
+
+typedef WERKS_EXPREVAL_TYPE (*werks_expreval_custom_fn)(const WERKS_EXPREVAL_TYPE* args, int arg_count);
+
+typedef struct {
+    const char* name;
+    werks_expreval_custom_fn routine;
+} werks_expreval_custom_function_dt;
+
+werks_expreval_custom_fn werks_expreval_find_custom_function(const werks_expreval_custom_function_dt* registry, const char* name);
+WERKS_EXPREVAL_TYPE werks_expreval_evaluate_expression_with_custom_functions(werks_expreval_dt* evaluator, const werks_expreval_custom_function_dt* registry, const char* expression);
+
 #ifdef __cplusplus
 }
 #endif
