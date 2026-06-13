@@ -437,7 +437,7 @@ void werks_expreval_expressions_list_destroy(werks_expreval_expressions_list_dt*
     free(list);
 }
 
-werks_expreval_custom_fn werks_expreval_find_custom_function(const werks_expreval_custom_function_dt* registry, const char* name) {
+werks_expreval_custom_fn werks_expreval_find_custom_function(werks_expreval_custom_function_dt* const registry, const char* name) {
     if (assigned(registry) && has_content(name))
         for (int i = 0; registry[i].name != NULL; i++)
             if (strcmp(registry[i].name, name) == 0)
@@ -445,7 +445,7 @@ werks_expreval_custom_fn werks_expreval_find_custom_function(const werks_expreva
     return NULL;
 }
 
-static WERKS_EXPREVAL_TYPE werks_expreval_internal_direct_eval_with_custom_functions(werks_expreval_dt* evaluator, const werks_expreval_custom_function_dt* registry, const char* expression) {
+static WERKS_EXPREVAL_TYPE werks_expreval_internal_direct_eval_with_custom_functions(werks_expreval_dt* const evaluator, werks_expreval_custom_function_dt* const registry, const char* expression) {
     // remove whitespace
     while (*expression && isspace((unsigned char)*expression)) expression++;
     // verify if text starts with a valid function name (A-Z, a-z)
@@ -503,7 +503,7 @@ static WERKS_EXPREVAL_TYPE werks_expreval_internal_direct_eval_with_custom_funct
                         i++;
                     }
                     // execute custom function
-                    WERKS_EXPREVAL_TYPE result = func(evaluated_args, arg_count);
+                    WERKS_EXPREVAL_TYPE result = func(evaluator, evaluated_args, arg_count);
                     ce_free(evaluated_args);
                     ce_free(args_text);
                     // if there is extra text after ')' (ex: "ROUND(1.5) * 10") we add it
@@ -522,7 +522,7 @@ static WERKS_EXPREVAL_TYPE werks_expreval_internal_direct_eval_with_custom_funct
     return werks_expreval_evaluate_expression(evaluator, expression);
 }
 
-static WERKS_EXPREVAL_TYPE werks_expreval_internal_evaluate_with_custom_functions(werks_expreval_dt* evaluator, const werks_expreval_custom_function_dt* registry, const char* expression) {
+static WERKS_EXPREVAL_TYPE werks_expreval_internal_evaluate_with_custom_functions(werks_expreval_dt* const evaluator, werks_expreval_custom_function_dt* const registry, const char* expression) {
     char* text = trim(expression);
     int len = strlen(text);
     if (starts_with(text, STRINGS_PARENTHESES_OPEN) && ends_with(text, STRINGS_PARENTHESES_CLOSE)) {
@@ -559,8 +559,21 @@ static WERKS_EXPREVAL_TYPE werks_expreval_internal_evaluate_with_custom_function
     return result;
 }
 
-WERKS_EXPREVAL_TYPE werks_expreval_evaluate_expression_with_custom_functions(werks_expreval_dt* evaluator, const werks_expreval_custom_function_dt* registry, const char* expression) {
+WERKS_EXPREVAL_TYPE werks_expreval_evaluate_expression_with_custom_functions(werks_expreval_dt* const evaluator, werks_expreval_custom_function_dt* const registry, const char* expression) {
     return both_assigned(evaluator, registry) && has_content(expression) ?
         werks_expreval_internal_evaluate_with_custom_functions(evaluator, registry, expression) : WERKS_EXPREVAL_NAN;
+}
+
+void werks_expreval_expressions_list_reevaluate_with_custom_functions(werks_expreval_expressions_list_dt* const list, werks_expreval_dt* const evaluator, werks_expreval_custom_function_dt* const registry) {
+    if (list == NULL || evaluator == NULL || registry == NULL) return;
+    list->evaluation_rounds++;
+    PTRHOLDER_EACH_CASTED(list->expressions_entries, werks_expreval_expressions_entry_dt, entry, {
+        entry->data.last = entry->data.current;
+        entry->data.current = werks_expreval_internal_evaluate_with_custom_functions(evaluator, registry, entry->data.expression);
+        entry->data.error = evaluator->error;
+        if ((entry->data.modified = (evaluator->error == WERKS_EXPREVAL_ERROR_NONE) && !WERKS_EXPREVAL_EQUAL(entry->data.current, entry->data.last, WERKS_EXPREVAL_EPSILON)))
+            if (assigned(list->on_result_change))
+                list->on_result_change(list, &entry->data);
+    });
 }
 

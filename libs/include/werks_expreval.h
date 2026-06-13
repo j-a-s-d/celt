@@ -110,8 +110,23 @@ static inline werks_expreval_dt* werks_expreval_make() {
 }
 werks_expreval_constants_dt* werks_expreval_constants_get_constants(werks_expreval_dt* evaluator);
 ssize_t werks_expreval_constants_get_error(werks_expreval_dt* evaluator);
-WERKS_EXPREVAL_TYPE werks_expreval_evaluate_expression(werks_expreval_dt* evaluator, const char* expression);
 void werks_expreval_destroy(werks_expreval_dt* instance);
+
+// functions
+
+typedef WERKS_EXPREVAL_TYPE (*werks_expreval_custom_fn)(werks_expreval_dt* evaluator, const WERKS_EXPREVAL_TYPE* args, int arg_count);
+
+typedef struct {
+    const char* name;
+    werks_expreval_custom_fn routine;
+} werks_expreval_custom_function_dt;
+
+werks_expreval_custom_fn werks_expreval_find_custom_function(werks_expreval_custom_function_dt* registry, const char* name);
+
+// evaluation
+
+WERKS_EXPREVAL_TYPE werks_expreval_evaluate_expression(werks_expreval_dt* evaluator, const char* expression);
+WERKS_EXPREVAL_TYPE werks_expreval_evaluate_expression_with_custom_functions(werks_expreval_dt* evaluator, werks_expreval_custom_function_dt* registry, const char* expression);
 
 // list
 
@@ -137,6 +152,7 @@ bool werks_expreval_expressions_list_add_from_array_with_size(werks_expreval_exp
 bool werks_expreval_expressions_list_delete(werks_expreval_expressions_list_dt* list, const char* expression);
 size_t werks_expreval_expressions_list_get_count(werks_expreval_expressions_list_dt* list);
 void werks_expreval_expressions_list_reevaluate(werks_expreval_expressions_list_dt* list, werks_expreval_dt* evaluator);
+void werks_expreval_expressions_list_reevaluate_with_custom_functions(werks_expreval_expressions_list_dt* list, werks_expreval_dt* evaluator, werks_expreval_custom_function_dt* registry);
 void werks_expreval_expressions_list_treat(werks_expreval_expressions_list_dt* list, WERKS_EXPREVAL_TREATER_TYPE treater);
 void werks_expreval_expressions_list_sort_by_value_ascending(werks_expreval_expressions_list_dt* list);
 void werks_expreval_expressions_list_sort_by_value_descending(werks_expreval_expressions_list_dt* list);
@@ -154,18 +170,6 @@ void werks_expreval_expressions_list_reverse_loop(werks_expreval_expressions_lis
 typedef void (*werks_expreval_expressions_list_loop_with_reference_handler_fn)(werks_expreval_expressions_list_dt* list, werks_expreval_expressions_data_dt* data, void* reference);
 void werks_expreval_expressions_list_loop_with_reference(werks_expreval_expressions_list_dt* list, werks_expreval_expressions_list_loop_with_reference_handler_fn handler, void* reference);
 void werks_expreval_expressions_list_reverse_loop_with_reference(werks_expreval_expressions_list_dt* list, werks_expreval_expressions_list_loop_with_reference_handler_fn handler, void* reference);
-
-// functions
-
-typedef WERKS_EXPREVAL_TYPE (*werks_expreval_custom_fn)(const WERKS_EXPREVAL_TYPE* args, int arg_count);
-
-typedef struct {
-    const char* name;
-    werks_expreval_custom_fn routine;
-} werks_expreval_custom_function_dt;
-
-werks_expreval_custom_fn werks_expreval_find_custom_function(const werks_expreval_custom_function_dt* registry, const char* name);
-WERKS_EXPREVAL_TYPE werks_expreval_evaluate_expression_with_custom_functions(werks_expreval_dt* evaluator, const werks_expreval_custom_function_dt* registry, const char* expression);
 
 #ifdef __cplusplus
 }
