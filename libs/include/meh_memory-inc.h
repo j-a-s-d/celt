@@ -72,6 +72,18 @@ inline void _auto_cleanup(void* ptr) {
     if (assigned(result)) { code } \
     return result;
 
+/* MeH.MEMORY -- Stack Result */
+
+#define RET(type, code) \
+    type result; \
+    { code } \
+    return result;
+
+#define RET_INIT(type, init, code) \
+    type result = (type)init; \
+    { code } \
+    return result;
+
 /* MeH.MEMORY -- Deallocation Utilities */
 
 static inline void zero_free(void* ptr, size_t size) {

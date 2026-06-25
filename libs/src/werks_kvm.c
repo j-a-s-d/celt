@@ -1157,7 +1157,7 @@ bool werks_kvm_set_bool(werks_kvm_dt* const map, const char* key, bool value) {
 // String mutator
 bool werks_kvm_set_string(werks_kvm_dt* const map, const char* key, const char* value) {
     if (map == NULL || !map->allow_set || !has_content(key)) return false;
-    char* ptr = strdup(value);
+    char* ptr = assigned(value) ? strdup(value) : NULL;
     if (ptr == NULL) return false;
     INSERT_POINTER_INTO_MAP(ptr, WERKS_KVM_TYPE_STRING);
 }
@@ -2130,7 +2130,7 @@ static inline bool deserialize_item_into_map(werks_kvm_dt** const map, const cha
     }) else ON_WERKS_KVM_TYPE_VAL_DO(STRINGS_PARENTHESES_OPEN WERKS_KVM_TYPE_NAME_LONG_DOUBLE STRINGS_PARENTHESES_CLOSE, {
         result = werks_kvm_set_long_double(*map, kv->key, str_to_long_double_def(ser, 0.0));
     }) else if ((*map)->untyped_treatment == WERKS_KVM_UNTYPED_IS_STRING) {
-        result = werks_kvm_set_string(*map, kv->key, kv->value);
+        result = werks_kvm_set_string(*map, kv->key, ensure_const_string(kv->value));
     } else {
         result = (*map)->untyped_treatment == WERKS_KVM_UNTYPED_IS_IGNORED;
     }

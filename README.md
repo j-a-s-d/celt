@@ -41,6 +41,9 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 25-jun-2026 -- *20260625L*
+	- [MeH] added `RET` and `RET_INIT`
+	- other minor adjustments
 * 13-jun-2026 -- *20260613L*
 	- [WeRKS] added `werks_expreval_expressions_list_reevaluate_with_custom_functions`
 * 12-jun-2026 -- *20260612L*
