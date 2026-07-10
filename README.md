@@ -41,6 +41,9 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 10-jul-2026 -- *20260710L*
+	- [KeWL] added `kewl_sampleprofiler_reset`, `print_line`, `print_error`, `print_info`, `print_hint`, `print_formatted_line`, `print_formatted_error`, `print_formatted_info` and `print_formatted_hint`
+	- [WeRKS] added `QUICK_STRINGLIST`
 * 25-jun-2026 -- *20260625L*
 	- [MeH] added `RET` and `RET_INIT`
 	- other minor adjustments

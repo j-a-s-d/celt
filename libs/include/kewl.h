@@ -43,10 +43,6 @@ bool falsy(void);
 #include "kewl_component-inc.h"
 #endif
 
-#ifndef KEWL_DISABLE_DEBUG
-#include "kewl_debug-inc.h"
-#endif
-
 #ifndef KEWL_DISABLE_DATETIME
 #include "kewl_datetime-inc.h"
 #endif
@@ -93,6 +89,10 @@ bool falsy(void);
 
 #ifndef KEWL_DISABLE_CHUNKSSTACK
 #include "kewl_chunksstack-inc.h"
+#endif
+
+#ifndef KEWL_DISABLE_DEBUG
+#include "kewl_debug-inc.h"
 #endif
 
 #ifdef __cplusplus

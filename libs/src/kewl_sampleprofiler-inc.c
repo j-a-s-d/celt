@@ -30,18 +30,7 @@ struct KEWL_SAMPLEPROFILER_ALIGNMENT kewl_sampleprofiler_dt {
 
 kewl_sampleprofiler_dt* kewl_sampleprofiler_create(void) {
     RET_MALLOC(kewl_sampleprofiler_dt, {
-        result->current_round = 0;
-        result->current_sum = 0.0;
-        result->max_input = -DBL_MAX;
-        result->min_input = DBL_MAX;
-        result->max_input_round = 0;
-        result->min_input_round = 0;
-        result->current_average = 0.0;
-        result->current_ss = 0.0;
-        result->max_average = -DBL_MAX;
-        result->min_average = DBL_MAX;
-        result->max_average_round = 0;
-        result->min_average_round = 0;
+        kewl_sampleprofiler_reset(result);
         result->on_before_new_input_handler = NULL;
         result->on_minimum_input_handler = NULL;
         result->on_maximum_input_handler = NULL;
@@ -52,6 +41,22 @@ kewl_sampleprofiler_dt* kewl_sampleprofiler_create(void) {
 
 void kewl_sampleprofiler_destroy(kewl_sampleprofiler_dt* const data) {
     ce_free(data);
+}
+
+void kewl_sampleprofiler_reset(kewl_sampleprofiler_dt* const data) {
+    if (data == NULL) return;
+    data->current_round = 0;
+    data->current_sum = 0.0;
+    data->max_input = -DBL_MAX;
+    data->min_input = DBL_MAX;
+    data->max_input_round = 0;
+    data->min_input_round = 0;
+    data->current_average = 0.0;
+    data->current_ss = 0.0;
+    data->max_average = -DBL_MAX;
+    data->min_average = DBL_MAX;
+    data->max_average_round = 0;
+    data->min_average_round = 0;
 }
 
 void kewl_sampleprofiler_update(kewl_sampleprofiler_dt* const data, double new_number) {

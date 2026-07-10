@@ -29,6 +29,7 @@ typedef struct kewl_sampleprofiler_dt kewl_sampleprofiler_dt;
 kewl_sampleprofiler_dt* kewl_sampleprofiler_create(void);
 void kewl_sampleprofiler_destroy(kewl_sampleprofiler_dt* data);
 
+void kewl_sampleprofiler_reset(kewl_sampleprofiler_dt* data);
 void kewl_sampleprofiler_update(kewl_sampleprofiler_dt* data, double new_number);
 size_t kewl_sampleprofiler_get_total_rounds(kewl_sampleprofiler_dt* data);
 double kewl_sampleprofiler_get_total_sum(kewl_sampleprofiler_dt* data);

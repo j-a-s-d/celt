@@ -4,6 +4,7 @@
 
 #include "gem_testing.h"
 #include <float.h> // FLT_EPSILON and DBL_EPSILON
+#define KEWL_PRINT_ERROR_PREFIX "ERRoR: "
 #include "kewl.h"
 
 #ifdef KEWL_HELP
@@ -319,6 +320,8 @@ static inline void test_sampleprofiler() {
     Tests.run("kewl_sampleprofiler_calculate_variance 4.91667", double_equal(kewl_sampleprofiler_calculate_variance(data), 4.91667, 0.00001));
     
     Tests.run("kewl_sampleprofiler_calculate_standard_deviation 2.217356", double_equal(kewl_sampleprofiler_calculate_standard_deviation(data, double_sqrt), 2.217356, 0.00001));
+    kewl_sampleprofiler_reset(data);
+    Tests.run("kewl_sampleprofiler_reset", kewl_sampleprofiler_get_total_rounds(data) == 0 && kewl_sampleprofiler_get_total_sum(data) == 0.0);
     kewl_sampleprofiler_destroy(data);
 }
 
@@ -1350,6 +1353,26 @@ void test_dbg_utilities() {
     print_binary8(rotated_right);
     printf("\n");
     printf("\n");
+    print_line(NULL);
+    print_line("hello world");
+    print_formatted_line(NULL);
+    print_formatted_line(" hello world ");
+    print_formatted_line("%s %s", "(hello", "world)");
+    print_error(NULL);
+    print_error("oops !!");
+    print_formatted_error(NULL);
+    print_formatted_error(" oops !! ");
+    print_formatted_error("%s %s", "(oops", "!!)");
+    print_info(NULL);
+    print_info("this is a test");
+    print_formatted_info(NULL);
+    print_formatted_info(" this is a test ");
+    print_formatted_info("%s %s", "(this is", "a test)");
+    print_hint(NULL);
+    print_hint("1 2 3 4");
+    print_formatted_hint(NULL);
+    print_formatted_hint(" 1 2 3 4 ");
+    print_formatted_hint("%s %s", "(1 2", "3 4)");
 }
 
 void show_ptr_int_item(__unused kewl_ptrholder_dt* arr, kewl_ptrholder_ptr_dt ptr) {

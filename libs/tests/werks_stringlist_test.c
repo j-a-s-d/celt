@@ -689,6 +689,9 @@ int main(void) {
     Tests.run("werks_stringlist_get_size sdr 5", werks_stringlist_get_size(sdr) == 5);
     werks_stringlist_destroy(sdr);
     werks_stringlist_destroy(srr);
+    QUICK_STRINGLIST(tqs, {
+        Tests.run("werks_stringlist_get_size tqs 0", werks_stringlist_get_size(tqs) == 0);
+    });
     return Tests.end();
 }
 
