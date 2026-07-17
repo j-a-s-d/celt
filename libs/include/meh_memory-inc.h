@@ -55,6 +55,8 @@ inline void _auto_cleanup(void* ptr) {
 
 #define AUTO_TYPE(name, type) __auto VAR_MALLOC(name, type)
 
+#define AUTO_TYPE_SIZE(name, type, size) __auto VAR_MALLOC_SIZE(name, type, size)
+
 /* MeH.MEMORY -- Automatic Return */
 
 #define RET_MALLOC(type, code) \

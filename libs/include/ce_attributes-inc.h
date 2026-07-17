@@ -19,6 +19,14 @@
     #define __unused
 #endif
 
+#ifdef __c23
+    #define __packed [[gnu::packed]]
+#elif defined(__GNUC__) || defined(__clang__)
+    #define __packed __attribute__((packed))
+#else
+    #define __packed
+#endif
+
 #if defined(__clang__)
   #define __unoptimizable __attribute__((optnone))
 #elif defined(__GNUC__)

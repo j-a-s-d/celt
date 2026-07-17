@@ -41,6 +41,10 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 17-jul-2026 -- *20260717L*
+	- [MeH] added `AUTO_TYPE_SIZE`
+	- [Ce] added `__packed`
+	- other minor adjustments
 * 10-jul-2026 -- *20260710L*
 	- [KeWL] added `kewl_sampleprofiler_reset`, `print_line`, `print_error`, `print_info`, `print_hint`, `print_formatted_line`, `print_formatted_error`, `print_formatted_info` and `print_formatted_hint`
 	- [WeRKS] added `QUICK_STRINGLIST`

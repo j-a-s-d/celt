@@ -77,7 +77,7 @@ static inline bool is_uppercase_char(char chr) {
 }
 
 static inline bool is_lowercase_char(char chr) {
-    return (chr >= 'a' && chr <= 'f');
+    return (chr >= 'a' && chr <= 'z');
 }
 
 static inline bool is_digit_char(char chr) {
