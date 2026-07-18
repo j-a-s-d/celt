@@ -62,6 +62,23 @@ static inline void print_binary64(uint64_t x) {
     free(text); \
     return true;
 
+#ifndef KEWL_PRINT_TEXT_PREFIX
+    #define KEWL_PRINT_TEXT_PREFIX STRINGS_NOTHING
+#endif
+#ifndef KEWL_PRINT_TEXT_SUFFIX
+    #define KEWL_PRINT_TEXT_SUFFIX STRINGS_NOTHING
+#endif
+
+// Function to safely print a generic text to the console (without line feed)
+static inline void print_text(const char* text) {
+    printf(KEWL_PRINT_TEXT_PREFIX "%s" KEWL_PRINT_TEXT_SUFFIX, ensure_const_string(text));
+}
+
+// Function to safely print a formatted text to the console (without line feed) returning true on success
+__unused static bool print_formatted_text(const char* fmt, ...) {
+    _PRINT_FORMATTED_FN(print_text)
+}
+
 #ifndef KEWL_PRINT_LINE_PREFIX
     #define KEWL_PRINT_LINE_PREFIX STRINGS_NOTHING
 #endif

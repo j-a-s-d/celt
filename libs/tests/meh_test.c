@@ -37,6 +37,55 @@ TREATER(float, float_treater)
 TREATER(double, double_treater)
 TREATER(long double, long_double_treater)
 
+static inline void test_ensure_utilities() {
+    Tests.run("ensure_bool_value", ensure_bool_value(NULL) == false);
+    Tests.run("ensure_char_value", ensure_char_value(NULL) == CHARS_NULL);
+    Tests.run("ensure_signed_char_value", ensure_signed_char_value(NULL) == CHARS_NULL);
+    Tests.run("ensure_unsigned_char_value", ensure_unsigned_char_value(NULL) == CHARS_NULL);
+    Tests.run("ensure_short_value", ensure_short_value(NULL) == (short)0);
+    Tests.run("ensure_unsigned_short_value", ensure_unsigned_short_value(NULL) == (unsigned short)0);
+    Tests.run("ensure_int_value", ensure_int_value(NULL) == (int)0);
+    Tests.run("ensure_unsigned_int_value", ensure_unsigned_int_value(NULL) == (unsigned int)0);
+    Tests.run("ensure_long_value", ensure_long_value(NULL) == (long)0);
+    Tests.run("ensure_unsigned_long_value", ensure_unsigned_long_value(NULL) == (unsigned long)0);
+    Tests.run("ensure_long_long_value", ensure_long_long_value(NULL) == (long long)0);
+    Tests.run("ensure_unsigned_long_long_value", ensure_unsigned_long_long_value(NULL) == (unsigned long long)0);
+    Tests.run("ensure_float_value", ensure_float_value(NULL) == (float)0);
+    Tests.run("ensure_double_value", ensure_double_value(NULL) == (double)0);
+    Tests.run("ensure_long_double_value", ensure_long_double_value(NULL) == (long double)0);
+    Tests.run("ensure_int8_value", ensure_int8_value(NULL) == (int8_t)0);
+    Tests.run("ensure_uint8_value", ensure_uint8_value(NULL) == (uint8_t)0);
+    Tests.run("ensure_int16_value", ensure_int16_value(NULL) == (int16_t)0);
+    Tests.run("ensure_uint16_value", ensure_uint16_value(NULL) == (uint16_t)0);
+    Tests.run("ensure_int32_value", ensure_int32_value(NULL) == (int32_t)0);
+    Tests.run("ensure_uint32_value", ensure_uint32_value(NULL) == (uint32_t)0);
+    Tests.run("ensure_int64_value", ensure_int64_value(NULL) == (int64_t)0);
+    Tests.run("ensure_uint64_value", ensure_uint64_value(NULL) == (uint64_t)0);
+    Tests.run("ensure_bool_value_def", ensure_bool_value_def(NULL, TEST_BOOL) == TEST_BOOL);
+    Tests.run("ensure_char_value_def", ensure_char_value_def(NULL, TEST_CHAR) == TEST_CHAR);
+    Tests.run("ensure_signed_char_value_def", ensure_signed_char_value_def(NULL, TEST_SIGNED_CHAR) == TEST_SIGNED_CHAR);
+    Tests.run("ensure_unsigned_char_value_def", ensure_unsigned_char_value_def(NULL, TEST_UNSIGNED_CHAR) == TEST_UNSIGNED_CHAR);
+    Tests.run("ensure_short_value_def", ensure_short_value_def(NULL, TEST_SHORT) == TEST_SHORT);
+    Tests.run("ensure_unsigned_short_value_def", ensure_unsigned_short_value_def(NULL, TEST_UNSIGNED_SHORT) == TEST_UNSIGNED_SHORT);
+    Tests.run("ensure_int_value_def", ensure_int_value_def(NULL, TEST_INT) == TEST_INT);
+    Tests.run("ensure_unsigned_int_value_def", ensure_unsigned_int_value_def(NULL, TEST_UNSIGNED_INT) == TEST_UNSIGNED_INT);
+    Tests.run("ensure_long_value_def", ensure_long_value_def(NULL, TEST_LONG_INT) == TEST_LONG_INT);
+    Tests.run("ensure_unsigned_long_value_def", ensure_unsigned_long_value_def(NULL, TEST_UNSIGNED_LONG_INT) == TEST_UNSIGNED_LONG_INT);
+    Tests.run("ensure_long_long_value_def", ensure_long_long_value_def(NULL, TEST_LONG_LONG_INT) == TEST_LONG_LONG_INT);
+    Tests.run("ensure_unsigned_long_long_value_def", ensure_unsigned_long_long_value_def(NULL, TEST_UNSIGNED_LONG_LONG_INT) == TEST_UNSIGNED_LONG_LONG_INT);
+    Tests.run("ensure_float_value_def", ensure_float_value_def(NULL, TEST_FLOAT) == TEST_FLOAT);
+    Tests.run("ensure_double_value_def", ensure_double_value_def(NULL, TEST_DOUBLE) == TEST_DOUBLE);
+    Tests.run("ensure_long_double_value_def", ensure_long_double_value_def(NULL, TEST_LONG_DOUBLE) == TEST_LONG_DOUBLE);
+    Tests.run("ensure_int8_value_def", ensure_int8_value_def(NULL, TEST_INT8) == TEST_INT8);
+    Tests.run("ensure_uint8_value_def", ensure_uint8_value_def(NULL, TEST_UINT8) == TEST_UINT8);
+    Tests.run("ensure_int16_value_def", ensure_int16_value_def(NULL, TEST_INT16) == TEST_INT16);
+    Tests.run("ensure_uint16_value_def", ensure_uint16_value_def(NULL, TEST_UINT16) == TEST_UINT16);
+    Tests.run("ensure_int32_value_def", ensure_int32_value_def(NULL, TEST_INT32) == TEST_INT32);
+    Tests.run("ensure_uint32_value_def", ensure_uint32_value_def(NULL, TEST_UINT32) == TEST_UINT32);
+    Tests.run("ensure_int64_value_def", ensure_int64_value_def(NULL, TEST_INT64) == TEST_INT64);
+    Tests.run("ensure_uint64_value_def", ensure_uint64_value_def(NULL, TEST_UINT64) == TEST_UINT64);
+}
+
 static inline void test_math_utilities() {
     int a = 1, b = 2, c = -1;
     Tests.run("MAX", MAX(a, b) == b);
@@ -473,6 +522,8 @@ int main(void) {
     test_math_utilities();
     printf("--- MEMORY\n");
     test_memory_utilities();
+    printf("--- ENSURE\n");
+    test_ensure_utilities();
     return 0;
 }
 unit_finalize({

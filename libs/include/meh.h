@@ -42,6 +42,10 @@ extern "C" {
 #include "meh_literals-inc.h"
 #endif
 
+#ifndef MEH_DISABLE_ENSURE
+#include "meh_ensure-inc.h"
+#endif
+
 #ifndef MEH_DISABLE_LOOPS
 #include "meh_loops-inc.h"
 #endif
