@@ -41,6 +41,9 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 21-jul-2026 -- *20260721L*
+	- [KeWL] added `copy_file` and `generate_temporary_filename`
+	- other minor adjustments
 * 20-jul-2026 -- *20260720L*
 	- [KeWL] added `write_binary_file`
 	- [PeRKS] added `perks_assets` for embedding files under gcc/clang

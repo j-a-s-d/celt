@@ -155,6 +155,17 @@ bool rename_file(const char* source_filename, const char* target_filename) {
 #endif
 }
 
+char* generate_temporary_filename(const char* base_dir, const char* prefix, const char* suffix) {
+    const char* pfx = assigned(prefix) ? prefix : STRINGS_NOTHING;
+    const char* sfx = assigned(suffix) ? suffix : STRINGS_NOTHING;
+    const char* base = assigned(base_dir) ? base_dir : STRINGS_PERIOD;
+    size_t needed = snprintf(NULL, 0, "%s/%s%ld%s", base, pfx, (long)time(NULL), sfx);
+    char* out_path = (char*)ce_malloc(needed + 1);
+    if (assigned(out_path))
+        snprintf(out_path, needed + 1, "%s/%s%ld%s", base, pfx, (long)time(NULL), sfx);
+    return out_path;
+}
+
 // DIRECTORIES
 
 bool create_moded_nested_directories(const char* path, mode_t mode) {
@@ -247,5 +258,34 @@ char* list_directory(const char* path, const char* separator) {
     if (result_len > separator_len)
         result[result_len - separator_len] = CHARS_NULL;
     return result;
+}
+
+bool copy_file(const char* src_path, const char* dest_path) {
+    FILE* src = NULL;
+    FILE* dest = NULL;
+    char buffer[KEWL_COPY_FILE_BUFFER_SIZE];
+    size_t bytes_read;
+    size_t bytes_written;
+    bool success = true;
+    src = fopen(src_path, "rb");
+    if (src == NULL)
+        return false;
+    dest = fopen(dest_path, "wb");
+    if (dest == NULL) {
+        fclose(src);
+        return false;
+    }
+    while ((bytes_read = fread(buffer, 1, sizeof(buffer), src)) > 0) {
+        bytes_written = fwrite(buffer, 1, bytes_read, dest);
+        if (bytes_written < bytes_read) {
+            success = false;
+            break;
+        }
+    }
+    if (ferror(src))
+        success = false;
+    fclose(src);
+    fclose(dest);
+    return success;
 }
 

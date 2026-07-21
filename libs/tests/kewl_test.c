@@ -64,6 +64,11 @@ static inline void test_fs_utilities() {
     for (size_t j = 0; j < hex_ln; j++) free(hex_dt[j]);
     __auto char* hex_st = read_file_as_hex_string(hex_fn, " ");
     Tests.run("read_file_as_hex_string", streq(hex_st, "48 65 6C 6C 6F"));
+    const char* hex_copy_fn = "hex.copy";
+    Tests.run("copy_file", copy_file(hex_fn, hex_copy_fn));
+    Tests.run("file_exists", file_exists(hex_copy_fn));
+    Tests.run("get_file_size", get_file_size(hex_copy_fn) == hex_sz);
+    Tests.run("delete_file", delete_file(hex_copy_fn));
     Tests.run("delete_file", delete_file(hex_fn));
     
     mode_t mode = 0755;

@@ -28,9 +28,17 @@
 #define double_NaN __builtin_nan("")
 #define long_double_NaN __builtin_nanl("")
 
-#define float_isNaN __builtin_isnanf
+#if defined(__clang__)
+    #define float_isNaN(x) __builtin_isnan((float)(x))
+#else
+    #define float_isNaN __builtin_isnanf
+#endif
 #define double_isNaN __builtin_isnan
-#define long_double_isNaN __builtin_isnanl
+#if defined(__clang__)
+    #define long_double_isNaN(x) __builtin_isnan((long double)(x))
+#else
+    #define long_double_isNaN __builtin_isnanl
+#endif
 // NOTE: if you can't use the builtin isnan functions, you can write your own simply by comparing the value to itself (x != x).
 
 #define float_signbit __builtin_signbitf

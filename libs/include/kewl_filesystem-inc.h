@@ -103,6 +103,14 @@ char** read_file_as_hex_data(const char* filename, size_t* out_count);
 // Function to read a file as hex string
 char* read_file_as_hex_string(const char* filename, const char* separator);
 
+#define KEWL_COPY_FILE_BUFFER_SIZE 4 * KILOBYTE
+
+// Function to copy a file
+bool copy_file(const char* src_path, const char* dest_path);
+
+// Function to generate a temporary filename in the provided directory with the specified prefix and suffix (which can be an extension)
+char* generate_temporary_filename(const char* base_dir, const char* prefix, const char* suffix);
+
 // FILESYSTEM -- Directories
 
 #include <dirent.h>

@@ -193,7 +193,7 @@ sinusoidal_model_dt fit_sinusoidal_regression_model(double x[], double y[], int 
     double sum_y = 0.0;
     double sum_ss = 0.0;
     double sum_cc = 0.0;
-    double sum_sc = 0.0;
+    //double sum_sc = 0.0;
     double sum_sy = 0.0;
     double sum_cy = 0.0;
     double omega = 2.0 * VALUE_PI / period;
@@ -205,7 +205,7 @@ sinusoidal_model_dt fit_sinusoidal_regression_model(double x[], double y[], int 
         sum_y += y[i];
         sum_ss += s * s;
         sum_cc += c * c;
-        sum_sc += s * c;
+        //sum_sc += s * c;
         sum_sy += s * y[i];
         sum_cy += c * y[i];
     }

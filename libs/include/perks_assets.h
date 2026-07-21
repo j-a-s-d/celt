@@ -19,14 +19,18 @@ extern "C" {
 // This macro generates the assembly to embed the specified file and declares the extern variables with the specified prefix to be dumped later with DUMP_ASSET macro
 #define EMBED_ASSET(file_path, prefix) \
     __asm__( \
+        ".section .rodata\n" /* force the linker into the read-only data section */ \
+        ".balign 16\n" /* 16-byte alignment optimizes CPU vector instruction speeds */ \
         ".global " STR(prefix) "_start\n" \
         ".global " STR(prefix) "_end\n" \
         STR(prefix) "_start:\n" \
         ".incbin \"" file_path "\"\n" \
         STR(prefix) "_end:\n" \
+        ".byte 0\n" /* append a hidden null-terminator for safety */ \
+        ".section .text\n" /* switch back to code section */ \
     ); \
-    extern const char prefix##_start[]; \
-    extern const char prefix##_end[]
+    extern const unsigned char prefix##_start[]; \
+    extern const unsigned char prefix##_end[]
 
 // This macro dumps a file with the specified name which was previously embedded with EMBED_ASSET macro using the specified prefix
 #define DUMP_ASSET(file_path, prefix) \
