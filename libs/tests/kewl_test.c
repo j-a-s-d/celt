@@ -90,6 +90,13 @@ static inline void test_fs_utilities() {
     AUTO_STRING(ld, list_directory(".", ","));
     Tests.run("list_directory", assigned(ld));
     Tests.print("%s\n", ld);
+
+    const char* bin_name = "sample.bin";
+    uint8_t bin_data[] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88};
+    Tests.run("write_binary_file", write_binary_file(bin_name, (uint8_t**)&bin_data, 8));
+    Tests.run("file_exists", file_exists(bin_name));
+    Tests.run("get_file_size", get_file_size(bin_name) == 8);
+    Tests.run("delete_file YES", delete_file(bin_name));
 }
 
 static inline void test_mth_utilities() {

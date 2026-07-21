@@ -38,6 +38,16 @@ static inline long get_file_size(const char* filename) {
     });
 }
 
+// Function to write content to a binary file
+static inline bool write_binary_file(const char* filename, uint8_t* content[], size_t size) {
+    FILE_OPERATION("w", false, {
+        fwrite(content, 1, size, file);
+        fflush(file);
+        fclose(file);
+        return true;
+    });
+}
+
 // Function to append content to a text file
 static inline bool append_text_file(const char* filename, const char* content) {
     FILE_OPERATION("a", false, {

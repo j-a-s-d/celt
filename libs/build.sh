@@ -50,6 +50,7 @@ function RUN_TESTS() {
     RUN_TEST perks_multiplatform_test
     RUN_TEST perks_dbgmm_test
     RUN_TEST perks_signals_test
+    RUN_TEST perks_assets_test
 }
 
 function TEST() {
@@ -151,6 +152,7 @@ function BUILD() {
     MODE c11 # required by multiplatform to get echo and by dbgmm (besides it compiles under c99) to get the aligned_alloc
     MAKE_TEST perks_dbgmm_test $SRC/perks_dbgmm.c -pedantic-errors
     MAKE_TEST perks_multiplatform_test $SRC/perks_multiplatform.c -D_POSIX_C_SOURCE=1 # the test requires the posix version of the stdout redirection
+    MAKE_TEST perks_assets_test -pedantic-errors
 }
 
 BUILD

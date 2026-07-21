@@ -41,6 +41,10 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 20-jul-2026 -- *20260720L*
+	- [KeWL] added `write_binary_file`
+	- [PeRKS] added `perks_assets` for embedding files under gcc/clang
+	- [WeRKS] added `QUICK_KVM`
 * 18-jul-2026 -- *20260718L*
 	- [KeWL] added `print_text` and `print_formatted_text`
 	- [MeH] added ensure value-pointers utilities

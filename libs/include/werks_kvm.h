@@ -129,6 +129,12 @@ werks_kvm_dt* werks_kvm_clone(werks_kvm_dt* map);
 void werks_kvm_destroy(werks_kvm_dt* map);
 const kewl_component_dt* werks_kvm_get_component(werks_kvm_dt* map);
 
+#define QUICK_KVM(name, block) { \
+        werks_kvm_dt* name = werks_kvm_make(); \
+        if (assigned(name)) block; \
+        werks_kvm_destroy(name); \
+    }
+
 // dimensions
 
 ssize_t werks_kvm_get_size(werks_kvm_dt* map);
