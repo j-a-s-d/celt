@@ -54,6 +54,9 @@ static inline bool contains_string(const char* container, const char* contained)
     return assigned(container) && assigned(contained) && assigned(strstr(container, contained));
 }
 
+bool match_starting_pattern(const char* str, const char* pattern, char wildcard);
+bool match_ending_pattern(const char* str, const char* pattern, char wildcard);
+
 bool starts_with(const char* str, const char* pfx);
 bool ends_with(const char* str, const char* sfx);
 

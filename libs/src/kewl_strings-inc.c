@@ -1022,6 +1022,29 @@ char* concat_strings(const char* str1, const char* str2) {
     return result;
 }
 
+static inline bool match_pattern(const char* str, const char* pattern, char wildcard) {
+    while (*str != CHARS_NULL && *pattern != CHARS_NULL) {
+        if (*pattern != wildcard)
+            if (*str != *pattern)
+                return false;
+        str++;
+        pattern++;
+    }
+    return *pattern == CHARS_NULL;
+}
+
+bool match_starting_pattern(const char* str, const char* pattern, char wildcard) {
+    return both_assigned(str, pattern) && match_pattern(str, pattern, wildcard);
+}
+
+bool match_ending_pattern(const char* str, const char* pattern, char wildcard) {
+    if (str == NULL || pattern == NULL) return false;
+    size_t str_len = strlen(str);
+    size_t pattern_len = strlen(pattern);
+    if (pattern_len > str_len) return false;
+    return match_pattern(str + (str_len - pattern_len), pattern, wildcard);
+}
+
 bool starts_with(const char* str, const char* pfx) {
     if (str == NULL || pfx == NULL) return false;
     size_t prefix_size = strlen(pfx);

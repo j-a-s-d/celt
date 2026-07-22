@@ -41,12 +41,15 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 22-jul-2026 -- *20260722L*
+	- [KeWL] added `match_starting_pattern` and `match_ending_pattern`
+	- other minor adjustments
 * 21-jul-2026 -- *20260721L*
 	- [KeWL] added `copy_file` and `generate_temporary_filename`
 	- other minor adjustments
 * 20-jul-2026 -- *20260720L*
 	- [KeWL] added `write_binary_file`
-	- [PeRKS] added `perks_assets` for embedding files under gcc/clang
+	- [WeRKS] added `werks_assets` for embedding files
 	- [WeRKS] added `QUICK_KVM`
 * 18-jul-2026 -- *20260718L*
 	- [KeWL] added `print_text` and `print_formatted_text`

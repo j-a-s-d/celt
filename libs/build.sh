@@ -47,10 +47,10 @@ function RUN_TESTS() {
     RUN_TEST werks_randomness_test
     RUN_TEST werks_i18n_test
     RUN_TEST werks_program_test
+    RUN_TEST werks_assets_test
     RUN_TEST perks_multiplatform_test
     RUN_TEST perks_dbgmm_test
     RUN_TEST perks_signals_test
-    RUN_TEST perks_assets_test
 }
 
 function TEST() {
@@ -148,11 +148,11 @@ function BUILD() {
     MAKE_TEST werks_log_test $SRC/werks_log.c -pedantic-errors
     MAKE_TEST werks_randomness_test $SRC/werks_randomness.c -pedantic-errors -D_POSIX_C_SOURCE=200809L # the posix 08 activation is for the secure random bytes
     MAKE_TEST werks_program_test $SRC/werks_program.c -pedantic-errors -D_POSIX_C_SOURCE=199309L # the posix 93 activation is for nap usage in the test program
+    MAKE_TEST werks_assets_test -pedantic-errors
     MAKE_TEST perks_signals_test $SRC/perks_signals.c -pedantic-errors -D_POSIX_C_SOURCE=200809L # the posix 08 activation is for the SA_RESTART inclusion
     MODE c11 # required by multiplatform to get echo and by dbgmm (besides it compiles under c99) to get the aligned_alloc
     MAKE_TEST perks_dbgmm_test $SRC/perks_dbgmm.c -pedantic-errors
     MAKE_TEST perks_multiplatform_test $SRC/perks_multiplatform.c -D_POSIX_C_SOURCE=1 # the test requires the posix version of the stdout redirection
-    MAKE_TEST perks_assets_test -pedantic-errors
 }
 
 BUILD

@@ -1,7 +1,7 @@
 /**
  * C eXTRA LiBRARiES & TOOLS
- * Library: PeRKS ASSETS
- * File: perks_assets.h
+ * Library: WeRKS ASSETS
+ * File: werks_assets.h
  * Brief: assets embedding
  * Copyright (c) 2025 Javier Santo Domingo (j-a-s-d@coderesearchlabs.com)
  */
@@ -14,7 +14,7 @@ extern "C" {
 
 #include "kewl.h"
 
-#define PERKS_ASSETS
+#define WERKS_ASSETS
 
 // This macro generates the assembly to embed the specified file and declares the extern variables with the specified prefix to be dumped later with DUMP_ASSET macro
 #define EMBED_ASSET(file_path, prefix) \
