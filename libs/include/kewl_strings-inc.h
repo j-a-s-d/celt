@@ -93,6 +93,8 @@ static inline bool is_hex_char(char chr) {
            (chr >= 'A' && chr <= 'F');
 }
 
+bool is_same_char_string(const char* str);
+bool is_same_char_string_skipping_whitespace(const char *str);
 bool contains_char(const char* str, char chr);
 ssize_t count_char(const char* str, char chr);
 ssize_t left_count_char(const char* str, char chr);

@@ -10,7 +10,7 @@ C eXTRA LiBRARiES & TOOLS
 
 ## LIBRARIES
 
-An opinionated mashup of decades of c code (with 2300+ test cases and 0 memory leaks/invalid memory accesses) structured in a bunch of libraries mostly for c99+, mostly for linux, mostly for gcc and clang, which does not use any external dependency (except indicated) not even libm/math.h (but it's compatible of course).
+An opinionated mashup of decades of c code (with 2400+ test cases and 0 memory leaks/invalid memory accesses) structured in a bunch of libraries mostly for c99+, mostly for linux, mostly for gcc and clang, which does not use any external dependency (except indicated) not even libm/math.h (but it's compatible of course).
 In all of this libraries, name casing is snake, data types are suffixed as _dt and function types (such as callback types) are suffixed as _fn.
 
 * [`Ce`](libs/docs/ce.md) *mostly c89+ (plus some c99+ typedefs), for most compilers, only headers with macros and typedefs*
@@ -41,6 +41,10 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 24-jul-2026 -- *20260724L*
+	- [WeRKS] added increment routines for numeric values to `werks_kvm`
+	- [KeWL] added `is_same_char_string` and `is_same_char_string_skipping_whitespace`
+	- [MeH] added `UNLESS_DO` and `REPEAT_UNTIL`
 * 22-jul-2026 -- *20260722L*
 	- [KeWL] added `match_starting_pattern` and `match_ending_pattern`
 	- other minor adjustments

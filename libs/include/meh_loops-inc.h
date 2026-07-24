@@ -12,6 +12,11 @@
 #warning This is intended to be part of the MeH C Library.
 #endif
 
+/* MeH.LOOPS -- Block Iteration */
+
+#define UNLESS_DO(condition, block) if (!(condition)) block
+#define REPEAT_UNTIL(block, condition) do block while(!(condition))
+
 /* MeH.LOOPS -- Block Unrolling */
 
 #define BLOCK_ONCE(block) do block while(0)

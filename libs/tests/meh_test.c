@@ -482,6 +482,19 @@ static inline void test_loops() {
     }
     printf("\n");
     
+    printf("Example of UNLESS_DO to print a variable unless is 0:\n");
+    UNLESS_DO(xx == 0, {
+        printf("%d\n", xx);
+    });
+    printf("\n");
+    
+    printf("Example of REPEAT_UNTIL to print a variable until is 0:\n");
+    REPEAT_UNTIL({
+        printf("%d ", xx);
+    }, --xx == 0);
+    printf("\n");
+    printf("\n");
+    
     BLOCK_ONCE({
         printf("A\n");
         printf("B\n");

@@ -417,6 +417,72 @@ typedef bool (*werks_kvm_on_before_copy_item_handler_fn)(werks_kvm_dt* map, cons
 void werks_kvm_set_on_before_copy_item(werks_kvm_dt* map, werks_kvm_on_before_copy_item_handler_fn handler);
 werks_kvm_on_before_copy_item_handler_fn werks_kvm_get_on_before_copy_item(werks_kvm_dt* map);
 
+// increments
+
+static inline bool werks_kvm_add_signed_char(werks_kvm_dt* map, const char* key, signed char value) {
+    return werks_kvm_set_signed_char(map, key, ensure_signed_char_value(werks_kvm_get_signed_char(map, key)) + value);
+}
+static inline bool werks_kvm_add_unsigned_char(werks_kvm_dt* map, const char* key, unsigned char value) {
+    return werks_kvm_set_unsigned_char(map, key, ensure_unsigned_char_value(werks_kvm_get_unsigned_char(map, key)) + value);
+}
+static inline bool werks_kvm_add_short(werks_kvm_dt* map, const char* key, short value) {
+    return werks_kvm_set_short(map, key, ensure_short_value(werks_kvm_get_short(map, key)) + value);
+}
+static inline bool werks_kvm_add_unsigned_short(werks_kvm_dt* map, const char* key, unsigned short value) {
+    return werks_kvm_set_unsigned_short(map, key, ensure_unsigned_short_value(werks_kvm_get_unsigned_short(map, key)) + value);
+}
+static inline bool werks_kvm_add_int(werks_kvm_dt* map, const char* key, int value) {
+    return werks_kvm_set_int(map, key, ensure_int_value(werks_kvm_get_int(map, key)) + value);
+}
+static inline bool werks_kvm_add_unsigned_int(werks_kvm_dt* map, const char* key, unsigned int value) {
+    return werks_kvm_set_unsigned_int(map, key, ensure_unsigned_int_value(werks_kvm_get_unsigned_int(map, key)) + value);
+}
+static inline bool werks_kvm_add_long(werks_kvm_dt* map, const char* key, long value) {
+    return werks_kvm_set_long(map, key, ensure_long_value(werks_kvm_get_long(map, key)) + value);
+}
+static inline bool werks_kvm_add_unsigned_long(werks_kvm_dt* map, const char* key, unsigned long value) {
+    return werks_kvm_set_unsigned_long(map, key, ensure_unsigned_long_value(werks_kvm_get_unsigned_long(map, key)) + value);
+}
+static inline bool werks_kvm_add_long_long(werks_kvm_dt* map, const char* key, long long value) {
+    return werks_kvm_set_long_long(map, key, ensure_long_long_value(werks_kvm_get_long_long(map, key)) + value);
+}
+static inline bool werks_kvm_add_unsigned_long_long(werks_kvm_dt* map, const char* key, unsigned long long value) {
+    return werks_kvm_set_unsigned_long_long(map, key, ensure_unsigned_long_long_value(werks_kvm_get_unsigned_long_long(map, key)) + value);
+}
+static inline bool werks_kvm_add_float(werks_kvm_dt* map, const char* key, float value) {
+    return werks_kvm_set_float(map, key, ensure_float_value(werks_kvm_get_float(map, key)) + value);
+}
+static inline bool werks_kvm_add_double(werks_kvm_dt* map, const char* key, double value) {
+    return werks_kvm_set_double(map, key, ensure_double_value(werks_kvm_get_double(map, key)) + value);
+}
+static inline bool werks_kvm_add_long_double(werks_kvm_dt* map, const char* key, long double value) {
+    return werks_kvm_set_long_double(map, key, ensure_long_double_value(werks_kvm_get_long_double(map, key)) + value);
+}
+static inline bool werks_kvm_add_int8(werks_kvm_dt* map, const char* key, int8_t value) {
+    return werks_kvm_set_int8(map, key, ensure_int8_value(werks_kvm_get_int8(map, key)) + value);
+}
+static inline bool werks_kvm_add_uint8(werks_kvm_dt* map, const char* key, uint8_t value) {
+    return werks_kvm_set_uint8(map, key, ensure_uint8_value(werks_kvm_get_uint8(map, key)) + value);
+}
+static inline bool werks_kvm_add_int16(werks_kvm_dt* map, const char* key, int16_t value) {
+    return werks_kvm_set_int16(map, key, ensure_int16_value(werks_kvm_get_int16(map, key)) + value);
+}
+static inline bool werks_kvm_add_uint16(werks_kvm_dt* map, const char* key, uint16_t value) {
+    return werks_kvm_set_uint16(map, key, ensure_uint16_value(werks_kvm_get_uint16(map, key)) + value);
+}
+static inline bool werks_kvm_add_int32(werks_kvm_dt* map, const char* key, int32_t value) {
+    return werks_kvm_set_int32(map, key, ensure_int32_value(werks_kvm_get_int32(map, key)) + value);
+}
+static inline bool werks_kvm_add_uint32(werks_kvm_dt* map, const char* key, uint32_t value) {
+    return werks_kvm_set_uint32(map, key, ensure_uint32_value(werks_kvm_get_uint32(map, key)) + value);
+}
+static inline bool werks_kvm_add_int64(werks_kvm_dt* map, const char* key, int64_t value) {
+    return werks_kvm_set_int64(map, key, ensure_int64_value(werks_kvm_get_int64(map, key)) + value);
+}
+static inline bool werks_kvm_add_uint64(werks_kvm_dt* map, const char* key, uint64_t value) {
+    return werks_kvm_set_uint64(map, key, ensure_uint64_value(werks_kvm_get_uint64(map, key)) + value);
+}
+
 // utilities
 
 char* werks_kvm_export_to_json_object_string(werks_kvm_dt* map);

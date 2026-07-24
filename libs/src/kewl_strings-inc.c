@@ -101,6 +101,30 @@ bool is_lowercase_string(const char* str) {
     return true;
 }
 
+bool is_same_char_string_skipping_whitespace(const char *str) {
+    if (str == NULL) return false;
+    int i = -1;
+    do {
+        if (str[++i] == CHARS_NULL) return false;
+    } while (isspace((unsigned char)str[i]));
+    char sample = str[i]; // takes the first non-whitespace character as the sample
+    while (str[++i] != CHARS_NULL)
+        if (!isspace((unsigned char)str[i]))
+            if (str[i] != sample)
+                return false;
+    return true;
+}
+
+bool is_same_char_string(const char* str) {
+    if (str == NULL || str[0] == CHARS_NULL) return false;
+    char sample = str[0];
+    int i = 0;
+    while (str[++i] != CHARS_NULL)
+        if (str[i] != sample)
+            return false;
+    return true;
+}
+
 bool contains_char(const char* str, char chr) {
     if (assigned(str))
         while (*str != CHARS_NULL) {
