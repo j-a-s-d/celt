@@ -742,6 +742,7 @@ int main(void) {
     werks_kvm_set_untyped_treatment(m_map, WERKS_KVM_UNTYPED_IS_STRING);
     werks_kvm_read_from_string(m_map, "item1=this\nitem2=that\nitem3=(string)hello");
     Tests.run("werks_kvm_get_items_count m_map 3", werks_kvm_get_items_count(m_map) == 3);
+    Tests.run("werks_kvm_format_keys", werks_kvm_format_keys(m_map, "|%s|") && streq(werks_kvm_get_string(m_map, "|item1|"), "this") && streq(werks_kvm_get_string(m_map, "|item2|"), "that") && streq(werks_kvm_get_string(m_map, "|item3|"), "hello"));
     werks_kvm_destroy(m_map);
     QUICK_KVM(qkvm, {
         werks_kvm_read_from_string(qkvm, "i1=(int)1\ni2=(int)2\ni3=(int)3");

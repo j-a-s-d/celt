@@ -186,6 +186,7 @@ bool werks_kvm_keep_typed_items_of(werks_kvm_dt* map, werks_kvm_dt* source_map);
 // keys
 
 bool werks_kvm_rename_item(werks_kvm_dt* map, const char* key, const char* new_key);
+bool werks_kvm_format_keys(werks_kvm_dt* map, const char* format);
 bool werks_kvm_prefix_keys(werks_kvm_dt* map, const char* prefix);
 bool werks_kvm_suffix_keys(werks_kvm_dt* map, const char* suffix);
 bool werks_kvm_unprefix_keys(werks_kvm_dt* map, const char* prefix);

@@ -805,6 +805,21 @@ bool werks_kvm_rename_item(werks_kvm_dt* const map, const char* key, const char*
     return false;
 }
 
+bool werks_kvm_format_keys(werks_kvm_dt* const map, const char* format) {
+    if (map == NULL || !map->allow_rename || !has_content(format)) return false;
+    for (ssize_t i = 0; i < map->size; i++)
+        if (map->types[i] != WERKS_KVM_TYPE_NOTHING) {
+            ssize_t sz = snprintf(NULL, 0, format, map->keys[i]) + 1;
+            char* str = TYPE_MALLOC(char, sz);
+            snprintf(str, sz, format, map->keys[i]);
+            if (!rename_map_item(map, i, str)) {
+                ce_free(str);
+                return false;
+            }
+        }
+    return true;
+}
+
 bool werks_kvm_prefix_keys(werks_kvm_dt* const map, const char* prefix) {
     if (map == NULL || !map->allow_rename || !has_content(prefix)) return false;
     for (ssize_t i = 0; i < map->size; i++)
@@ -861,16 +876,29 @@ bool werks_kvm_unsuffix_keys(werks_kvm_dt* const map, const char* suffix) {
     return true;
 }
 
-char* werks_kvm_get_joined_keys(werks_kvm_dt* const map, const char* separator) {
-    if (map == NULL || separator == NULL) return NULL;
+static char* get_joined_keys_with_prefix(werks_kvm_dt* const map, const char* separator, const char* prefix) {
     char* result = strdup(STRINGS_NOTHING);
     for (ssize_t i = 0; i < map->size; i++)
         if (map->types[i] != WERKS_KVM_TYPE_NOTHING) {
-            result = strappend(result, map->keys[i]);
+            if (map->types[i] == WERKS_KVM_TYPE_KVM) {
+                AUTO_STRING(pfx, concat_strings(map->keys[i], STRINGS_BACKSLASH));
+                result = strappend(result, get_joined_keys_with_prefix(map->values[i], separator, pfx));
+            } else {
+                if (has_content(prefix)) {
+                    AUTO_STRING(key, concat_strings(prefix, map->keys[i]));
+                    result = strappend(result, key);
+                } else
+                    result = strappend(result, map->keys[i]);
+            }
             if (i < map->size - 1)
                 result = strappend(result, separator);
         }
     return result;
+}
+
+char* werks_kvm_get_joined_keys(werks_kvm_dt* const map, const char* separator) {
+    if (map == NULL || separator == NULL) return NULL;
+    return get_joined_keys_with_prefix(map, separator, STRINGS_NOTHING);
 }
 
 // transfers the specified origin item from the specified origin map to the specified destination map with the specified destination key (if it already exists returns false)

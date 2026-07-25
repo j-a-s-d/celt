@@ -41,6 +41,9 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 25-jul-2026 -- *20260725L*
+	- [WeRKS] added `werks_kvm_format_keys`
+	- other minor adjustments
 * 24-jul-2026 -- *20260724L*
 	- [WeRKS] added increment routines for numeric values to `werks_kvm`
 	- [KeWL] added `is_same_char_string` and `is_same_char_string_skipping_whitespace`
