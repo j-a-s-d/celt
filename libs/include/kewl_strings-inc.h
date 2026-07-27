@@ -50,6 +50,10 @@ static inline bool streq(const char* a, const char* b) {
     return both_assigned(a, b) && strcmp(a, b) == 0;
 }
 
+static inline ssize_t strlength(const char* str) {
+    return assigned(str) ? strlen(str) : 0;
+}
+
 static inline bool contains_string(const char* container, const char* contained) {
     return assigned(container) && assigned(contained) && assigned(strstr(container, contained));
 }

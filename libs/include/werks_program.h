@@ -65,6 +65,7 @@ static inline werks_program_finalizer_fn werks_program_get_on_after_main(werks_p
 void werks_program_set_input_args(werks_program_dt* prg, int args_count, const char* args_values[]);
 int werks_program_get_input_argc(werks_program_dt* prg);
 const char** werks_program_get_input_argv(werks_program_dt* prg);
+char* werks_program_consolidate_input_argv(werks_program_dt* prg, bool skip_first);
 
 void werks_program_set_context(werks_program_dt* prg, void* ctx);
 void* werks_program_get_context(werks_program_dt* prg);

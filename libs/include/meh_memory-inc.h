@@ -43,7 +43,13 @@ inline void _auto_cleanup(void* ptr) {
     ce_free(*(void**)ptr);
 }
 
-#define AUTO_STRING(name, value) __auto char* name = value
+#define AUTO_TYPE(name, type) __auto VAR_MALLOC(name, type)
+
+#define AUTO_TYPE_SIZE(name, type, size) __auto VAR_MALLOC_SIZE(name, type, size)
+
+#define AUTO_TYPE_INIT(name, type, value) __auto type* name = value
+
+#define AUTO_STRING(name, value) AUTO_TYPE_INIT(name, char, value)
 
 #define AUTO_STRDUP(name, value) AUTO_STRING(name, strdup(value))
 
@@ -52,10 +58,6 @@ inline void _auto_cleanup(void* ptr) {
     strcpy(name, value)
 
 #define AUTO_BYTES(name, size) __auto uint8_t* name = TYPE_MALLOC(uint8_t, size)
-
-#define AUTO_TYPE(name, type) __auto VAR_MALLOC(name, type)
-
-#define AUTO_TYPE_SIZE(name, type, size) __auto VAR_MALLOC_SIZE(name, type, size)
 
 /* MeH.MEMORY -- Automatic Return */
 

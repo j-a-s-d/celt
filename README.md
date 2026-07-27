@@ -41,6 +41,10 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 27-jul-2026 -- *20260727L*
+	- [WeRKS] added `werks_program_consolidate_input_argv`
+	- [KeWL] added `strlength`
+	- [MeH] added `AUTO_TYPE_INIT`
 * 25-jul-2026 -- *20260725L*
 	- [WeRKS] added `werks_kvm_format_keys`
 	- other minor adjustments

@@ -98,6 +98,11 @@ const char** werks_program_get_input_argv(werks_program_dt* const prg) {
         NULL : prg->args_values;
 }
 
+char* werks_program_consolidate_input_argv(werks_program_dt* const prg, bool skip_first) {
+    return prg == NULL ?
+        NULL : string_array_join_range(prg->args_count, prg->args_values, skip_first ? 1 : 0, prg->args_count - 1, STRINGS_SPACE);
+}
+
 bool werks_program_has_finished(werks_program_dt* const prg) {
     return prg == NULL || prg->program_task == NULL ?
         false : prg->program_task->state == KEWL_TASK_FINALIZED;

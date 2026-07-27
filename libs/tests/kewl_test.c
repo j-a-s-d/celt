@@ -728,6 +728,9 @@ static inline void test_str_functions() {
     Tests.run("bool_to_str", streq(st, "true"));
     bool bt = str_to_bool(st);
     Tests.run("str_to_bool", bt);
+    Tests.run("strlength YES", strlength(st) == 4);
+    Tests.run("strlength empty", strlength(STRINGS_NOTHING) == 0);
+    Tests.run("strlength null", strlength(NULL) == 0);
     free(st);
     Tests.run("is_digit_char \\0", !is_digit_char('\0'));
     Tests.run("is_digit_char A", !is_digit_char('A'));

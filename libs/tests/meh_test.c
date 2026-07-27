@@ -399,6 +399,13 @@ static inline void test_memory_utilities() {
     AUTO_STRHEAP(hs, "my string in the heap");
     Tests.run("AUTO_STRHEAP", assigned(hs));
     Tests.print("%s\n", hs);
+    
+    AUTO_TYPE_SIZE(y, char, 4);
+    strcpy(y, "baz");
+    Tests.print("%s\n", y);
+    AUTO_TYPE_INIT(w, char, malloc(4));
+    strcpy(w, "baz");
+    Tests.print("%s\n", w);
     AUTO_BYTES(bb, 3);
     Tests.run("AUTO_BYTES", assigned(bb));
     bb[0] = BYTES_A1;
