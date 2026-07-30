@@ -51,9 +51,9 @@ werks_stringlist_dt* werks_stringlist_concatenate(werks_stringlist_dt* sl1, werk
 void werks_stringlist_destroy(werks_stringlist_dt* sl);
 const kewl_component_dt* werks_stringlist_get_component(werks_stringlist_dt* sl);
 
-#define QUICK_STRINGLIST(name, block) { \
+#define QUICK_STRINGLIST(name, slblk) { \
         werks_stringlist_dt* name = werks_stringlist_make(); \
-        if (assigned(name)) block; \
+        if (assigned(name)) slblk; \
         werks_stringlist_destroy(name); \
     }
 

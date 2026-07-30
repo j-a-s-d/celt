@@ -41,6 +41,9 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 30-jul-2026 -- *20260730L*
+	- [KeWL] added `string_key_value_write`
+	- other minor adjustments
 * 27-jul-2026 -- *20260727L*
 	- [WeRKS] added `werks_program_consolidate_input_argv`
 	- [KeWL] added `strlength`

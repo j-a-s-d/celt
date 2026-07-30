@@ -349,6 +349,10 @@ typedef struct {
 
 string_key_value_dt* string_key_value_parse(const char* input, const char* separator);
 
+static inline char* string_key_value_write(string_key_value_dt* kv, const char* separator) {
+    return both_assigned(kv, separator) ? strenclose(strdup(separator), kv->key, kv->value) : NULL;
+}
+
 static inline void string_key_value_destroy(string_key_value_dt* kv) {
     if (kv == NULL) return;
     ce_free(kv->key);

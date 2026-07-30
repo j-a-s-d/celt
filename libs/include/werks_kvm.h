@@ -129,9 +129,9 @@ werks_kvm_dt* werks_kvm_clone(werks_kvm_dt* map);
 void werks_kvm_destroy(werks_kvm_dt* map);
 const kewl_component_dt* werks_kvm_get_component(werks_kvm_dt* map);
 
-#define QUICK_KVM(name, block) { \
+#define QUICK_KVM(name, kvmblk) { \
         werks_kvm_dt* name = werks_kvm_make(); \
-        if (assigned(name)) block; \
+        if (assigned(name)) kvmblk; \
         werks_kvm_destroy(name); \
     }
 
