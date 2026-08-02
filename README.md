@@ -41,6 +41,8 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 02-ago-2026 -- *20260802L*
+	- [KeWL] added `gmt_translate_time`
 * 30-jul-2026 -- *20260730L*
 	- [KeWL] added `string_key_value_write`
 	- other minor adjustments

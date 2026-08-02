@@ -166,6 +166,11 @@ double local_hms_to_utc_decimal_hours(int local_hours, int local_minutes, int lo
  */
 void utc_decimal_hours_to_local_hms(double utc_decimal_hour, double gmt_offset, int result[3], int* day_shift);
 
+/**
+ * Function to translate a time (hour and minutes) from a gmt to another specifying also the day shift.
+ */
+void gmt_translate_time(double origin_gmt, int origin_hh, int origin_mm, double destination_gmt, int* destination_dd, int* destination_hh, int* destination_mm);
+
 // DATETIME
 
 /**

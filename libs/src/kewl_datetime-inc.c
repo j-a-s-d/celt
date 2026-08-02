@@ -141,6 +141,34 @@ void utc_decimal_hours_to_local_hms(double utc_decimal_hour, double gmt_offset, 
     _normalize_hms(&result[0], &result[1], &result[2], day_shift);
 }
 
+void gmt_translate_time(double origin_gmt, int origin_hh, int origin_mm, double destination_gmt, int* destination_dd, int* destination_hh, int* destination_mm) {
+    // manually round floating-point offsets to exact integer minutes 
+    int orig_gmt_mins = (int)(origin_gmt * 60.0 + (origin_gmt >= 0 ? 0.5 : -0.5));
+    int dest_gmt_mins = (int)(destination_gmt * 60.0 + (destination_gmt >= 0 ? 0.5 : -0.5));
+    
+    // map original local time to absolute minutes at GMT 0
+    int orig_total_mins = (origin_hh * 60) + origin_mm - orig_gmt_mins;
+    
+    // shift from GMT 0 to destination local time
+    int dest_total_mins = orig_total_mins + dest_gmt_mins;
+
+    // determine the date shift relative to the original day
+    if (dest_total_mins < 0) {
+        *destination_dd = -1; // previous day
+    } else if (dest_total_mins >= 1440) {
+        *destination_dd = 1; // next day
+    } else {
+        *destination_dd = 0; // same day
+    }
+
+    // wrap around 24 hours (1440 minutes) safely handling negative values
+    dest_total_mins = (dest_total_mins % 1440 + 1440) % 1440;
+
+    // store results in output pointers for hours and minutes
+    *destination_hh = dest_total_mins / 60;
+    *destination_mm = dest_total_mins % 60;
+}
+
 bool fill_datetime_from_tm(datetime_dt* datetime, const struct tm* time_tm) {
     if (datetime == NULL || time_tm == NULL) return false;
     datetime->year = time_tm->tm_year + 1900; // tm_year is years since 1900
