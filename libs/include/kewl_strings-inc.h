@@ -338,6 +338,8 @@ char* trim(const char* str);
 char* drop_left(const char* str, size_t amount);
 char* drop_right(const char* str, size_t amount);
 char* drop_both(const char* str, size_t amount);
+char* drop_at_char(const char* str, char c);
+char* drop_after_char(const char* str, char c);
 char* remove_whitespace(const char* str);
 
 // KEY-VALUE
@@ -359,6 +361,12 @@ static inline void string_key_value_destroy(string_key_value_dt* kv) {
     ce_free(kv->value);
     ce_free(kv);
 }
+
+#define QUICK_KEY_VALUE(kvvar, kvstr, kvsep, kvblk) { \
+        string_key_value_dt* kvvar = string_key_value_parse(kvstr, kvsep); \
+        if (assigned(kvvar)) kvblk; \
+        string_key_value_destroy(kvvar); \
+    }
 
 // REPLACEMENT
 

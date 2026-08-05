@@ -1221,6 +1221,20 @@ static inline void test_str_functions() {
     Tests.run("drop_both NULL", drop_both(NULL, 0) == NULL);
     Tests.run("drop_both 0", drop_both("abc", 0) == NULL);
     Tests.run("drop_both excessive", drop_both("abc", 2) == NULL);
+    AUTO_STRING(mmm, drop_at_char("key=value", '='));
+    Tests.run("drop_at_char YES", streq(mmm, "key"));
+    Tests.run("drop_at_char NULL CHARS_NULL", drop_at_char(NULL, CHARS_NULL) == NULL);
+    Tests.run("drop_at_char NULL", drop_at_char(NULL, '=') == NULL);
+    Tests.run("drop_at_char CHARS_NULL", drop_at_char("key=value", CHARS_NULL) == NULL);
+    AUTO_STRING(mmm2, drop_at_char("", ' '));
+    Tests.run("drop_at_char empty", strlen(mmm2) == 0);
+    AUTO_STRING(nnn, drop_after_char("key=value", '='));
+    Tests.run("drop_after_char YES", streq(nnn, "key="));
+    Tests.run("drop_after_char NULL CHARS_NULL", drop_after_char(NULL, CHARS_NULL) == NULL);
+    Tests.run("drop_after_char NULL", drop_after_char(NULL, '=') == NULL);
+    Tests.run("drop_after_char CHARS_NULL", drop_after_char("key=value", CHARS_NULL) == NULL);
+    AUTO_STRING(nnn2, drop_at_char("", ' '));
+    Tests.run("drop_after_char empty", strlen(nnn2) == 0);
     AUTO_STRING(eee, remove_whitespace(" this is\ta test "));
     Tests.run("remove_whitespace YES", streq(eee, "thisisatest"));
     Tests.run("remove_whitespace NO", remove_whitespace(NULL) == NULL);
@@ -1287,6 +1301,9 @@ static inline void test_str_functions() {
     kvs = string_key_value_write(kv, NULL);
     Tests.run("string_key_value_write null 2", kvs == NULL);
     string_key_value_destroy(kv);
+    QUICK_KEY_VALUE(qkv, "key=value", "=", {
+        Tests.run("QUICK_KEY_VALUE", assigned(qkv) && streq(qkv->key, "key") && streq(qkv->value, "value"));
+    });
     Tests.run("parse_separated_values", parse_separated_values("abc,def,ghi", ",", print_value));
     sample_ptr = malloc(1);
     Tests.run("parse_separated_values_with_reference", parse_separated_values_with_reference("abc,def,ghi", ",", print_value_with_reference, sample_ptr));

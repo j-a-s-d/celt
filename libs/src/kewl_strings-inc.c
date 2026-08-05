@@ -1184,6 +1184,36 @@ char* drop_right(const char* str, size_t amount) {
     return result;
 }
 
+char* drop_at_char(const char* str, char c) {
+    if (str == NULL || c == CHARS_NULL) return NULL;
+    const char* match = strchr(str, c);
+    size_t new_len;
+    if (match != NULL) {
+        new_len = (size_t)(match - str);
+    } else
+        new_len = strlen(str);
+    char* result = ce_malloc(new_len + 1);
+    if (result == NULL) return NULL;
+    memcpy(result, str, new_len);
+    result[new_len] = CHARS_NULL;
+    return result;
+}
+
+char* drop_after_char(const char* str, char c) {
+    if (str == NULL || c == CHARS_NULL) return NULL;
+    const char* match = strchr(str, c);
+    size_t new_len;
+    if (match != NULL) {
+        new_len = (size_t)(match - str) + 1;
+    } else
+        new_len = strlen(str);
+    char* result = ce_malloc(new_len + 1);
+    if (result == NULL) return NULL;
+    memcpy(result, str, new_len);
+    result[new_len] = CHARS_NULL;
+    return result;
+}
+
 char* remove_whitespace(const char* str) {
     if (str == NULL) return NULL;
     int count = 0;
