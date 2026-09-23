@@ -381,3 +381,15 @@ char validate_yyyymmdd_date_string_format(const char* text) {
     return result;
 }
 
+bool is_dst_active(int year, int month, int day) {
+    struct tm time_input = {0};
+    time_input.tm_year = year - 1900;
+    time_input.tm_mon = month - 1;
+    time_input.tm_mday = day;
+    time_input.tm_hour = 12; // avoid transition ambiguities at midnight
+    time_input.tm_isdst = -1; // force system to calculate DST status
+    if (mktime(&time_input) == (time_t)-1 && time_input.tm_isdst == -1)
+        return false; // returns false if calculation completely fails
+    return time_input.tm_isdst > 0;
+}
+

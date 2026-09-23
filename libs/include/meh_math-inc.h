@@ -42,6 +42,13 @@
 #define VALUE_DEGREES_TO_RADIANS (VALUE_PI / 180) // ~ 0.0174533
 #define VALUE_RADIANS_TO_DEGREES (180 / VALUE_PI) // ~ 57.2958
 
+// array of the antiprime numbers up to 1000
+static const int ANTIPRIMES_UP_TO_1000[] = {
+      1,   2,   4,   6,
+     12,  24,  36,  48,  60,
+    120, 180, 240, 360, 720, 840
+};
+
 // array of the prime numbers up to 1000
 static const int PRIMES_UP_TO_1000[] = {
       2,   3,   5,   7,  11,

@@ -499,11 +499,18 @@ static inline void test_datetime_utilities() {
     // London (GMT +0) at 02:30 AM -> New York (GMT -5) = 21:30 (9:30 PM), Date: -1 day
     gmt_translate_time(0.0, 2, 30, -5.0, &res_d, &res_h, &res_m);
     Tests.run("gmt_translate_time (Previous Day Transition)", res_d == -1 && res_h == 21 && res_m == 30);
-    printf("New York: (date shift: %+d) %02d:%02d\n", res_d, res_h, res_m);
+    Tests.print("New York: (date shift: %+d) %02d:%02d\n", res_d, res_h, res_m);
     // Paris (GMT +1) at 14:00 (2 PM) -> Mumbai (GMT +5.5) = 18:30 (6:30 PM), Date: 0 (same day)
     gmt_translate_time(1.0, 14, 00, 5.5, &res_d, &res_h, &res_m);
     Tests.run("gmt_translate_time (Same Day Transition with Half-Hour Zone)", res_d == 0 && res_h == 18 && res_m == 30);
-    printf("Mumbai: (date shift: %+d) %02d:%02d\n", res_d, res_h, res_m);
+    Tests.print("Mumbai: (date shift: %+d) %02d:%02d\n", res_d, res_h, res_m);
+    
+    int y = 2026, m = 7, d = 15;
+    Tests.run("is_dst_active", true); // NOTE: we can't tell
+    Tests.print("Date with system TZ:  %s\n", is_dst_active(y, m, d) ? "DST Active" : "Standard");
+    datetime_dt dtymd = (datetime_dt){y,m,d,12,00,00};
+    Tests.run("is_dst_active_for_datetime", true); // NOTE: same here
+    Tests.print("Datetime with system TZ: %s\n", is_dst_active_for_datetime(&dtymd) ? "DST Active" : "Standard");
 }
 
 static inline void test_strhashset() {

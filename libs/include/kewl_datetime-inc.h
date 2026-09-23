@@ -327,3 +327,15 @@ char validate_ddmmyyyy_date_string_format(const char* text);
  */
 char validate_yyyymmdd_date_string_format(const char* text);
 
+/**
+ * Determines if Daylight Saving Time (DST) is active for a specific date using the system timezone.
+ */
+bool is_dst_active(int year, int month, int day);
+
+/**
+ * Function to determine if DST is active for a datetime using the system timezone.
+ */
+static inline bool is_dst_active_for_datetime(datetime_dt* dt) {
+    return assigned(dt) && is_dst_active(dt->year, dt->month, dt->day);
+}
+
