@@ -393,3 +393,63 @@ bool is_dst_active(int year, int month, int day) {
     return time_input.tm_isdst > 0;
 }
 
+unsigned long duration_to_days(const char* duration) {
+    unsigned long result = 0;
+    if (assigned(duration)) {
+        const char* ptr = duration;
+        int read;
+        long val;
+        char unit;
+        while (sscanf(ptr, " %ld %c %n", &val, &unit, &read) == 2) {
+            switch (unit) {
+                case 'y': result += val * 365; break;
+                case 'm': result += val * 30; break;
+                case 'w': result += val * 7; break;
+                case 'd': result += val; break;
+                default: break;
+            }
+            ptr += read;
+        }
+    }
+    return result;
+}
+
+char* days_to_duration(unsigned long total_days) {
+    if (total_days == 0) {
+        char* zero_result = ce_malloc(3 * sizeof(char));
+        if (assigned(zero_result)) {
+            zero_result[0] = '0';
+            zero_result[1] = 'd';
+            zero_result[2] = CHARS_NULL;
+        }
+        return zero_result;
+    }
+    unsigned long years = total_days / 365;
+    unsigned long remaining_days = total_days % 365;
+    unsigned long months = remaining_days / 30;
+    remaining_days = remaining_days % 30;
+    unsigned long weeks = remaining_days / 7;
+    unsigned long days = remaining_days % 7;
+    char buffer[128];
+    int offset = 0;
+    bool first = true;
+    #define APPEND_UNIT(value, unit_char) \
+        if ((value) > 0) { \
+            if (!first) \
+                offset += snprintf(buffer + offset, sizeof(buffer) - offset, STRINGS_SPACE); \
+            offset += snprintf(buffer + offset, sizeof(buffer) - offset, "%lu%c", (value), (unit_char)); \
+            first = false; \
+        }
+    APPEND_UNIT(years, 'y');
+    APPEND_UNIT(months, 'm');
+    APPEND_UNIT(weeks, 'w');
+    APPEND_UNIT(days, 'd');
+    #undef APPEND_UNIT
+    int final_size = offset + 1;
+    char* result = ce_malloc(final_size * sizeof(char));
+    if (result == NULL)
+        return NULL;
+    snprintf(result, final_size, "%s", buffer);
+    return result;
+}
+

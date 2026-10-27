@@ -302,6 +302,16 @@ static inline void test_memory_utilities() {
     Tests.run("memxchg", strcmp(m, "5678") == 0 && strcmp(n, "1234") == 0);
     Tests.print("m = %s | n = %s\n", m, n);
     
+    unsigned char tmp1[5] = {0xAA, 0x55, 0x01, 0xFF, 0x7F};
+    unsigned char tmp2[5] = {0xB3, 0x25, 0x70, 0x12, 0x5C};
+    memswap(tmp1, tmp2, 3); // xchg 3 first bytes
+    unsigned char cmp1[5] = {0xB3, 0x25, 0x70, 0xFF, 0x7F};
+    unsigned char cmp2[5] = {0xAA, 0x55, 0x01, 0x12, 0x5C};
+    Tests.run("memswap", tmp1[0] == cmp1[0] && tmp1[1] == cmp1[1] &&
+        tmp1[2] == cmp1[2] && tmp1[3] == cmp1[3] && tmp1[4] == cmp1[4] &&
+        tmp2[0] == cmp2[0] && tmp2[1] == cmp2[1] &&
+        tmp2[2] == cmp2[2] && tmp2[3] == cmp2[3] && tmp2[4] == cmp2[4]);
+    
     uint8_t val8 = 0b10010110;  // 150 decimal, 0x96
     uint8_t rotated_left8 = rol8(val8, 3); // 0xB4, 0b10110100
     Tests.run("rol8", rotated_left8 == 0xB4);

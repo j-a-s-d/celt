@@ -41,6 +41,9 @@ None of this programs use any of the CeLT libraries, just in case you want this 
 
 ### HISTORY
 
+* 27-oct-2026 -- *20261027L*
+	- [KeWL] added `duration_to_days` and `days_to_duration`
+	- [MeH] added `memwap`
 * 23-sep-2026 -- *20260923L*
 	- [KeWL] added `is_dst_active` and `is_dst_active_for_datetime`
 	- [MeH] added `ANTIPRIMES_UP_TO_1000`

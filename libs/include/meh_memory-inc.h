@@ -277,6 +277,24 @@ static inline void memxchg(void* a, void* b, const size_t size) {
     }
 }
 
+// swaps n bytes of memory between two memory blocks
+static inline bool memswap(void* a, void* b, size_t n) {
+    if (!both_assigned(a, b) || a == b || n == 0) return false;
+    unsigned char* p = (unsigned char*)a;
+    unsigned char* q = (unsigned char*)b;
+    unsigned char tmp[256];
+    while (n > 0) {
+        size_t chunk = n < sizeof(tmp) ? n : sizeof(tmp);
+        memcpy(tmp, p, chunk);
+        memcpy(p, q, chunk);
+        memcpy(q, tmp, chunk);
+        p += chunk;
+        q += chunk;
+        n -= chunk;
+    }
+    return true;
+}
+
 /* MeH.MEMORY -- Pointer Functions */
 
 // write a value through a volatile pointer to prevent the compiler from optimizing away the write

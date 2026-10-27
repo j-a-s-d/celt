@@ -88,6 +88,16 @@ char* get_formatted_date_time(const char* fmt);
  */
 char* time_t_to_iso8601(time_t raw_time);
 
+/*
+ * Converts a given formatted duration string ("Xy Xm Xw Xd") into the corresponding number of days (for example: "1y 2m 2w 5d" = 444).
+ */
+unsigned long duration_to_days(const char* duration);
+
+/*
+ * Converts a given number of days into a formatted duration string ("Xy Xm Xw Xd") newly allocated string (for example: 444 = "1y 2m 2w 5d").
+ */
+char* days_to_duration(unsigned long total_days);
+
 // TIMESTAMP
 
 #include <sys/time.h>

@@ -511,6 +511,17 @@ static inline void test_datetime_utilities() {
     datetime_dt dtymd = (datetime_dt){y,m,d,12,00,00};
     Tests.run("is_dst_active_for_datetime", true); // NOTE: same here
     Tests.print("Datetime with system TZ: %s\n", is_dst_active_for_datetime(&dtymd) ? "DST Active" : "Standard");
+    
+    Tests.run("duration_to_days null", duration_to_days(NULL) == 0);
+    Tests.run("duration_to_days empty", duration_to_days("") == 0);
+    Tests.run("duration_to_days zero", duration_to_days("0d") == 0);
+    Tests.run("duration_to_days OK", duration_to_days("1y 2m 2w 5d") == 444);
+    __auto char* d0 = days_to_duration(0);
+    Tests.run("days_to_duration zero", streq(d0, "0d"));
+    __auto char* d1 = days_to_duration(1);
+    Tests.run("days_to_duration one", streq(d1, "1d"));
+    __auto char* d2 = days_to_duration(444);
+    Tests.run("days_to_duration OK", streq(d2, "1y 2m 2w 5d"));
 }
 
 static inline void test_strhashset() {
