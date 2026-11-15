@@ -150,3 +150,6 @@ bool delete_nested_directories(const char* path);
 // Function to list the entries (files and directories) of a directory with a custom separator
 char* list_directory(const char* path, const char* separator);
 
+// Function to determine a file with the target name exists in the specified directory or any of its nested directories.
+bool file_exists_in_nested_directories(const char* path, const char* target_filename);
+

@@ -289,3 +289,37 @@ bool copy_file(const char* src_path, const char* dest_path) {
     return success;
 }
 
+bool file_exists_in_nested_directories(const char* dir_path, const char* target_filename) {
+    if (!both_assigned(dir_path, target_filename)) return false;
+    bool result = false;
+    DIR* dir = opendir(dir_path);
+    if (assigned(dir)) {
+        struct dirent* entry;
+        while (assigned(entry = readdir(dir))) {
+            if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
+                continue;
+            int len = snprintf(NULL, 0, "%s/%s", dir_path, entry->d_name);
+            char* full_path = ce_malloc(len + 1);
+            if (!assigned(full_path)) continue;
+            snprintf(full_path, len + 1, "%s/%s", dir_path, entry->d_name);
+            struct stat st;
+#ifdef __posix01
+            // NOTE: use lstat so symlinks to directories don't cause infinite loops if available
+            if (lstat(full_path, &st) == 0) {
+#else
+            if (stat(full_path, &st) == 0) {
+#endif
+                if (S_ISDIR(st.st_mode)) {
+                    if (file_exists_in_nested_directories(full_path, target_filename))
+                        result = true;
+                } else if (streq(entry->d_name, target_filename))
+                    result = true;
+            }
+            ce_free(full_path);
+            if (result) break;
+        }
+        closedir(dir);
+    }
+    return result;
+}
+

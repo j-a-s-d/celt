@@ -537,7 +537,10 @@ unit_initializer({
     puts("Static Initializer 1 (normal initializers execute in the sequential order they appear in code)!");
 })
 unit_initializer({
-    puts("Static Initializer 2!");
+    puts("Static Initializer 2! (use as many unit_initializer as you want)");
+})
+unit_initializer({
+    puts("Static Initializer 3! (use as many unit_initializer as you want)");
 })
 unit_initialize({
     puts("Last Initializer (special initializer: last in the execution order)!");
@@ -563,7 +566,10 @@ unit_finalizer({
     puts("Static Finalizer 1 (normal finalizers execute in the reversed sequential order they appear in code)!");
 })
 unit_finalizer({
-    puts("Static Finalizer 2!");
+    puts("Static Finalizer 2! (use as many unit_finalizer as you want)");
+})
+unit_finalizer({
+    puts("Static Finalizer 3! (use as many unit_finalizer as you want)");
 })
 unit_finalization({
     puts("Last Finalizer (special finalizer: last in the execution order)!");

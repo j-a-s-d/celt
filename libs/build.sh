@@ -133,7 +133,7 @@ function BUILD() {
 
     MAKE_TEST gest_pfssysnfo_test $SRC/gest_pfssysnfo.c -pedantic-errors # for unix-like only
     EXT+=$SRC/kewl.c # from now on, everything uses kewl
-    MAKE_TEST kewl_test -D_POSIX_C_SOURCE=200809L # the posix 93 activation is for some DATETIME's features, and posix 01 will be even better due to optimizations in the code, and posix 08 for a feature of CMDLINE
+    MAKE_TEST kewl_test -D_POSIX_C_SOURCE=200809L # the posix 93 activation is for some DATETIME's features, and posix 01 will be even better due to optimizations in the code and a feature in filesystem's file_exists_in_nested_directories, and posix 08 for a feature of CMDLINE
 
     # WERKS & PERKS
 

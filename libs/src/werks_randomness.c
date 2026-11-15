@@ -31,6 +31,7 @@ static void randomize(void) {
     internal_.seeded_rng = true;
 }
 
+/* NOTE: to ensure this is being executed first, the unit_initilization is taken here, if you had a clash use unit_initializer instead */
 unit_initialization({
     randomize();
 })

@@ -96,6 +96,13 @@ static inline void test_fs_utilities() {
     Tests.run("list_directory", assigned(ld));
     Tests.print("%s\n", ld);
 
+    const char* nested_filename = "a/b/c/d/test.file";
+    Tests.run("create_moded_nested_directories", create_moded_nested_directories(path, mode));
+    Tests.run("write_text_file", write_text_file(nested_filename, content));
+    Tests.run("file_exists_in_nested_directories", file_exists_in_nested_directories("a", "test.file"));
+    Tests.run("delete_file", delete_file(nested_filename));
+    Tests.run("delete_nested_directories", delete_nested_directories("a"));
+
     const char* bin_name = "sample.bin";
     uint8_t bin_data[] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88};
     Tests.run("write_binary_file", write_binary_file(bin_name, (uint8_t**)&bin_data, 8));
